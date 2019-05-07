@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/jquery-easyui-1.7.0/themes/default/easyui.css}">
+    <link rel="stylesheet" th:href="@{/jquery-easyui-1.7.0/themes/icon.css}">
+    <script th:src="@{/jquery-easyui-1.7.0/jquery.easyui.min.js}"></script>
+</head>
+<body>
+<div id="cc" class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'center',title:'center title'" style="padding:5px;background:#eee;">
+        <table class="easyui-datagrid">
+            <thead>
+            <tr>
+                <th data-options="field:'code'">项目名称</th>
+                <th data-options="field:'name'">项目阶段</th>
+                <th data-options="field:'price'">人员配置</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>001</td><td>name1</td><td>2323</td>
+            </tr>
+            <tr>
+                <td>002</td><td>name2</td><td>4612</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>
