@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+</head>
+<body>
+<div class="easyui-layout" style="width: 100%;height: 800px;">
+    <div data-options="region:'center',title:'详细信息'" style="padding:5px;" >
+
+    </div>
+    <div data-options="region:'west',title:'用户管理',split:true" style="width:230px;" >
+        <div style="width: 100%;height: 20px;background: rgba(0, 0, 255, 0.1)">审计部门</div>
+        <div id="tree">
+            <ul class="easyui-tree">
+                <li>
+                    <span>审计部门</span>
+                    <ul>
+                        <li>
+                            <span>稽核部</span>
+                            <ul>
+                                <li><a href="javascript:void(0)"><span>XX部1子节点</span></a></li>
+                                <li><span>XX部1子节点</span></li>
+                                <li><span>XX部1子节点</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

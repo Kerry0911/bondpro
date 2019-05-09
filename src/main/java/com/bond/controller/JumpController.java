@@ -5,6 +5,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class JumpController {
+    @RequestMapping("/todolist")
+    public String todolist(){return "todoList"; }
+
+    @RequestMapping("/manager")
+    public String manager(){
+        return "auditManager/auditedManage";
+    }
+
+    @RequestMapping("/useradmin")
+    public String useradmin(){
+        return "auditManager/auditUserAdministration";
+    }
 
     @RequestMapping("/managerindex")
     public String index(){
