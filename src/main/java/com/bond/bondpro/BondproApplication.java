@@ -10,6 +10,7 @@ public class BondproApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BondproApplication.class, args);
+        System.out.println("OK");
     }
 
 }

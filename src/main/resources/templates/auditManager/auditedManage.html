@@ -1,10 +1,263 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>被审单位管理</title>
 </head>
-<body>
+<style>
+    a{text-decoration: none}
+</style>
 
+<script>
+   function OpenDiv(){
+           document.getElementById("div1").style.display="block";
+   }
+   
+   function addDialog() {
+       $("#win").window('open');
+   }
+
+   function addDialog1() {
+       $("#win").window('open');
+   }
+
+   function ayo() {
+       $.messager.confirm('提示','确认删除吗?',function (r) {
+                  if(r){
+                      alert('想跳哪去自己写');
+                  }
+       });
+   }
+</script>
+<body>
+<div class="easyui-layout" style="width: 100%;height: 800px;">
+    <div data-options="region:'west',title:'被审计机构用户',split:true" style="width:230px;" >
+        <div style="width: 100%;height: 20px;background: rgba(0, 0, 255, 0.1)">
+      业务类型:<select>
+                <option>HelloWord</option>
+               </select>f
+        </div>
+        <div id="ad" style="background: rgba(0, 0, 255, 0.1)">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
+        </div>
+        <div id="tree">
+            <ul class="easyui-tree">
+                <li>
+                    <span>文档没看清</span>
+                    <ul>
+                        <li>
+                            <span>XX部1</span>
+                            <ul>
+                                <li><a href="javascript:void(0)" onclick="OpenDiv()" id="open"><span>XX部1子节点</span></a></li>
+                                <li><span>XX部1子节点</span></li>
+                                <li><span>XX部1子节点</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <span>XX部2</span>
+                            <ul>
+                                <li><span>XX部2子节点</span></li>
+                                <li><span>XX部2子节点</span></li>
+                                <li><span>XX部2子节点</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+<div data-options="region:'center',title:'详细信息'" style="padding:5px;" >
+    <div id="div1" style="display: none;">
+         <table class="easyui-datagrid" pagination="true" rownumbers="true" style="width:100%;height: 370px;">
+             <thead>
+             <tr>
+                 <th field="name1" width="200">机构名称</th>
+                 <th field="name2" width="200">部门开展业务</th>
+                 <th field="name3" width="200">上次稽核时间</th>
+                 <th field="name4" width="200">成立时间</th>
+                 <th field="name5" width="200">财务帐套</th>
+                 <th field="name6" width="200">使用柜台编码</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr>
+                 <td>Data 1</td>
+                 <td>Data 2</td>
+                 <td>Data 3</td>
+                 <td>Data 4</td>
+                 <td>Data 5</td>
+                 <td>Data 6</td>
+             </tr>
+             <tr>
+                 <td>Data 1</td>
+                 <td>Data 2</td>
+                 <td>Data 3</td>
+                 <td>Data 4</td>
+                 <td>Data 5</td>
+                 <td>Data 6</td>
+             </tr>
+             <tr>
+                 <td>Data 1</td>
+                 <td>Data 2</td>
+                 <td>Data 3</td>
+                 <td>Data 4</td>
+                 <td>Data 5</td>
+                 <td>Data 6</td>
+             </tr>
+             <tr>
+                 <td>Data 1</td>
+                 <td>Data 2</td>
+                 <td>Data 3</td>
+                 <td>Data 4</td>
+                 <td>Data 5</td>
+                 <td>Data 6</td>
+             </tr>
+             <tr>
+                 <td>Data 1</td>
+                 <td>Data 2</td>
+                 <td>Data 3</td>
+                 <td>Data 4</td>
+                 <td>Data 5</td>
+                 <td>Data 6</td>
+             </tr>
+             <tr>
+                 <td>Data 1</td>
+                 <td>Data 2</td>
+                 <td>Data 3</td>
+                 <td>Data 4</td>
+                 <td>Data 5</td>
+                 <td>Data 6</td>
+             </tr>
+             <tr>
+                 <td>Data 1</td>
+                 <td>Data 2</td>
+                 <td>Data 3</td>
+                 <td>Data 4</td>
+                 <td>Data 5</td>
+                 <td>Data 6</td>
+             </tr>
+             </tbody>
+         </table>
+        <table id="tab1" class="easyui-datagrid" pagination="true" rownumbers="true" toolbar="#tb" style="width:100%;height: 370px;">
+            <thead>
+            <tr>
+                <th field="name1" width="200">用户名</th>
+                <th field="name2" width="200">姓名</th>
+                <th field="name3" width="200">邮箱</th>
+                <th field="name4" width="200">电话</th>
+                <th field="name5" width="200">RTX</th>
+                <th field="name6" width="200">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+                <td>Data 5</td>
+                <td>Data 6</td>
+            </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+                <td>Data 5</td>
+                <td>Data 6</td>
+            </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+                <td>Data 5</td>
+                <td>Data 6</td>
+            </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+                <td>Data 5</td>
+                <td>Data 6</td>
+            </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+                <td>Data 5</td>
+                <td>Data 6</td>
+            </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+                <td>Data 5</td>
+                <td>Data 6</td>
+            </tr>
+            <tr>
+                <td>Data 1</td>
+                <td>Data 2</td>
+                <td>Data 3</td>
+                <td>Data 4</td>
+                <td>Data 5</td>
+                <td>Data 6</td>
+            </tr>
+            </tbody>
+        </table>
+        <div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
+             iconCls="icon-add" data-options="title:'增加被审机构',modal:true,closed:true">
+            <form id="" method="post" novalidate>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-textbox" label="编码:" required="true" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-textbox" label="名称:"  required="true" validType="email" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-datetimespinner" label="成立时间:" required="true" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combo" label="部门开展业务:" required="true" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-datetimespinner" label="上次稽核时间:" required="true" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combo" label="营业部等级:" required="true" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-textbox" label="信用柜台编码:" required="true" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-textbox" label="财务帐套:" required="true" style="width:100%"></input>
+                </div>
+                <div style="text-align:right">
+                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+    <div style="padding: 3px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:alert('增加')">增加</a>
+        <input id="productid" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字,按回车查询">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="">搜索</a>
+    </div>
+    </div>
+</div>
 </body>
 </html>
