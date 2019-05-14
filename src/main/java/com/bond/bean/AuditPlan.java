@@ -1,20 +1,15 @@
 package com.bond.bean;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "audit_plan")
 public class AuditPlan {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pId;
 
     private String pNd;
 
     private String pName;
 
-    private Integer aId;
+    private String pJigouname;
 
     private String pType;
 
@@ -23,34 +18,6 @@ public class AuditPlan {
     private Integer uId;
 
     private Date pTime;
-
-    @Override
-    public String toString() {
-        return "AuditPlan{" +
-                "pId=" + pId +
-                ", pNd='" + pNd + '\'' +
-                ", pName='" + pName + '\'' +
-                ", aId=" + aId +
-                ", pType='" + pType + '\'' +
-                ", pState='" + pState + '\'' +
-                ", uId=" + uId +
-                ", pTime=" + pTime +
-                '}';
-    }
-
-    public AuditPlan(Integer pId, String pNd, String pName, Integer aId, String pType, String pState, Integer uId, Date pTime) {
-        this.pId = pId;
-        this.pNd = pNd;
-        this.pName = pName;
-        this.aId = aId;
-        this.pType = pType;
-        this.pState = pState;
-        this.uId = uId;
-        this.pTime = pTime;
-    }
-
-    public AuditPlan() {
-    }
 
     public Integer getpId() {
         return pId;
@@ -76,12 +43,12 @@ public class AuditPlan {
         this.pName = pName == null ? null : pName.trim();
     }
 
-    public Integer getaId() {
-        return aId;
+    public String getpJigouname() {
+        return pJigouname;
     }
 
-    public void setaId(Integer aId) {
-        this.aId = aId;
+    public void setpJigouname(String pJigouname) {
+        this.pJigouname = pJigouname == null ? null : pJigouname.trim();
     }
 
     public String getpType() {
