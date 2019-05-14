@@ -2,19 +2,158 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<link rel="stylesheet" href="@{jquery-easyui-1.7.0/themes/default/easyui.css}">
-	<link rel="stylesheet" href="@{jquery-easyui-1.7.0/themes/icon.css}">
-	<script type="text/javascript" src="@{js/jquery-1.8.3.js}"></script>
-	<script type="text/javascript" src="@{jquery-easyui-1.7.0/jquery.easyui.min.js}"></script>
-	<script type="text/javascript" src="@{jquery-easyui-1.7.3/jquery.easyui.min.js}"></script>
-	<script type="text/javascript" src="@{js/jquery-3.3.1.js/jquery-3.3.1.min.js}"></script>
+	<!-- VENDOR CSS -->
+	<link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}">
+	<link rel="stylesheet" th:href="@{/vendor/linearicons/style.css}">
+	<link rel="stylesheet" th:href="@{/vendor/chartist/css/chartist-custom.css}">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" th:href="@{/css/demo.css}">
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" th:href="@{/img/apple-icon.png}">
+	<link rel="icon" type="image/png" sizes="96x96" th:href="@{/img/favicon.png}">
+
+	<link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
+
+	<script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+
+	<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/vendor/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+	<script th:src="@{/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js}"></script>
+	<script th:src="@{/vendor/chartist/js/chartist.min.js}"></script>
+	<script th:src="@{/scripts/klorofil-common.js}"></script>
 	<title>领导工作台</title>
 </head>
+<style>
+	.nav-brand{
+		color:deepskyblue;
+		font-size: 25px;
+		font-style: italic;
+		font-weight: bolder;
+		letter-spacing: 20px;
+	}
+</style>
+<script>
+    function addTab(title, url){
+        if ($('#tab').tabs('exists', title)){
+
+            $('#tab').tabs('select', title);
+        } else {
+
+            var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+            $('#tab').tabs('add',{
+                title:title,
+                content:content,
+                closable:true
+            });
+        }
+    }
+</script>
 
 <body class="easyui-layout">
-<div data-options="region:'west',split:true" title="领导的工作台">
-	...
+<div data-options="region:'north',split:true" style="height:80px;">
+	<div data-options="region:'north',title:'West',split:true">
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="brand">
+				<a href="auditorindex"><img th:src="@{/img/logo-dark.png}" alt="首页" class="img-responsive logo"></a>
+			</div>
+			<div class="container-fluid">
+				<div id="navbar-menu">
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							<a href="#" class="notification-item"><span class="dot bg-danger"></span>修改信息</a>
+						</li>>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#" class="notification-item"><span class="dot bg-success"></span>查看个人信息</a></li>>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>注销</a></li>>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
 </div>
+<div data-options="region:'west',split:true" style="width:300px;">
+	<div id="sidebar-nav" class="sidebar">
+		<div class="sidebar-scroll">
+			<nav>
+				<ul class="nav">
+					<li>
+						<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>工作台</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages" class="collapse ">
+							<ul class="nav">
+								<li><a href="javascript:void(0);" onclick="addTab('待办事项','toolist1')" >待办事项</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('已审批事项','myapproved')">已审批事项</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的消息','mynews')">我的消息</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的文件夹','myfolder')">我的文件夹</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a href="#subPages1" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>立项阶段</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages1" class="collapse ">
+							<ul class="nav">
+								<li><a href="javascript:void(0);" onclick="addTab('待办事项','toolist1')" >项目基本信息</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('已审批事项','myapproved')">角色分配</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的消息','mynews')">任务分配</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的文件夹','myfolder')">审计方案</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a href="#subPages2" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>非现场检查阶段</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages2" class="collapse ">
+							<ul class="nav">
+								<li><a href="javascript:void(0);" onclick="addTab('待办事项','toolist1')" >数据抽取</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('已审批事项','myapproved')">疑点库</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的消息','mynews')">非现场检查结果</a></li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a href="#subPages3" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>现场检查阶段</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages3" class="collapse ">
+							<ul class="nav">
+								<li><a href="javascript:void(0);" onclick="addTab('待办事项','toolist1')" >进场会</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('已审批事项','myapproved')">离场会议</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的消息','mynews')">现场检查结果</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的文件夹','myfolder')">稽核清单</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的文件夹','myfolder')">量化打分</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('我的文件夹','myfolder')">风险矩阵</a></li>
+							</ul>
+						</div>
+					</li>
+					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>审计计划管理</span></a></li>
+					<li><a href="typography" class=""><i class="lnr lnr-text-format"></i> <span>被审单位管理</span></a></li>
+					<li><a href="icons" class=""><i class="lnr lnr-linearicons"></i> <span>审计项目</span></a></li>
+					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>流程定义</span></a></li>
+					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>审计知识库管理</span></a></li>
+					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>工作日志</span></a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+
+</div>
+<div data-options="region:'center'" style="padding: 1px;">
+	<div id="tab" class="easyui-tabs" style="width: 100%;height:100%"></div>
+</div>
+<footer>
+	<div class="container-fluid">
+		<p class="copyright">Copyright &copy; 2019.Company name All rights reserved.</p>
+	</div>
+</footer>
+
 
 </body>
 </html>

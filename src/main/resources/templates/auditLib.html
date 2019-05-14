@@ -3,8 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+    <div id="tool" >
+        <input type="text" placeholder="输入关键字"><a id="btn" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" ></a>
+    </div>
+<table class="easyui-datagrid" toolbar="#tool" id="dg1" data-options="pagination:true" style="width: 100%" >
+    <thead>
+    <tr>
+        <th data-options="field:'code',width:280">知识要点</th>
+        <th data-options="field:'name',width:280">资料名称</th>
+        <th data-options="field:'price',width:280">发布时间</th>
+        <th data-options="field:'price',width:280">状态</th>
+        <th data-options="field:'price',width:280">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>001</td><td>name1</td><td>2323</td><td>2323</td><td>2323</td>
+    </tr>
+    <tr>
+        <td>002</td><td>name2</td><td>4612</td><td>2323</td><td>2323</td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

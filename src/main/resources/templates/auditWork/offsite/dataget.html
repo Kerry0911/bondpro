@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>数据获取</title>
 </head>
 <body>
-
+<div id="search">
+    审计编号:<input id="productid" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
+    审计要点:<input id="yaodian" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
+    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="">搜索</a>
+</div>
+<table class="easyui-datagrid" style="height: 700px;" toolbar="#search"pagination="true">
+    <thead>
+    <tr style="background: #00aff0">
+        <th data-options="field:'bianhao'" style="width:20%;">审计编号</th>
+        <th data-options="field:'yaodian'" style="width:20%;">审计要点</th>
+        <th data-options="field:'renyuan'" style="width:20%;">稽核人员</th>
+        <th data-options="field:'状态'" style="width: 20%;">处理状态</th>
+        <th data-options="field:'caozuo'" style="width:20%;">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>A01</td><td>资产前20户</td><td>李明</td><td>完成</td><td><a href="javascript:void(0)">重做</a></td>
+    </tr>
+    <tr>
+        <td>B01</td><td>重点账户</td><td>李冰</td><td>重采中</td><td><a href="javascript:void(0)">重做</a></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

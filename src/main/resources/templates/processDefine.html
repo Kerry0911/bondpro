@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
-<body>
+<body class="easyui-layout">
+    <div data-options="region:'west',iconCls:'icon-reload',title:'East',split:true" style="width:30%;">
+        <div id="mm" class="easyui-menu" >
+            <div><span>数据导出申请</span></div>
+            <div><span>敏感字段申请</span></div>
+            <div><span>数据导入</span></div>
+            <div><span>审计计划</span></div>
+            <div><span>项目立项审核</span></div>
+            <div><span>项目终止审核</span></div>
+            <div><span>项目实施月份调整</span></div>
+            <div><span>案例</span></div>
+            <div><span>调条审核</span></div>
+            <div><span>个人项目(违规问题)</span></div>
+            <div><span>个人项目(事实描述)</span></div>
+            <div><span>监测预警审批</span></div>
+            <div><span>模型上线审批</span></div>
+        </div>
+    </div>
+    <div data-options="region:'center',title:'Center',split:true" style="width:70%;">
 
+    </div>
+</div>
 </body>
 </html>

@@ -3,8 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
-
+    <div id="tool">
+        用户：<input type="text" width="100px"/><br>
+        用户所在机构：<input type="text" width="100px"/><br>
+        操作日期：<input type="date" width="100px"/>-<input type="date" width="100px"/><br>
+        模块：<input type="text" width="100px"/><br>
+        模块内容：<textarea style="width: 200px"></textarea><br>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" style="width: 100px;">高级查询</a>
+    </div>
+    <table class="easyui-datagrid" id="dg1"  toolbar="#tool" data-options="fitColumns:true" style="width: 100%;">
+        <thead>
+        <tr>
+            <th data-options="field:'code',width:'16%'">操作人</th>
+            <th data-options="field:'name',width:'16%'">操作时间</th>
+            <th data-options="field:'price',width:'16%'">操作单位</th>
+            <th data-options="field:'price',width:'17%'">模块</th>
+            <th data-options="field:'price',width:'17%'">操作类型</th>
+            <th data-options="field:'price',width:'17%'">操作内容</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>001</td><td>name1</td><td>2323</td><td>001</td><td>name1</td><td>2323</td>
+        </tr>
+        <tr>
+            <td>002</td><td>name2</td><td>4612</td><td>001</td><td>name1</td><td>2323</td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>

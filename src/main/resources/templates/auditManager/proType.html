@@ -3,8 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+<script>
+    function add(){
+        $("#adddlg").dialog('open');
+    }
+    function edit() {
+        var row = $('#dg1').datagrid('getSelected');
+        if (row){
+            $('#editdlg').dialog('open');
+            $('#edit_form').form('load',row);
+        }
+    }
+    function bind() {
+        $("#binddlg").dialog('open');
+    }
+</script>
+<div id="tool">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="add()"  style="width: 100px;">增加</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true" onclick="edit()"  style="width: 120px;">编辑</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-del',plain:true"  style="width: 120px;">删除</a>
+    <a href="javascript:void(0)" onclick="bind()">绑定检查项</a>
+</div>
+<table class="easyui-datagrid" id="dg1"  toolbar="#tool" data-options="fitColumns:true" style="width: 100%;">
+    <thead>
+    <tr>
+        <th data-options="field:'code',width:402">名称</th>
+        <th data-options="field:'name',width:401">类型</th>
+        <th data-options="field:'price',width:401">角色</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>001</td><td>name1</td><td>2323</td>
+    </tr>
+    <tr>
+        <td>002</td><td>name2</td><td>4612</td>
+    </tr>
+    </tbody>
+</table>
 
+<div id="adddlg" class="easyui-dialog" data-options="iconCls:'icon-save',closed:true"
+     style="width:400px;height:200px;">
+    <form id="add_form" action="post">
+        <table>
+            <tr>
+                <td>名称：</td>
+                <td><input type="text" name="name"/></td>
+            </tr>
+            <tr>
+                <td>类型：</td>
+                <td><input type="text" name="type"/></td>
+            </tr>
+            <tr>
+                <td>角色：</td>
+                <td><input type="text" name="role"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="提交"/></td>
+                <td><input type="button" value="取消"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<div id="editdlg" class="easyui-dialog" title="项目类型编辑" data-options="iconCls:'icon-save',closed:true"
+     style="width:400px;height:800px;">
+    <table class="easyui-datagrid" title="基本信息" data-options="fitColumns:true" style="width:400px;">
+        <form id="edit_form" action="post">
+            <table>
+                <tr>
+                    <td>名称：</td>
+                    <td><input type="text" name="name"/></td>
+                </tr>
+                <tr>
+                    <td>类型：</td>
+                    <td><input type="text" name="type"/></td>
+                </tr>
+                <tr>
+                    <td>角色：</td>
+                    <td><input type="text" name="role"/></td>
+                </tr>
+            </table>
+        </form>
+    </table>
+    <table class="easyui-datagrid" title="模块配置" data-options="fitColumns:true" style="width:400px;">
+        <thead>
+        <tr>
+            <th data-options="field:'code',width:402">项目阶段</th>
+            <th data-options="field:'name',width:401">环节名称</th>
+            <th data-options="field:'price',width:401">采纳与否</th>
+            <th data-options="field:'price',width:401"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>001</td><td>name1</td><td>2323</td><td></td>
+        </tr>
+        <tr>
+            <td>002</td><td>name2</td><td>4612</td><td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="binddlg" class="easyui-dialog" data-options="iconCls:'icon-save',closed:true"
+     style="width:500px;height:300px;">
+    <div id="p">
+        检查项类型：
+        <select>
+            <option></option>
+        </select>
+        <input type="radio" value="已选"/>
+        <input type="button" value="查询" width="50px">
+        <input type="button" value="重置" width="50px">
+        <input type="button" value="保存" width="50px">
+    </div>
+    <table class="easyui-datagrid" toolbar="#p" title="模块配置" data-options="fitColumns:true" style="width:500px;margin-top: 100px;">
+        <thead>
+        <tr>
+            <th data-options="field:'code',width:202"></th>
+            <th data-options="field:'code',width:202">检查项编号</th>
+            <th data-options="field:'name',width:201">检查项名称</th>
+            <th data-options="field:'price',width:201">检查项类型</th>
+            <th data-options="field:'price',width:201">说明</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td><td>001</td><td>name1</td><td>2323</td><td></td>
+        </tr>
+        <tr>
+            <td></td><td>002</td><td>name2</td><td>4612</td><td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

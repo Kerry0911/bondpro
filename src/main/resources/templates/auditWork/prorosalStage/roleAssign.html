@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>角色分配</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+<script>
+    function next() {
+        $("#next").dialog('open');
+    }
+</script>
+<div>
+    <form>
+        项目批次时间：<input type="date"/> ———————— <input type="date"> <input type="submit" value="查询">
+    </form>
+    非现场阶段
+    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 600px;height: 300px;">
+        <thead>
+        <tr>
+            <th data-options="field:'code',width:'15%'">项目名称</th>
+            <th data-options="field:'name',width:'15%'">被审计阶段</th>
+            <th data-options="field:'code',width:'16%'">主审</th>
+            <th data-options="field:'code',width:'17%'">主审角色</th>
+            <th data-options="field:'code',width:'16%'">助审</th>
+            <th data-options="field:'code',width:'16%'">助审角色</th>
+        </tr>
+        </thead>
+    </table><br><br>
 
+    现场阶段
+    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 600px;height: 300px;">
+        <thead>
+        <tr>
+            <th data-options="field:'code',width:'15%'">项目名称</th>
+            <th data-options="field:'name',width:'15%'">被审计阶段</th>
+            <th data-options="field:'code',width:'16%'">主审</th>
+            <th data-options="field:'code',width:'17%'">主审角色</th>
+            <th data-options="field:'code',width:'16%'">助审</th>
+            <th data-options="field:'code',width:'16%'">助审角色</th>
+        </tr>
+        </thead>
+    </table>
+    <input type="button" value="下一步" onclick="next()">
+</div>
+<div id="next" class="easyui-dialog" title="My Dialog" style="width:500px;height:400px;padding: 30px;"
+     data-options="resizable:true,modal:true,closed:true">
+    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 400px;height: 300px;">
+        <thead>
+        <tr>
+            <th data-options="field:'code',checkbox:true"></th>
+            <th data-options="field:'name',width:'33%'">人员</th>
+            <th data-options="field:'name',width:'33%'">角色</th>
+            <th data-options="field:'name',width:'33%'">人员资质</th>
+        </tr>
+        </thead>
+    </table>
+    <input type="button" value="保存"> <input type="button" value="取消">
+</div>
 </body>
 </html>

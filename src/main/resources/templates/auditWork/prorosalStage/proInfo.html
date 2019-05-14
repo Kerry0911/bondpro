@@ -1,10 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+<script>
+    $(function () {
+        //检查项
+        var type=$("#protype").val();
+        if(type==1){
+            $("#next").dialog('open');
+        }
+    })
+    //抽取数据
+    function chou() {
+        $("#chou").dialog('open');
+    }
+    //申请
+    function shen() {
+        $("#shen").dialog('open');
+    }
+    function close() {
+        $("#shen").dialog('close');
+    }
+</script>
+    <div style="padding: 100px;">
+        项目名称：<input type="text" placeholder="请输入项目名称"/>
+        项目类型：
+        <select style="width: 150px;" id="protype">
+            <option>请输入项目类型</option>
+        </select><br>
+        被审单位：
+        <select style="width: 150px;">
+            <option>请输入项目类型</option>
+        </select><input type="button" value="抽数单位配置" onclick="chou()"/><br>
+        审计时间起：<input type="date">
+        审计时间止：<input type="date"/><br>
+        项目阶段：<input type="radio" name="stage" >仅非现场阶段&nbsp;&nbsp;<input type="radio" name="stage">仅现场阶段&nbsp;&nbsp;<input type="radio" name="stage" >全部<br>
+        <input type="button" value="下一步"/>&nbsp;&nbsp;<input type="button" value="重置"/>
+    </div>
 
+    <div id="next" class="easyui-dialog" title="My Dialog" style="width:500px;height:400px;padding: 30px;"
+         data-options="resizable:true,modal:true,closed:true">
+        <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 400px;height: 300px;">
+            <thead>
+            <tr>
+                <th data-options="field:'code',checkbox:true"></th>
+                <th data-options="field:'name',width:'95%'">检查项</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td></td><td>name1</td>
+            </tr>
+            <tr>
+                <td></td><td>name2</td>
+            </tr>
+            <tr>
+                <td></td><td>name1</td>
+            </tr>
+            <tr>
+                <td></td><td>name2</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+<div id="chou" class="easyui-dialog" title="抽数单位配置" style="width:770px;height:400px;padding: 20px;"
+     data-options="fitColumns:true,modal:true,closed:true">
+    <table class="easyui-datagrid" style="width: 700px;height: 280px;" data-options="fitColumns:true">
+        <thead>
+        <tr>
+            <th data-options="field:'code',checkbox:true"></th>
+            <th data-options="field:'name',width:'12%'">分支机构</th>
+            <th data-options="field:'name',width:'12%'">抽数时间起</th>
+            <th data-options="field:'name',width:'12%'">抽数时间止</th>
+            <th data-options="field:'name',width:'12%'">成立时间</th>
+            <th data-options="field:'name',width:'12%'">上次稽核时间</th>
+            <th data-options="field:'name',width:'12%'">上级营业部</th>
+            <th data-options="field:'name',width:'12%'">下级营业部</th>
+            <th data-options="field:'name',width:'12%'">项目类型</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td>
+        </tr>
+        <tr>
+            <td></td><td>name2</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td>
+        </tr>
+        <tr>
+            <td></td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td><td>name1</td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="button" value="保存" onclick="shen()">&nbsp;&nbsp;&nbsp;<input type="button" value="取消">
+</div>
+
+<div id="shen" class="easyui-dialog" title="My Dialog" style="width:500px;height:600px;"
+     data-options="resizable:true,modal:true,closed:true">
+    <div id="tool">
+        <a href="#">立项申请书上传</a>
+    </div>
+    <table class="easyui-datagrid" style="width: 400px;height: 400px;" toolbar="#tool" data-options="fitColumns:true">
+        <thead>
+        <tr>
+            <th data-options="field:'code',width:'50%'">附件名</th>
+            <th data-options="field:'name',width:'40%'">上传时间</th>
+            <th data-options="field:'name',width:'10%'">操作</th>
+        </tr>
+        </thead>
+    </table>
+    <a id="save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-OK'">保存</a>
+    <a id="cancel" href="javascript:close()" class="easyui-linkbutton" data-options="iconCls:'icon-close'">关闭</a>
+</div>
 </body>
 </html>

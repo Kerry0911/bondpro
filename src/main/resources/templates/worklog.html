@@ -2,9 +2,92 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>工作日志</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+<script>
+    function add() {
+        $("#adddlg").dialog('open');
+    }
+</script>
+    <div>
+        项目名称
+        <select style="width: 100px;">
+            <option></option>
+        </select>
+        日期
+        <select style="width: 100px;">
+            <option></option>
+        </select>
+        <input type="button" value="查询">
+    </div>
+    <div id="tool">
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" onclick="add()"  style="width: 100px;">增加</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit',plain:true"  style="width: 120px;">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-del',plain:true" onclick="edit()"   style="width: 120px;">编辑</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-look',plain:true" onclick="scan()"  style="width: 100px;">查看</a>
+       </div>
+<table class="easyui-datagrid" style="width: 100%" toolbar="#tool">
+    <thead>
+    <tr>
+        <th data-options="field:'code',width:'50%'">记录人员</th>
+        <th data-options="field:'name',width:'50%'">记录日期</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>张三</td><td>2015-6-9</td>
+    </tr>
+    <tr>
+        <td>李四</td><td>2015-3-5</td>
+    </tr>
+    </tbody>
+</table>
 
+<div id="adddlg" class="easyui-dialog" title="新增日志" align="center" data-options="iconCls:'icon-save',closed:true"
+     style="width:700px;height:300px;">
+    <form id="add_form" action="post">
+        <table>
+            <tr>
+                <td>项目名称：</td>
+                <td><input type="text" name="name"/></td>
+            </tr>
+            <tr>
+                <td>工作日期：</td>
+                <td><input type="text" name="type"/></td>
+            </tr>
+            <tr>
+                <td>工作内容：</td>
+                <td><input type="text" name="role"/></td>
+            </tr>
+            <tr>
+                <td>存在问题：</td>
+                <td><input type="text" name="role"/></td>
+            </tr>
+            <tr>
+                <td>未了事项：</td>
+                <td><input type="text" name="role"/></td>
+            </tr>
+            <tr>
+                <td>明日计划：</td>
+                <td><input type="text" name="role"/></td>
+            </tr>
+            <tr>
+                <td>编写人员：</td>
+                <td><input type="text" name="role" disabled="disabled"/></td>
+                <td>编写时间：</td>
+                <td><input type="text" name="role" disabled="disabled"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="提交"/></td>
+                <td><input type="button" value="取消"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
 </body>
 </html>
