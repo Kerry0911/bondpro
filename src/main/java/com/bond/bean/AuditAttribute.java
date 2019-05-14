@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "audit_attribute")
+@Table(name ="audit_attribute" )
 public class AuditAttribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,30 +18,6 @@ public class AuditAttribute {
     private String aCode;
 
     private Integer modelId;
-
-    @Override
-    public String toString() {
-        return "AuditAttribute{" +
-                "aId=" + aId +
-                ", aName='" + aName + '\'' +
-                ", aType='" + aType + '\'' +
-                ", aJurisdiction='" + aJurisdiction + '\'' +
-                ", aCode='" + aCode + '\'' +
-                ", modelId=" + modelId +
-                '}';
-    }
-
-    public AuditAttribute(Integer aId, String aName, String aType, String aJurisdiction, String aCode, Integer modelId) {
-        this.aId = aId;
-        this.aName = aName;
-        this.aType = aType;
-        this.aJurisdiction = aJurisdiction;
-        this.aCode = aCode;
-        this.modelId = modelId;
-    }
-
-    public AuditAttribute() {
-    }
 
     public Integer getaId() {
         return aId;

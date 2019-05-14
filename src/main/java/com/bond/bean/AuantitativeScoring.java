@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "auantitative_scoring")
+@Table(name ="auantitative_scoring" )
 public class AuantitativeScoring {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,42 +30,6 @@ public class AuantitativeScoring {
     private String asDept;
 
     private Integer asColumnnumber;
-
-    @Override
-    public String toString() {
-        return "AuantitativeScoring{" +
-                "asId=" + asId +
-                ", asName='" + asName + '\'' +
-                ", asDeductionstandard='" + asDeductionstandard + '\'' +
-                ", asActualdeduction='" + asActualdeduction + '\'' +
-                ", asCalculationdeduction='" + asCalculationdeduction + '\'' +
-                ", asFillpersonid='" + asFillpersonid + '\'' +
-                ", asDeduction='" + asDeduction + '\'' +
-                ", asIsnormal='" + asIsnormal + '\'' +
-                ", asFilltime=" + asFilltime +
-                ", asProjectname='" + asProjectname + '\'' +
-                ", asDept='" + asDept + '\'' +
-                ", asColumnnumber=" + asColumnnumber +
-                '}';
-    }
-
-    public AuantitativeScoring(Integer asId, String asName, String asDeductionstandard, String asActualdeduction, String asCalculationdeduction, String asFillpersonid, String asDeduction, String asIsnormal, Date asFilltime, String asProjectname, String asDept, Integer asColumnnumber) {
-        this.asId = asId;
-        this.asName = asName;
-        this.asDeductionstandard = asDeductionstandard;
-        this.asActualdeduction = asActualdeduction;
-        this.asCalculationdeduction = asCalculationdeduction;
-        this.asFillpersonid = asFillpersonid;
-        this.asDeduction = asDeduction;
-        this.asIsnormal = asIsnormal;
-        this.asFilltime = asFilltime;
-        this.asProjectname = asProjectname;
-        this.asDept = asDept;
-        this.asColumnnumber = asColumnnumber;
-    }
-
-    public AuantitativeScoring() {
-    }
 
     public Integer getAsId() {
         return asId;

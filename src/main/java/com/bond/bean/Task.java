@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "task")
+@Table(name ="task" )
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,30 +18,6 @@ public class Task {
     private String tCode;
 
     private String tState;
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "tId=" + tId +
-                ", ppId=" + ppId +
-                ", tName='" + tName + '\'' +
-                ", tAuditpoints='" + tAuditpoints + '\'' +
-                ", tCode='" + tCode + '\'' +
-                ", tState='" + tState + '\'' +
-                '}';
-    }
-
-    public Task(Integer tId, Integer ppId, String tName, String tAuditpoints, String tCode, String tState) {
-        this.tId = tId;
-        this.ppId = ppId;
-        this.tName = tName;
-        this.tAuditpoints = tAuditpoints;
-        this.tCode = tCode;
-        this.tState = tState;
-    }
-
-    public Task() {
-    }
 
     public Integer gettId() {
         return tId;

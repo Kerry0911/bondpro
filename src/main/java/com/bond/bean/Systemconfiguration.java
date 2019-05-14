@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "systemconfiguration")
+@Table(name ="systemconfiguration" )
 public class Systemconfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,32 +20,6 @@ public class Systemconfiguration {
     private Integer isstart;
 
     private String description;
-
-    @Override
-    public String toString() {
-        return "Systemconfiguration{" +
-                "id=" + id +
-                ", configcode='" + configcode + '\'' +
-                ", configname='" + configname + '\'' +
-                ", configvalueid='" + configvalueid + '\'' +
-                ", configvaluename='" + configvaluename + '\'' +
-                ", isstart=" + isstart +
-                ", description='" + description + '\'' +
-                '}';
-    }
-
-    public Systemconfiguration(Integer id, String configcode, String configname, String configvalueid, String configvaluename, Integer isstart, String description) {
-        this.id = id;
-        this.configcode = configcode;
-        this.configname = configname;
-        this.configvalueid = configvalueid;
-        this.configvaluename = configvaluename;
-        this.isstart = isstart;
-        this.description = description;
-    }
-
-    public Systemconfiguration() {
-    }
 
     public Integer getId() {
         return id;

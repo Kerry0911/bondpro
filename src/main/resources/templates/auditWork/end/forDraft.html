@@ -1,10 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<head>
+
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
+    <title></title>
+</head>
+<style>
+    a{text-decoration: none;}
+    li{list-style-type: none;margin-bottom: 5px;}
+</style>
+
+<script>
+    function addTab(title, url){
+        if ($('#tabs').tabs('exists', title)){
+            $('#tabs').tabs('select', title);
+        } else {
+            var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+            $('#tabs').tabs('add',{
+                title:title,
+                content:content,
+                closable:true
+            });
+        }
+    }
+</script>
+<body>
+<div id="cc" class="easyui-layout" style="width:100%;height:920px;">
+    <div data-options="region:'west',title:'项目主页',split:true" style="width:200px;">
+        <div class="easyui-accordion" style="width:100%;">
+            <div title="项目主页" iconCls="icon-ok" style="overflow:auto;padding:10px;">
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="addTab('项目准备','')">项目准备</a></li>
+                    <li><a href="javascript:void(0)">项目立项</a></li>
+                    <li><a href="javascript:void(0)">项目组成员管理</a></li>
+                </ul>
+            </div>
+            <div title="项目核查准备" iconCls="icon-ok" style="overflow:auto;padding:10px;">
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="addTab('项目核查准备','datagetliblist')">项目核查准备</a></li>
+                </ul>
+            </div>
+            <div title="现场核查" iconCls="icon-ok" style="overflow:auto;padding:10px;">
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="addTab('现场核查','offsiteresult')">现场核查</a></li>
+                </ul>
+            </div>
+            <div title="项目总结" iconCls="icon-ok" style="overflow:auto;padding:10px;">
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="addTab('项目总结','zhuliqd')">项目总结</a></li>
+                </ul>
+            </div>
+            <div title="项目终结" iconCls="icon-ok" style="overflow:auto;padding:10px;">
+                <ul>
+                    <li><a href="javascript:void(0)" onclick="addTab('项目终结','doubleLib')">项目终结</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div data-options="region:'center',title:'信息展示'" style="padding:5px;background:#eee;">
+        <div id="tabs" class="easyui-tabs" style="width: 100%;height:865px; ">
+
+        </div>
+    </div>
+</div>
 </body>
 </html>

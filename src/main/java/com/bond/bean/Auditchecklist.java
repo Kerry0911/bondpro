@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "auditchecklist")
+@Table(name ="auditchecklist" )
 public class Auditchecklist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,42 +30,6 @@ public class Auditchecklist {
     private Date acJihetime;
 
     private Integer ppId;
-
-    @Override
-    public String toString() {
-        return "Auditchecklist{" +
-                "id=" + id +
-                ", acCheckxiang='" + acCheckxiang + '\'' +
-                ", acDataclassdeduction='" + acDataclassdeduction + '\'' +
-                ", acComprehensivededuction='" + acComprehensivededuction + '\'' +
-                ", acProblem='" + acProblem + '\'' +
-                ", acProblementry='" + acProblementry + '\'' +
-                ", acPeoblemname='" + acPeoblemname + '\'' +
-                ", acCalculateddeduction='" + acCalculateddeduction + '\'' +
-                ", acActualdeduction='" + acActualdeduction + '\'' +
-                ", acJiherenyuan='" + acJiherenyuan + '\'' +
-                ", acJihetime=" + acJihetime +
-                ", ppId=" + ppId +
-                '}';
-    }
-
-    public Auditchecklist(Integer id, String acCheckxiang, String acDataclassdeduction, String acComprehensivededuction, String acProblem, String acProblementry, String acPeoblemname, String acCalculateddeduction, String acActualdeduction, String acJiherenyuan, Date acJihetime, Integer ppId) {
-        this.id = id;
-        this.acCheckxiang = acCheckxiang;
-        this.acDataclassdeduction = acDataclassdeduction;
-        this.acComprehensivededuction = acComprehensivededuction;
-        this.acProblem = acProblem;
-        this.acProblementry = acProblementry;
-        this.acPeoblemname = acPeoblemname;
-        this.acCalculateddeduction = acCalculateddeduction;
-        this.acActualdeduction = acActualdeduction;
-        this.acJiherenyuan = acJiherenyuan;
-        this.acJihetime = acJihetime;
-        this.ppId = ppId;
-    }
-
-    public Auditchecklist() {
-    }
 
     public Integer getId() {
         return id;

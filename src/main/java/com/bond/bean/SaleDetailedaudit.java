@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "sale_detailedaudit")
+@Table(name ="sale_detailedaudit" )
 public class SaleDetailedaudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,44 +32,6 @@ public class SaleDetailedaudit {
     private Integer ppId;
 
     private String ddIs;
-
-    @Override
-    public String toString() {
-        return "SaleDetailedaudit{" +
-                "ddId=" + ddId +
-                ", ddCheckxiang='" + ddCheckxiang + '\'' +
-                ", ddName='" + ddName + '\'' +
-                ", ddViolation='" + ddViolation + '\'' +
-                ", ddIstrue='" + ddIstrue + '\'' +
-                ", ddDeduction='" + ddDeduction + '\'' +
-                ", ddShoud='" + ddShoud + '\'' +
-                ", ddBeizhu='" + ddBeizhu + '\'' +
-                ", ddCalculateddeduction='" + ddCalculateddeduction + '\'' +
-                ", ddActualdeduction='" + ddActualdeduction + '\'' +
-                ", ddChecktime=" + ddChecktime +
-                ", ppId=" + ppId +
-                ", ddIs='" + ddIs + '\'' +
-                '}';
-    }
-
-    public SaleDetailedaudit(Integer ddId, String ddCheckxiang, String ddName, String ddViolation, String ddIstrue, String ddDeduction, String ddShoud, String ddBeizhu, String ddCalculateddeduction, String ddActualdeduction, Date ddChecktime, Integer ppId, String ddIs) {
-        this.ddId = ddId;
-        this.ddCheckxiang = ddCheckxiang;
-        this.ddName = ddName;
-        this.ddViolation = ddViolation;
-        this.ddIstrue = ddIstrue;
-        this.ddDeduction = ddDeduction;
-        this.ddShoud = ddShoud;
-        this.ddBeizhu = ddBeizhu;
-        this.ddCalculateddeduction = ddCalculateddeduction;
-        this.ddActualdeduction = ddActualdeduction;
-        this.ddChecktime = ddChecktime;
-        this.ppId = ppId;
-        this.ddIs = ddIs;
-    }
-
-    public SaleDetailedaudit() {
-    }
 
     public Integer getDdId() {
         return ddId;

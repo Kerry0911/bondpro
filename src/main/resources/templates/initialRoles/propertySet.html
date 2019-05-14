@@ -1,10 +1,111 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>属性设置</title>
 </head>
-<body>
+<style>
+    a{text-decoration: none}
+</style>
 
+<script>
+    function OpenDiv(){
+        document.getElementById("div1").style.display="block";
+    }
+
+    function addDialog() {
+        $("#win").window('open');
+    }
+
+    function addDialog1() {
+        $("#wi").window('open');
+    }
+
+    function ayo() {
+        $.messager.confirm('提示','确认删除吗?',function (r) {
+            if(r){
+                alert('想跳哪去自己写');
+            }
+        });
+    }
+    function EditUser() {
+        $('#fm').form('submit', {
+            url: "ajax/UserMAjax.ashx?cmd=edit&userid=" + userid,
+            success: function (data) {
+                var data = eval('(' + data + ')');  // change the JSON string to javascript object
+                if (data.rbool) {
+                    window.location.reload();
+                }
+                else {
+                    $.messager.alert('提示', data.infor);
+                }
+            }
+        });
+    }
+
+</script>
+<body>
+<div class="easyui-layout" style="width: 100%;height:800px;">
+    <div data-options="region:'west',title:'属性设置',split:true" style="width:230px;" >
+        <div style="width: 100%;height:30px;background: rgba(0, 0, 255, 0.1)">
+        </div>
+    </div>
+    <div data-options="region:'center'" style="padding:5px;">
+        <div style="width: 100%;">
+            <div id="d" style="background: rgba(0, 0, 255, 0.1)">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="javascript:addDialog1()">刷新</a>
+            </div>
+        </div>
+        <div style="width: 100%;">
+            <table class="easyui-datagrid" pagination="true" rownumbers="true" style="width:95%;height:720px;">
+                <thead>
+                <tr>
+                    <th field="ck" checkbox="true"></th>
+                    <th field="itemid" width="180">属性名称</th>
+                    <th field="productid" width="180">属性类型</th>
+                    <th field="listprice" width="180" align="right">是否权限</th>
+                    <th field="listprice" width="180" align="right">是否多选</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
+             iconCls="icon-add" data-options="title:'增加',modal:true,closed:true">
+            <form id="" method="post" novalidate>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combo" label="属性名称:" required="true" style="width:100%" ></input>
+                </div>
+                <div style="text-align:right">
+                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+                </div>
+
+            </form>
+        </div>
+        <div id="wi" class="easyui-dialog" style="width:400px;padding: 20px;"
+             iconCls="icon-edit" data-options="title:'编写',modal:true,closed:true">
+            <form  method="post" novalidate>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-textbox" label="属性类型:"  required="true" validType="email" style="width:100%"></input>
+                </div>
+                <div style="margin-bottom:10px">
+                    <input class="easyui-combo" label="是否权限:" required="true" style="width:100%"></input>
+                </div>
+                <div style="text-align:right">
+                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>风险矩阵</title>
+    <title></title>风险矩阵</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
-
+<div style="margin-bottom:10px" data-options="region:'west',title:'公司评级',split:true">
+    <input class="easyui-combo" label="项目名称:" required="true" style="width:100%;" >
+    <input class="easyui-combo" label="	稽核公司:" required="true" style="width:100%">
+    <input class="easyui-combo" label="风险结果:" required="true" style="width:100%"><br/>
+    <input class="easyui-combo" label="事项总数:" required="true" style="width:100%">
+</div>
 </body>
 </html>

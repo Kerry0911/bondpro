@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "manuscripthuifu")
+@Table(name ="manuscripthuifu" )
 public class Manuscripthuifu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,28 +16,6 @@ public class Manuscripthuifu {
     private Integer msId;
 
     private Date msTime;
-
-    @Override
-    public String toString() {
-        return "Manuscripthuifu{" +
-                "mhId=" + mhId +
-                ", mhName='" + mhName + '\'' +
-                ", mhInfo='" + mhInfo + '\'' +
-                ", msId=" + msId +
-                ", msTime=" + msTime +
-                '}';
-    }
-
-    public Manuscripthuifu(Integer mhId, String mhName, String mhInfo, Integer msId, Date msTime) {
-        this.mhId = mhId;
-        this.mhName = mhName;
-        this.mhInfo = mhInfo;
-        this.msId = msId;
-        this.msTime = msTime;
-    }
-
-    public Manuscripthuifu() {
-    }
 
     public Integer getMhId() {
         return mhId;

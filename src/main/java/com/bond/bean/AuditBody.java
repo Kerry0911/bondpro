@@ -1,42 +1,25 @@
 package com.bond.bean;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "audit_body")
+@Table(name ="audit_body" )
 public class AuditBody {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer abId;
+    private String abId;
 
     private String abName;
 
     private String abHigher;
 
-    @Override
-    public String toString() {
-        return "AuditBody{" +
-                "abId=" + abId +
-                ", abName='" + abName + '\'' +
-                ", abHigher='" + abHigher + '\'' +
-                '}';
-    }
-
-    public AuditBody(Integer abId, String abName, String abHigher) {
-        this.abId = abId;
-        this.abName = abName;
-        this.abHigher = abHigher;
-    }
-
-    public AuditBody() {
-    }
-
-    public Integer getAbId() {
+    public String getAbId() {
         return abId;
     }
 
-    public void setAbId(Integer abId) {
-        this.abId = abId;
+    public void setAbId(String abId) {
+        this.abId = abId == null ? null : abId.trim();
     }
 
     public String getAbName() {

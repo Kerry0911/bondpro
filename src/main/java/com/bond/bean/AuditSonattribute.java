@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "audit_sonattribute")
+@Table(name ="audit_osnattribute" )
 public class AuditSonattribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,26 +14,6 @@ public class AuditSonattribute {
     private Integer aId;
 
     private String sonaName;
-
-    @Override
-    public String toString() {
-        return "AuditSonattribute{" +
-                "sonaId=" + sonaId +
-                ", sonaCode='" + sonaCode + '\'' +
-                ", aId=" + aId +
-                ", sonaName='" + sonaName + '\'' +
-                '}';
-    }
-
-    public AuditSonattribute(Integer sonaId, String sonaCode, Integer aId, String sonaName) {
-        this.sonaId = sonaId;
-        this.sonaCode = sonaCode;
-        this.aId = aId;
-        this.sonaName = sonaName;
-    }
-
-    public AuditSonattribute() {
-    }
 
     public Integer getSonaId() {
         return sonaId;
