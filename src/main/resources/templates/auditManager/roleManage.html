@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
+    <meta charset="UTF-8">
+    <title>角色管理</title>
+    <style>
+        a{text-decoration: none}
+    </style>
+    <script>
+        function OpenDiv(){
+            document.getElementById("div1").style.display="block";
+        }
+
+        function addDialog() {
+            $("#win").window('open');
+        }
+
+        function addDialog1() {
+            $("#wi").window('open');
+        }
+        function a() {
+            $("#w").window('open');
+        }
+        function ayo() {
+            $.messager.confirm('提示','确认删除吗?',function (r) {
+                if(r){
+                    alert('666');
+                }
+            });
+        }
+        function da() {
+            alert("aaa")
+            var obj = $("#datagrid").datagrid("getSelected");
+            alert(obj)
+            $("#d").datagrid("load", obj);
+        }
+    </script>
+</head>
+<body>
+<div id="ad" style="background: rgba(0, 0, 255, 0.1)">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:a()">分配权限</a>
+</div>
+<div>
+    <table id="datagrid" class="easyui-datagrid" title="" style="width:100%;height: 370px;"  pagination="true">
+        <thead>
+        <tr>
+            <th data-options="field:'itemid',width:550">名称</th>
+            <th data-options="field:'productid',width:550">描述</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Data 1</td>
+            <td>Data 2</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+
+    <input type="text" class="search" placeholder="输入关键字">
+    <input type="button"  class="btn" value="查询">
+
+    <table class="easyui-datagrid" id="d" title="" style="width:100%;height: 370px;"  pagination="true" >
+        <thead>
+        <tr>
+            <th data-options="field:'itemid',width:180">用户名</th>
+            <th data-options="field:'productid',width:180">姓名</th>
+            <th data-options="field:'productid',width:180">邮箱</th>
+            <th data-options="field:'productid',width:180">电话</th>
+            <th data-options="field:'productid',width:180">状态</th>
+            <th data-options="field:'productid',width:180">部门</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Data 1</td>
+            <td>Data 2</td>
+            <td>Data 1</td>
+            <td>Data 2</td>
+            <td>Data 1</td>
+            <td>Data 2</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
+     iconCls="icon-add" data-options="title:'增加角色',modal:true,closed:true">
+    <form id="" method="post" novalidate>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="名称:" required="true" style="width:80%"></input>
+        </div>
+        <div style="margin-bottom:10px">
+            描述：<textarea  style="width:60% ;height: 60%;">
+        </textarea>
+        </div>
+        <div style="text-align:right">
+            <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+            <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+        </div>
+    </form>
+</div>
+<div id="wi" class="easyui-dialog" style="width:400px;padding: 20px;"
+     iconCls="icon-edic" data-options="title:'编辑角色',modal:true,closed:true">
+    <form id="" method="post" novalidate>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="名称:" required="true" style="width:80%"></input>
+        </div>
+        <div style="margin-bottom:10px">
+            描述：<textarea  style="width:60% ;height: 60%;">
+        </textarea>
+        </div>
+        <div style="text-align:right">
+            <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+            <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+        </div>
+    </form>
+</div>
+<div id="w" class="easyui-dialog" style="width:400px;padding: 20px;"
+     iconCls="icon-edic" data-options="title:'分配资源',modal:true,closed:true">
+    <form id="" method="post" novalidate>
+        <ul class="easyui-tree" checkbox="true" style="text-decoration: none">
+            <li>
+                <span >工作台</span>
+                <ul>
+                    <li>asss</li>
+                </ul>
+            </li>
+            <li>
+                <span>系统管理</span>
+                <ul>
+                    <li>aa</li>
+                </ul>
+            </li>
+            <li>
+                <span>现场审计</span>
+                <ul style="">
+                    <li><a href="javascript:void(0)" onclick="OpenDiv()" id="open"><span>审计计划</span></a></li>
+                    <li ><span>审计项目</span></li>
+                    <li ><span>底稿查询</span></li>
+                    <li ><span>问题库</span></li>
+                    <li ><span>制度库</span></li>
+                    <li><span>问题词条</span></li>
+                    <li ><span>案例库</span></li>
+                    <li ><span>疑点库</span></li>
+                    <li ><span>项目类型</span></li>
+                    <li ><span>内控评价模版</span></li>
+                    <li ><span>内控评价项目</span></li>
+                </ul>
+            </li>
+            <li><span>工具</span>
+                <ul>
+                    <li>
+                        ddd
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div style="text-align:right">
+            <input class="easyui-linkbutton" type="button" value="重置" style="width:80px;height:30px">
+            <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+            <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+        </div>
+    </form>
+</div>
+</body>
+</html>
