@@ -1,0 +1,106 @@
+package com.bond.bean;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "approachmeeting")
+public class Approachmeeting {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer amId;
+
+    private Integer ppId;
+
+    private String amName;
+
+    private Date amStarttime;
+
+    private Date amStoptime;
+
+    private String amFuzeren;
+
+    private String amLujing;
+
+    public Approachmeeting() {
+    }
+
+    public Approachmeeting(Integer amId, Integer ppId, String amName, Date amStarttime, Date amStoptime, String amFuzeren, String amLujing) {
+        this.amId = amId;
+        this.ppId = ppId;
+        this.amName = amName;
+        this.amStarttime = amStarttime;
+        this.amStoptime = amStoptime;
+        this.amFuzeren = amFuzeren;
+        this.amLujing = amLujing;
+    }
+
+    @Override
+    public String toString() {
+        return "Approachmeeting{" +
+                "amId=" + amId +
+                ", ppId=" + ppId +
+                ", amName='" + amName + '\'' +
+                ", amStarttime=" + amStarttime +
+                ", amStoptime=" + amStoptime +
+                ", amFuzeren='" + amFuzeren + '\'' +
+                ", amLujing='" + amLujing + '\'' +
+                '}';
+    }
+
+    public Integer getAmId() {
+        return amId;
+    }
+
+    public void setAmId(Integer amId) {
+        this.amId = amId;
+    }
+
+    public Integer getPpId() {
+        return ppId;
+    }
+
+    public void setPpId(Integer ppId) {
+        this.ppId = ppId;
+    }
+
+    public String getAmName() {
+        return amName;
+    }
+
+    public void setAmName(String amName) {
+        this.amName = amName == null ? null : amName.trim();
+    }
+
+    public Date getAmStarttime() {
+        return amStarttime;
+    }
+
+    public void setAmStarttime(Date amStarttime) {
+        this.amStarttime = amStarttime;
+    }
+
+    public Date getAmStoptime() {
+        return amStoptime;
+    }
+
+    public void setAmStoptime(Date amStoptime) {
+        this.amStoptime = amStoptime;
+    }
+
+    public String getAmFuzeren() {
+        return amFuzeren;
+    }
+
+    public void setAmFuzeren(String amFuzeren) {
+        this.amFuzeren = amFuzeren == null ? null : amFuzeren.trim();
+    }
+
+    public String getAmLujing() {
+        return amLujing;
+    }
+
+    public void setAmLujing(String amLujing) {
+        this.amLujing = amLujing == null ? null : amLujing.trim();
+    }
+}
