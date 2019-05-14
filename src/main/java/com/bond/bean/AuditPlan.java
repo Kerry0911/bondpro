@@ -1,8 +1,12 @@
 package com.bond.bean;
 
+import javax.persistence.*;
 import java.util.Date;
-
+@Entity
+@Table(name = "audit_plan")
 public class AuditPlan {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pId;
 
     private String pNd;
