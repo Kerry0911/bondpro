@@ -1,11 +1,15 @@
 package com.bond.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "audit_planproject")
-public class AuditPlanproject {
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class AuditPlanproject implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ppId;
@@ -33,8 +37,9 @@ public class AuditPlanproject {
     private String ppZszrole;
 
     private String ppGeneratepeople;
-
-    private Integer pId;
+@ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditPlan.class)
+@JoinColumn(name = "pId",referencedColumnName = "pId")
+    private AuditPlan auditPlan;
 
     private Date ppStarttime;
 
@@ -45,10 +50,6 @@ public class AuditPlanproject {
     private String ppCheck;
 
     public AuditPlanproject() {
-    }
-
-    public Integer getPpId() {
-        return ppId;
     }
 
     @Override
@@ -67,7 +68,7 @@ public class AuditPlanproject {
                 ", ppZs='" + ppZs + '\'' +
                 ", ppZszrole='" + ppZszrole + '\'' +
                 ", ppGeneratepeople='" + ppGeneratepeople + '\'' +
-                ", pId=" + pId +
+                ", auditPlan=" + auditPlan +
                 ", ppStarttime=" + ppStarttime +
                 ", ppEndstart=" + ppEndstart +
                 ", ppJieduan='" + ppJieduan + '\'' +
@@ -75,8 +76,7 @@ public class AuditPlanproject {
                 '}';
     }
 
-    public AuditPlanproject(Integer ppId, String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppZhushen, String ppZhushenrole, String ppZs, String ppZszrole, String ppGeneratepeople, Integer pId, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck) {
-        this.ppId = ppId;
+    public AuditPlanproject(String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppZhushen, String ppZhushenrole, String ppZs, String ppZszrole, String ppGeneratepeople, AuditPlan auditPlan, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck) {
         this.ppName = ppName;
         this.ppAudit = ppAudit;
         this.ppAudited = ppAudited;
@@ -89,11 +89,15 @@ public class AuditPlanproject {
         this.ppZs = ppZs;
         this.ppZszrole = ppZszrole;
         this.ppGeneratepeople = ppGeneratepeople;
-        this.pId = pId;
+        this.auditPlan = auditPlan;
         this.ppStarttime = ppStarttime;
         this.ppEndstart = ppEndstart;
         this.ppJieduan = ppJieduan;
         this.ppCheck = ppCheck;
+    }
+
+    public Integer getPpId() {
+        return ppId;
     }
 
     public void setPpId(Integer ppId) {
@@ -105,7 +109,7 @@ public class AuditPlanproject {
     }
 
     public void setPpName(String ppName) {
-        this.ppName = ppName == null ? null : ppName.trim();
+        this.ppName = ppName;
     }
 
     public String getPpAudit() {
@@ -113,7 +117,7 @@ public class AuditPlanproject {
     }
 
     public void setPpAudit(String ppAudit) {
-        this.ppAudit = ppAudit == null ? null : ppAudit.trim();
+        this.ppAudit = ppAudit;
     }
 
     public String getPpAudited() {
@@ -121,7 +125,7 @@ public class AuditPlanproject {
     }
 
     public void setPpAudited(String ppAudited) {
-        this.ppAudited = ppAudited == null ? null : ppAudited.trim();
+        this.ppAudited = ppAudited;
     }
 
     public String getPpSpecific() {
@@ -129,7 +133,7 @@ public class AuditPlanproject {
     }
 
     public void setPpSpecific(String ppSpecific) {
-        this.ppSpecific = ppSpecific == null ? null : ppSpecific.trim();
+        this.ppSpecific = ppSpecific;
     }
 
     public String getPpType() {
@@ -137,7 +141,7 @@ public class AuditPlanproject {
     }
 
     public void setPpType(String ppType) {
-        this.ppType = ppType == null ? null : ppType.trim();
+        this.ppType = ppType;
     }
 
     public String getPpCreatepeople() {
@@ -145,7 +149,7 @@ public class AuditPlanproject {
     }
 
     public void setPpCreatepeople(String ppCreatepeople) {
-        this.ppCreatepeople = ppCreatepeople == null ? null : ppCreatepeople.trim();
+        this.ppCreatepeople = ppCreatepeople;
     }
 
     public Date getPpCreatedate() {
@@ -161,7 +165,7 @@ public class AuditPlanproject {
     }
 
     public void setPpZhushen(String ppZhushen) {
-        this.ppZhushen = ppZhushen == null ? null : ppZhushen.trim();
+        this.ppZhushen = ppZhushen;
     }
 
     public String getPpZhushenrole() {
@@ -169,7 +173,7 @@ public class AuditPlanproject {
     }
 
     public void setPpZhushenrole(String ppZhushenrole) {
-        this.ppZhushenrole = ppZhushenrole == null ? null : ppZhushenrole.trim();
+        this.ppZhushenrole = ppZhushenrole;
     }
 
     public String getPpZs() {
@@ -177,7 +181,7 @@ public class AuditPlanproject {
     }
 
     public void setPpZs(String ppZs) {
-        this.ppZs = ppZs == null ? null : ppZs.trim();
+        this.ppZs = ppZs;
     }
 
     public String getPpZszrole() {
@@ -185,7 +189,7 @@ public class AuditPlanproject {
     }
 
     public void setPpZszrole(String ppZszrole) {
-        this.ppZszrole = ppZszrole == null ? null : ppZszrole.trim();
+        this.ppZszrole = ppZszrole;
     }
 
     public String getPpGeneratepeople() {
@@ -193,15 +197,15 @@ public class AuditPlanproject {
     }
 
     public void setPpGeneratepeople(String ppGeneratepeople) {
-        this.ppGeneratepeople = ppGeneratepeople == null ? null : ppGeneratepeople.trim();
+        this.ppGeneratepeople = ppGeneratepeople;
     }
 
-    public Integer getpId() {
-        return pId;
+    public AuditPlan getAuditPlan() {
+        return auditPlan;
     }
 
-    public void setpId(Integer pId) {
-        this.pId = pId;
+    public void setAuditPlan(AuditPlan auditPlan) {
+        this.auditPlan = auditPlan;
     }
 
     public Date getPpStarttime() {
@@ -225,7 +229,7 @@ public class AuditPlanproject {
     }
 
     public void setPpJieduan(String ppJieduan) {
-        this.ppJieduan = ppJieduan == null ? null : ppJieduan.trim();
+        this.ppJieduan = ppJieduan;
     }
 
     public String getPpCheck() {
@@ -233,6 +237,6 @@ public class AuditPlanproject {
     }
 
     public void setPpCheck(String ppCheck) {
-        this.ppCheck = ppCheck == null ? null : ppCheck.trim();
+        this.ppCheck = ppCheck;
     }
 }

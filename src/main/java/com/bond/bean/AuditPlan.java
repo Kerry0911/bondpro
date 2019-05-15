@@ -1,13 +1,37 @@
 package com.bond.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name = "audit_plan")
-public class AuditPlan {
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+public class AuditPlan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer pId;
+    @OneToMany(fetch = FetchType.LAZY,targetEntity =AuditPlanproject.class,mappedBy = "auditPlan")
+    private List<AuditPlanproject> auditPlanprojects = new ArrayList<AuditPlanproject>();
+
+    @Override
+    public String toString() {
+        return "AuditPlan{" +
+                "pId=" + pId +
+                ", auditPlanprojects=" + auditPlanprojects +
+                ", pNd='" + pNd + '\'' +
+                ", pName='" + pName + '\'' +
+                ", pJigouname='" + pJigouname + '\'' +
+                ", pType='" + pType + '\'' +
+                ", pState='" + pState + '\'' +
+                ", uId=" + uId +
+                ", pTime=" + pTime +
+                '}';
+    }
 
     private String pNd;
 
