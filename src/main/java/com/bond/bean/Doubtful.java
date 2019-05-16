@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "doubtful")
+@Table(name ="doubtful" )
 public class Doubtful {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,34 +22,6 @@ public class Doubtful {
     private Date dChecktime;
 
     private Integer ppId;
-
-    @Override
-    public String toString() {
-        return "Doubtful{" +
-                "dId=" + dId +
-                ", dCheckxiang='" + dCheckxiang + '\'' +
-                ", dName='" + dName + '\'' +
-                ", dViolation='" + dViolation + '\'' +
-                ", dIstrue='" + dIstrue + '\'' +
-                ", dCalculateddeduction='" + dCalculateddeduction + '\'' +
-                ", dChecktime=" + dChecktime +
-                ", ppId=" + ppId +
-                '}';
-    }
-
-    public Doubtful(Integer dId, String dCheckxiang, String dName, String dViolation, String dIstrue, String dCalculateddeduction, Date dChecktime, Integer ppId) {
-        this.dId = dId;
-        this.dCheckxiang = dCheckxiang;
-        this.dName = dName;
-        this.dViolation = dViolation;
-        this.dIstrue = dIstrue;
-        this.dCalculateddeduction = dCalculateddeduction;
-        this.dChecktime = dChecktime;
-        this.ppId = ppId;
-    }
-
-    public Doubtful() {
-    }
 
     public Integer getdId() {
         return dId;

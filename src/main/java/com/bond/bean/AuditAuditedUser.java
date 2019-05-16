@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "audit_audited_user")
+@Table(name ="audit_audited_user" )
 public class AuditAuditedUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,34 +22,6 @@ public class AuditAuditedUser {
     private String state;
 
     private Integer auditedId;
-
-    @Override
-    public String toString() {
-        return "AuditAuditedUser{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", rtx='" + rtx + '\'' +
-                ", state='" + state + '\'' +
-                ", auditedId=" + auditedId +
-                '}';
-    }
-
-    public AuditAuditedUser(Integer id, String username, String name, String email, String phone, String rtx, String state, Integer auditedId) {
-        this.id = id;
-        this.username = username;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.rtx = rtx;
-        this.state = state;
-        this.auditedId = auditedId;
-    }
-
-    public AuditAuditedUser() {
-    }
 
     public Integer getId() {
         return id;

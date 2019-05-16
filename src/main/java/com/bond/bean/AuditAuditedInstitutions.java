@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "audit_audited_institutions")
+@Table(name ="audit_audited_institutions" )
 public class AuditAuditedInstitutions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,38 +37,6 @@ public class AuditAuditedInstitutions {
 
     public String getAuditedHigher() {
         return auditedHigher;
-    }
-
-    @Override
-    public String toString() {
-        return "AuditAuditedInstitutions{" +
-                "auditedId=" + auditedId +
-                ", auditedHigher='" + auditedHigher + '\'' +
-                ", auditedCode='" + auditedCode + '\'' +
-                ", auditedName='" + auditedName + '\'' +
-                ", auditedCreatetime=" + auditedCreatetime +
-                ", auditedBusiness='" + auditedBusiness + '\'' +
-                ", auditedBeforetime=" + auditedBeforetime +
-                ", auditedLevel='" + auditedLevel + '\'' +
-                ", auditedCreditCode='" + auditedCreditCode + '\'' +
-                ", auditedAccounting='" + auditedAccounting + '\'' +
-                '}';
-    }
-
-    public AuditAuditedInstitutions(Integer auditedId, String auditedHigher, String auditedCode, String auditedName, Date auditedCreatetime, String auditedBusiness, Date auditedBeforetime, String auditedLevel, String auditedCreditCode, String auditedAccounting) {
-        this.auditedId = auditedId;
-        this.auditedHigher = auditedHigher;
-        this.auditedCode = auditedCode;
-        this.auditedName = auditedName;
-        this.auditedCreatetime = auditedCreatetime;
-        this.auditedBusiness = auditedBusiness;
-        this.auditedBeforetime = auditedBeforetime;
-        this.auditedLevel = auditedLevel;
-        this.auditedCreditCode = auditedCreditCode;
-        this.auditedAccounting = auditedAccounting;
-    }
-
-    public AuditAuditedInstitutions() {
     }
 
     public void setAuditedHigher(String auditedHigher) {

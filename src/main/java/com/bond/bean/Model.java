@@ -1,31 +1,21 @@
 package com.bond.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "model")
-public class Model {
+@Table(name ="model" )
+public class Model  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer modelId;
 
     private String modelName;
 
-    @Override
-    public String toString() {
-        return "Model{" +
-                "modelId=" + modelId +
-                ", modelName='" + modelName + '\'' +
-                '}';
-    }
-
-    public Model(Integer modelId, String modelName) {
-        this.modelId = modelId;
-        this.modelName = modelName;
-    }
-
-    public Model() {
-    }
+    @OneToMany(fetch =FetchType.LAZY,targetEntity = AuditAttribute.class,mappedBy = "model")
+    private List<AuditAttribute> auditAttributes=new ArrayList<>();
 
     public Integer getModelId() {
         return modelId;
@@ -41,5 +31,21 @@ public class Model {
 
     public void setModelName(String modelName) {
         this.modelName = modelName == null ? null : modelName.trim();
+    }
+
+    public List<AuditAttribute> getAuditAttributes() {
+        return auditAttributes;
+    }
+
+    public void setAuditAttributes(List<AuditAttribute> auditAttributes) {
+        this.auditAttributes = auditAttributes;
+    }
+
+    public Model() {
+    }
+
+    public Model(String modelName, List<AuditAttribute> auditAttributes) {
+        this.modelName = modelName;
+        this.auditAttributes = auditAttributes;
     }
 }

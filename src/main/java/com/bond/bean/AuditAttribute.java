@@ -1,10 +1,13 @@
 package com.bond.bean;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "audit_attribute")
-public class AuditAttribute {
+@Table(name ="audit_attribute" )
+public class AuditAttribute implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer aId;
@@ -17,31 +20,23 @@ public class AuditAttribute {
 
     private String aCode;
 
-    private Integer modelId;
-
-    @Override
-    public String toString() {
-        return "AuditAttribute{" +
-                "aId=" + aId +
-                ", aName='" + aName + '\'' +
-                ", aType='" + aType + '\'' +
-                ", aJurisdiction='" + aJurisdiction + '\'' +
-                ", aCode='" + aCode + '\'' +
-                ", modelId=" + modelId +
-                '}';
+    public AuditAttribute() {
     }
 
-    public AuditAttribute(Integer aId, String aName, String aType, String aJurisdiction, String aCode, Integer modelId) {
-        this.aId = aId;
+    public AuditAttribute(String aName, String aType, String aJurisdiction, String aCode, Model model) {
         this.aName = aName;
         this.aType = aType;
         this.aJurisdiction = aJurisdiction;
         this.aCode = aCode;
-        this.modelId = modelId;
+        this.model = model;
     }
 
-    public AuditAttribute() {
+    public AuditAttribute(String aName, String aType) {
+        this.aName = aName;
+        this.aType = aType;
     }
+
+    private Model model;
 
     public Integer getaId() {
         return aId;
@@ -83,11 +78,11 @@ public class AuditAttribute {
         this.aCode = aCode == null ? null : aCode.trim();
     }
 
-    public Integer getModelId() {
-        return modelId;
+    public Model getModel() {
+        return model;
     }
 
-    public void setModelId(Integer modelId) {
-        this.modelId = modelId;
+    public void setModel(Model model) {
+        this.model = model;
     }
 }

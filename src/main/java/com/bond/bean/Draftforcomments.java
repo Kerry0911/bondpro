@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "draftforcomments")
+@Table(name ="draftforcomments" )
 public class Draftforcomments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,24 +12,6 @@ public class Draftforcomments {
     private Integer ppId;
 
     private Integer pId;
-
-    @Override
-    public String toString() {
-        return "Draftforcomments{" +
-                "id=" + id +
-                ", ppId=" + ppId +
-                ", pId=" + pId +
-                '}';
-    }
-
-    public Draftforcomments(Integer id, Integer ppId, Integer pId) {
-        this.id = id;
-        this.ppId = ppId;
-        this.pId = pId;
-    }
-
-    public Draftforcomments() {
-    }
 
     public Integer getId() {
         return id;

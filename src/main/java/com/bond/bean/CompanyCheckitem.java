@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "company_checkitem")
+@Table(name ="compoany_checkitem" )
 public class CompanyCheckitem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,42 +30,6 @@ public class CompanyCheckitem {
     private Integer ppId;
 
     private String ccIs;
-
-    @Override
-    public String toString() {
-        return "CompanyCheckitem{" +
-                "ccId=" + ccId +
-                ", ccProjectname='" + ccProjectname + '\'' +
-                ", ccCheck='" + ccCheck + '\'' +
-                ", ccDept='" + ccDept + '\'' +
-                ", ccState='" + ccState + '\'' +
-                ", ccBeijihe='" + ccBeijihe + '\'' +
-                ", ccShenji='" + ccShenji + '\'' +
-                ", ccBeizhu='" + ccBeizhu + '\'' +
-                ", ccCheckname='" + ccCheckname + '\'' +
-                ", ccChecktime=" + ccChecktime +
-                ", ppId=" + ppId +
-                ", ccIs='" + ccIs + '\'' +
-                '}';
-    }
-
-    public CompanyCheckitem(Integer ccId, String ccProjectname, String ccCheck, String ccDept, String ccState, String ccBeijihe, String ccShenji, String ccBeizhu, String ccCheckname, Date ccChecktime, Integer ppId, String ccIs) {
-        this.ccId = ccId;
-        this.ccProjectname = ccProjectname;
-        this.ccCheck = ccCheck;
-        this.ccDept = ccDept;
-        this.ccState = ccState;
-        this.ccBeijihe = ccBeijihe;
-        this.ccShenji = ccShenji;
-        this.ccBeizhu = ccBeizhu;
-        this.ccCheckname = ccCheckname;
-        this.ccChecktime = ccChecktime;
-        this.ppId = ppId;
-        this.ccIs = ccIs;
-    }
-
-    public CompanyCheckitem() {
-    }
 
     public Integer getCcId() {
         return ccId;

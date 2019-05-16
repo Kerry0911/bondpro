@@ -1,10 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>离场会议</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+<style>
+    a{text-decoration: none}
+</style>
 
+<div style="margin: 0 auto;border: 1px solid red;width: 900px;">
+    <div style="background: #0ea0db">
+        离会场
+    </div>
+        <div style="margin-bottom:10px">
+            <span style=" margin-left:30px;">
+            项目名称: <input type="text" value="" name="" >
+            </span>
+            <span style=" margin-left:60px;">
+            项目编号: <input type="text" value="" name="">
+                </span>
+            <span style=" margin-left:10px;">
+            项目类型: <input type="text" value="" name=""><br/>
+            </span>
+            <span style=" margin-left:10px;">
+            被审计机构: <input type="text" value="" name="">
+            </span>
+            <span style=" margin-left:10px;">
+            具体被审计机构: <input type="text" value="" name=""><br/>
+            </span>
+            <span style=" margin-left:10px;">
+            审计期间起: <input type="text" value="" name="">
+            </span>
+            <span style=" margin-left:40px;">
+                审计期间止: <input type="text" value="" name=""></span>
+        </div>
+    <div >
+        <table border="1" cellpadding="1" cellspacing="1" style="width: 100%">
+            <div style="background: #0ea0db"><a href=" " style=" margin-left:750px;" >离场会议上传文件</a></div>
+            <th rowspan="2">
+                附件名
+            </th>
+            <th rowspan="2">上传时间</th>
+            <th rowspan="2">操作</th>
+        </table>
+    </div>
+</div>
 </body>
 </html>

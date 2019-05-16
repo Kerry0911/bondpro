@@ -70,14 +70,12 @@ public class AuditPlan implements Serializable {
     public void setpName(String pName) {
         this.pName = pName == null ? null : pName.trim();
     }
-
     public String getpJigouname() {
         return pJigouname;
     }
 
     public void setpJigouname(String pJigouname) {
         this.pJigouname = pJigouname == null ? null : pJigouname.trim();
-    }
 
     public String getpType() {
         return pType;

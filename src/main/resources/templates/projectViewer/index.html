@@ -20,9 +20,28 @@
 	<!-- ICONS -->
 	<link rel="apple-touch-icon" sizes="76x76" th:href="@{/img/apple-icon.png}">
 	<link rel="icon" type="image/png" sizes="96x96" th:href="@{/img/favicon.png}">
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+    <script th:src="@{/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js}"></script>
+    <script th:src="@{/vendor/chartist/js/chartist.min.js}"></script>
+    <script th:src="@{/scripts/klorofil-common.js}"></script>
 </head>
 
 <body >
+<script>
+    function addTab(title, url){
+        if ($('#tab').tabs('exists', title)){
+            $('#tab').tabs('select', title);
+        } else {
+            var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+            $('#tab').tabs('add',{
+                title:title,
+                content:content,
+                closable:true
+            });
+        }
+    }
+</script>
 <!-- WRAPPER -->
 <div id="wrapper">
 	<!-- NAVBAR -->
@@ -56,18 +75,18 @@
 						<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>工作台</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 						<div id="subPages" class="collapse ">
 							<ul class="nav">
-								<li><a href="page-profile" class="">待办事项</a></li>
-								<li><a href="page-login" class="">已审批事项</a></li>
-								<li><a href="page-lockscreen" class="">我的消息</a></li>
-								<li><a href="page-lockscreen" class="">我的文件</a></li>
+								<li><a href="javascript:void(0);" onclick="addTab('待办事项','todolist')">待办事项</a></li>
+								<li><a href="javascript:void(0);" onclick="addTab('已审批事项','approved')">已审批事项</a></li>
+								<li><a href="javascript:void(0);" onclick="addTab('我的消息','message')">我的消息</a></li>
+								<li><a href="javascript:void(0);" onclick="addTab('我的文件','directory')">我的文件</a></li>
 							</ul>
 						</div>
 					</li>
-					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>流程定义</span></a></li>
-					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>审计知识库管理</span></a></li>
-					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>工作日志</span></a></li>
-					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>项目类型</span></a></li>
-					<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>审计项目</span></a></li>
+					<li><a href="javascript:void(0);" onclick="addTab('流程定义','processdefine')"><i class="lnr lnr-alarm"></i> <span>流程定义</span></a></li>
+					<li><a href="javascript:void(0);" onclick="addTab('审计知识库管理','auditlib')"><i class="lnr lnr-alarm"></i> <span>审计知识库管理</span></a></li>
+					<li><a href="javascript:void(0);" onclick="addTab('工作日志','worklog')"><i class="lnr lnr-alarm"></i> <span>工作日志</span></a></li>
+					<li><a href="javascript:void(0);" onclick="addTab('项目类型','protype')"><i class="lnr lnr-alarm"></i> <span>项目类型</span></a></li>
+					<li><a href="javascript:void(0);" onclick="addTab('审计项目','auditpro')"><i class="lnr lnr-alarm"></i> <span>审计项目</span></a></li>
 				</ul>
 			</nav>
 		</div>
@@ -81,12 +100,7 @@
 </div>
 <!-- END WRAPPER -->
 <!-- Javascript -->
-<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
-<script th:src="@{/vendor/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
-<script th:src="@{/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js}"></script>
-<script th:src="@{/vendor/chartist/js/chartist.min.js}"></script>
-<script th:src="@{/scripts/klorofil-common.js}"></script>
+
 </body>
 
 </html>
