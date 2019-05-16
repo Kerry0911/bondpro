@@ -44,8 +44,7 @@ public class Model  implements Serializable {
     public Model() {
     }
 
-    public Model(String modelName, List<AuditAttribute> auditAttributes) {
+    public Model(String modelName) {
         this.modelName = modelName;
-        this.auditAttributes = auditAttributes;
     }
 }

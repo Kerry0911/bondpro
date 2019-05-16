@@ -76,36 +76,36 @@ public class AuditPlan implements Serializable {
 
     public void setpJigouname(String pJigouname) {
         this.pJigouname = pJigouname == null ? null : pJigouname.trim();
-
-    public String getpType() {
-        return pType;
     }
+        public String getpType () {
+            return pType;
+        }
 
-    public void setpType(String pType) {
-        this.pType = pType == null ? null : pType.trim();
-    }
+        public void setpType (String pType){
+            this.pType = pType == null ? null : pType.trim();
+        }
 
-    public String getpState() {
-        return pState;
-    }
+        public String getpState () {
+            return pState;
+        }
 
-    public void setpState(String pState) {
-        this.pState = pState == null ? null : pState.trim();
-    }
+        public void setpState (String pState){
+            this.pState = pState == null ? null : pState.trim();
+        }
 
-    public Integer getuId() {
-        return uId;
-    }
+        public Integer getuId () {
+            return uId;
+        }
 
-    public void setuId(Integer uId) {
-        this.uId = uId;
-    }
+        public void setuId (Integer uId){
+            this.uId = uId;
+        }
 
-    public Date getpTime() {
-        return pTime;
-    }
+        public Date getpTime () {
+            return pTime;
+        }
 
-    public void setpTime(Date pTime) {
-        this.pTime = pTime;
-    }
+        public void setpTime (Date pTime){
+            this.pTime = pTime;
+        }
 }

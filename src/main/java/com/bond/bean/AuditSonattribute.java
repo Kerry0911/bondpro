@@ -1,17 +1,21 @@
 package com.bond.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name ="audit_osnattribute" )
-public class AuditSonattribute {
+@Table(name ="audit_sonattribute" )
+public class AuditSonattribute implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer sonaId;
 
     private String sonaCode;
 
-    private Integer aId;
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditAttribute.class)
+    //@JoinColumn(name = "sonaId",referencedColumnName ="aId" )
+    private AuditAttribute attribute;
 
     private String sonaName;
 
@@ -31,12 +35,13 @@ public class AuditSonattribute {
         this.sonaCode = sonaCode == null ? null : sonaCode.trim();
     }
 
-    public Integer getaId() {
-        return aId;
+
+    public AuditAttribute getAttribute() {
+        return attribute;
     }
 
-    public void setaId(Integer aId) {
-        this.aId = aId;
+    public void setAttribute(AuditAttribute attribute) {
+        this.attribute = attribute;
     }
 
     public String getSonaName() {

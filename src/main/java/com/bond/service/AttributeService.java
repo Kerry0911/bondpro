@@ -1,12 +1,11 @@
 package com.bond.service;
 
 import com.bond.bean.AuditAttribute;
-import com.bond.dao.AttributeDao;
+import com.bond.repository.AttributeDao;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class AttributeService {
@@ -17,8 +16,8 @@ public class AttributeService {
      * 查找所有属性
      * @return
      */
-    public List<AuditAttribute> findAll(){
-        return attributeDao.findAll();
+    public List<AuditAttribute> findAllType(){
+        return attributeDao.findAllType();
     }
 
     /**
@@ -30,7 +29,7 @@ public class AttributeService {
         return attributeDao.save(auditAttribute);
     }
 
-    public List<AuditAttribute> findAllByAname(String aName){
+    public AuditAttribute findAllByAname(String aName){
         return attributeDao.findAuditAttributeByAName(aName);
     }
 }

@@ -28,7 +28,9 @@
         $("#wi").window('open');
     }
     function addDialog4() {
-        $("#n").window('open');
+        var data=$("#dg").datagrid('getSelected')
+        $("#editpro").window('open');
+        $("#edit_form").form('load',data);
     }
     function ayo() {
         $.messager.confirm('提示','确认删除吗?',function (r) {
@@ -53,8 +55,10 @@
     }
 
     function save(){
+        var aname=$("#aName").val();
+        var atype=$("#aType").val();
         $.ajax({
-            url:'addproperty',
+            url:'addproperty?aName='+aname+'&aType='+atype,
             type:'get',
             dataType:'json',
             success:function (data) {
@@ -75,7 +79,7 @@
         $('#dg').datagrid({
             onSelect:function (rowIndex,rowData) {
                 $.ajax({
-                    url:'attbyname?name='+rowData.aName,
+                    url:'attbyname?aId='+rowData.aId,
                     type:'get',
                     success:function (data) {
                         $("#code").datagrid('loadData',data);
@@ -117,10 +121,10 @@
              iconCls="icon-add" data-options="title:'增加',modal:true,closed:true">
             <form id="add" method="post" novalidate>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="属性名称:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" id="aName" name="aName" label="属性名称:" required="true" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-combo" label="属性类型:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" id="aType" name="aType" label="属性类型:" required="true" style="width:100%"></input>
                 </div>
                 <div style="text-align:right">
                     <input class="easyui-linkbutton" type="submit" value="保存" onclick="save()" style="width:80px;height:30px">
@@ -129,17 +133,17 @@
 
             </form>
         </div>
-        <div id="n" class="easyui-dialog" style="width:400px;padding: 20px;"
+        <div id="editpro" class="easyui-dialog" style="width:400px;padding: 20px;"
              iconCls="icon-edit" data-options="title:'编辑',modal:true,closed:true">
-            <form id="" method="post" novalidate>
+            <form id="editpro_form" method="post" novalidate>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="属性名称:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" name="aName" label="属性名称:" required="true" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="属性类型:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" name="aType" label="属性类型:" required="true" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-combo" label="属性类型:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" name="aJurisdiction" label="权限:" required="true" style="width:100%"></input>
                 </div>
                 <div style="text-align:right">
                     <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
@@ -159,12 +163,11 @@
             </div>
         </div>
         <div style="width: 100%;">
-            <table id="code" class="easyui-datagrid" pagination="true" style="width:1411px;height:797px;" toolbar="#ad"
-               >
+            <table id="code" class="easyui-datagrid" pagination="true" style="width:1411px;height:797px;" toolbar="#ad">
                 <thead>
                 <tr>
-                    <th field="aCode" width="50%">代码</th>
-                    <th field="modelName" width="50%">名称</th>
+                    <th field="sonaCode" width="50%">代码</th>
+                    <th field="sonaName" width="50%">名称</th>
                 </tr>
                 </thead>
             </table>

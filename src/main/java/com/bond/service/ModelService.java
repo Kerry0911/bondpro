@@ -1,7 +1,8 @@
 package com.bond.service;
 
+import com.bond.bean.AuditSonattribute;
 import com.bond.bean.Model;
-import com.bond.dao.ModelDao;
+import com.bond.repository.ModelDao;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,4 +16,9 @@ public class ModelService {
     public List<Model> findAll(){
         return modelDao.findAll();
     }
+
+
+//    public List<AuditSonattribute> findbyaId(Integer aId){
+//        return modelDao.findAllByAuditAttributes(aId);
+//    }
 }
