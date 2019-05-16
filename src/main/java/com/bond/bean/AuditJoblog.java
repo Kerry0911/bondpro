@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "audit_joblog")
+@Table(name ="audit_joblog" )
 public class AuditJoblog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,36 +24,6 @@ public class AuditJoblog {
     private Date jSubmittime;
 
     private String jProjectname;
-
-    @Override
-    public String toString() {
-        return "AuditJoblog{" +
-                "jId=" + jId +
-                ", jTime=" + jTime +
-                ", jInfo='" + jInfo + '\'' +
-                ", jProblem='" + jProblem + '\'' +
-                ", iNothing='" + iNothing + '\'' +
-                ", jTomorrowplan='" + jTomorrowplan + '\'' +
-                ", uId=" + uId +
-                ", jSubmittime=" + jSubmittime +
-                ", jProjectname='" + jProjectname + '\'' +
-                '}';
-    }
-
-    public AuditJoblog(Integer jId, Date jTime, String jInfo, String jProblem, String iNothing, String jTomorrowplan, Integer uId, Date jSubmittime, String jProjectname) {
-        this.jId = jId;
-        this.jTime = jTime;
-        this.jInfo = jInfo;
-        this.jProblem = jProblem;
-        this.iNothing = iNothing;
-        this.jTomorrowplan = jTomorrowplan;
-        this.uId = uId;
-        this.jSubmittime = jSubmittime;
-        this.jProjectname = jProjectname;
-    }
-
-    public AuditJoblog() {
-    }
 
     public Integer getjId() {
         return jId;

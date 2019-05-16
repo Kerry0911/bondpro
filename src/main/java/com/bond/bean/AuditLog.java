@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "audit_log")
+@Table(name ="audit_log" )
 public class AuditLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,32 +20,6 @@ public class AuditLog {
     private String lType;
 
     private String lInfo;
-
-    @Override
-    public String toString() {
-        return "AuditLog{" +
-                "lId=" + lId +
-                ", lName='" + lName + '\'' +
-                ", lTime=" + lTime +
-                ", lDept='" + lDept + '\'' +
-                ", lMk='" + lMk + '\'' +
-                ", lType='" + lType + '\'' +
-                ", lInfo='" + lInfo + '\'' +
-                '}';
-    }
-
-    public AuditLog(Integer lId, String lName, Date lTime, String lDept, String lMk, String lType, String lInfo) {
-        this.lId = lId;
-        this.lName = lName;
-        this.lTime = lTime;
-        this.lDept = lDept;
-        this.lMk = lMk;
-        this.lType = lType;
-        this.lInfo = lInfo;
-    }
-
-    public AuditLog() {
-    }
 
     public Integer getlId() {
         return lId;

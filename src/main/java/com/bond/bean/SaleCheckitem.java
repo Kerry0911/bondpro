@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "sale_checkitem")
+@Table(name ="sale_checkitem" )
 public class SaleCheckitem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,48 +36,6 @@ public class SaleCheckitem {
     private Integer ppId;
 
     private String cIs;
-
-    @Override
-    public String toString() {
-        return "SaleCheckitem{" +
-                "cId=" + cId +
-                ", cProjectname='" + cProjectname + '\'' +
-                ", cCheck='" + cCheck + '\'' +
-                ", cDept='" + cDept + '\'' +
-                ", cState='" + cState + '\'' +
-                ", cCount='" + cCount + '\'' +
-                ", cBeijihe='" + cBeijihe + '\'' +
-                ", cShenji='" + cShenji + '\'' +
-                ", cBeizhu='" + cBeizhu + '\'' +
-                ", cCalculateddeduction='" + cCalculateddeduction + '\'' +
-                ", cActualdeduction='" + cActualdeduction + '\'' +
-                ", cCheckname='" + cCheckname + '\'' +
-                ", cChecktime=" + cChecktime +
-                ", ppId=" + ppId +
-                ", cIs='" + cIs + '\'' +
-                '}';
-    }
-
-    public SaleCheckitem(Integer cId, String cProjectname, String cCheck, String cDept, String cState, String cCount, String cBeijihe, String cShenji, String cBeizhu, String cCalculateddeduction, String cActualdeduction, String cCheckname, Date cChecktime, Integer ppId, String cIs) {
-        this.cId = cId;
-        this.cProjectname = cProjectname;
-        this.cCheck = cCheck;
-        this.cDept = cDept;
-        this.cState = cState;
-        this.cCount = cCount;
-        this.cBeijihe = cBeijihe;
-        this.cShenji = cShenji;
-        this.cBeizhu = cBeizhu;
-        this.cCalculateddeduction = cCalculateddeduction;
-        this.cActualdeduction = cActualdeduction;
-        this.cCheckname = cCheckname;
-        this.cChecktime = cChecktime;
-        this.ppId = ppId;
-        this.cIs = cIs;
-    }
-
-    public SaleCheckitem() {
-    }
 
     public Integer getcId() {
         return cId;

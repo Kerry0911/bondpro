@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "audit_plan")
+@Table(name ="audit_plan" )
 public class AuditPlan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,14 +46,12 @@ public class AuditPlan {
     public void setpName(String pName) {
         this.pName = pName == null ? null : pName.trim();
     }
-
     public String getpJigouname() {
         return pJigouname;
     }
 
     public void setpJigouname(String pJigouname) {
         this.pJigouname = pJigouname == null ? null : pJigouname.trim();
-    }
 
     public String getpType() {
         return pType;

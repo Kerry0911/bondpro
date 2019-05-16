@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "manuscript")
+@Table(name ="manuscript" )
 public class Manuscript {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,34 +22,6 @@ public class Manuscript {
     private String msPeople;
 
     private Date msTime;
-
-    @Override
-    public String toString() {
-        return "Manuscript{" +
-                "msId=" + msId +
-                ", msInfo='" + msInfo + '\'' +
-                ", msAdvice='" + msAdvice + '\'' +
-                ", msChecktype='" + msChecktype + '\'' +
-                ", msState='" + msState + '\'' +
-                ", msTitle='" + msTitle + '\'' +
-                ", msPeople='" + msPeople + '\'' +
-                ", msTime=" + msTime +
-                '}';
-    }
-
-    public Manuscript(Integer msId, String msInfo, String msAdvice, String msChecktype, String msState, String msTitle, String msPeople, Date msTime) {
-        this.msId = msId;
-        this.msInfo = msInfo;
-        this.msAdvice = msAdvice;
-        this.msChecktype = msChecktype;
-        this.msState = msState;
-        this.msTitle = msTitle;
-        this.msPeople = msPeople;
-        this.msTime = msTime;
-    }
-
-    public Manuscript() {
-    }
 
     public Integer getMsId() {
         return msId;

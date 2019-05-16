@@ -2,7 +2,6 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
 @Table(name = "approachmeeting")
 public class Approachmeeting {
@@ -21,32 +20,6 @@ public class Approachmeeting {
     private String amFuzeren;
 
     private String amLujing;
-
-    public Approachmeeting() {
-    }
-
-    public Approachmeeting(Integer amId, Integer ppId, String amName, Date amStarttime, Date amStoptime, String amFuzeren, String amLujing) {
-        this.amId = amId;
-        this.ppId = ppId;
-        this.amName = amName;
-        this.amStarttime = amStarttime;
-        this.amStoptime = amStoptime;
-        this.amFuzeren = amFuzeren;
-        this.amLujing = amLujing;
-    }
-
-    @Override
-    public String toString() {
-        return "Approachmeeting{" +
-                "amId=" + amId +
-                ", ppId=" + ppId +
-                ", amName='" + amName + '\'' +
-                ", amStarttime=" + amStarttime +
-                ", amStoptime=" + amStoptime +
-                ", amFuzeren='" + amFuzeren + '\'' +
-                ", amLujing='" + amLujing + '\'' +
-                '}';
-    }
 
     public Integer getAmId() {
         return amId;

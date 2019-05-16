@@ -1,10 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>量化打分</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
+    <style type="text/css">
+        .fy {width: 928px; display: table; padding: 15px 0px 8px; text-align: center; font-size: 12px;}
+        .fy a {width: auto; height: 19px; line-height: 19px; padding: 0px 10px; margin: 0px 5px; display: inline-block; color: #7f7f7f; background-color: #fff; border: 1px solid #7f7f7f;}
+        .fy a.num {font-family: Arial; padding: 0px 6px;}
+        .fy a:hover, .fy a.cur {background-color: #9c0004; color: #fff; border: 1px solid #9c0004;}
+    </style>
 </head>
 <body>
-
+<div style="margin: 0 auto;border: 1px solid red;width: 900px;">
+    <div style="margin-bottom:10px">
+        <input class="easyui-combo" label="项目名称:" required="true" style="width:30%">
+        <input class="easyui-combo" label="部门名称:" required="true" style="width:30%">
+        <input class="easyui-combo" label="填写人id:" required="true" style="width:30%"><br/>
+        扣分值：
+        <input class="easyui-linkbutton" type="button" value="查询" style="width:80px;height:30px">
+        <input class="easyui-linkbutton" type="reset" value="导出" style="width:80px;height:30px">
+    </div>
+    <div>
+        <table border="1"  cellpadding="1" cellspacing="1" style="width: 100%"   >
+            <tr style="background: #0ea0db">
+                <th rowspan="2">序号</th>
+                <th rowspan="2">操作</th>
+                <th rowspan="2">类别</th>
+                <th rowspan="2">量化项名</th>
+                <th rowspan="2">扣分标准</th>
+                <th colspan="2" align="center">扣分情况</th>
+                <th rowspan="2">填写人id</th>
+                <th rowspan="2">扣分事项</th>
+                <th rowspan="2">填写时间</th>
+                <th rowspan="2">项目名称</th>
+                <th rowspan="2">部门名称</th>
+            </tr>
+            <tr style="background: #0ea0db">
+                <th>实际</th>
+                <th>计算</th>
+            </tr>
+        </table>
+        <div class="fy">
+            <a href="" title="上一页">上一页</a>
+            <a class="num cur" href="" title="1">1</a>
+            <a class="num" href="" title="2">2</a>
+            <a class="num" href="" title="3">3</a>
+            <a class="num" href="" title="4">4</a>
+            <a class="num" href="" title="5">5</a>
+            <a href="" title="下一页">下一页</a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

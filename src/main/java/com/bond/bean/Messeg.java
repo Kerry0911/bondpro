@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "messeg")
+@Table(name ="messeg" )
 public class Messeg {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,30 +18,6 @@ public class Messeg {
     private String mReception;
 
     private Date mSendtime;
-
-    @Override
-    public String toString() {
-        return "Messeg{" +
-                "mId=" + mId +
-                ", mType='" + mType + '\'' +
-                ", mInfo='" + mInfo + '\'' +
-                ", mSend='" + mSend + '\'' +
-                ", mReception='" + mReception + '\'' +
-                ", mSendtime=" + mSendtime +
-                '}';
-    }
-
-    public Messeg(Integer mId, String mType, String mInfo, String mSend, String mReception, Date mSendtime) {
-        this.mId = mId;
-        this.mType = mType;
-        this.mInfo = mInfo;
-        this.mSend = mSend;
-        this.mReception = mReception;
-        this.mSendtime = mSendtime;
-    }
-
-    public Messeg() {
-    }
 
     public Integer getmId() {
         return mId;

@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "audit_user")
+@Table(name ="audit_user" )
 public class AuditUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,42 +30,6 @@ public class AuditUser {
     private String uEmail;
 
     private String uPhone;
-
-    @Override
-    public String toString() {
-        return "AuditUser{" +
-                "uId=" + uId +
-                ", uUsercode='" + uUsercode + '\'' +
-                ", uPassword='" + uPassword + '\'' +
-                ", state='" + state + '\'' +
-                ", uPqualification='" + uPqualification + '\'' +
-                ", uUsername='" + uUsername + '\'' +
-                ", uCode='" + uCode + '\'' +
-                ", uRole='" + uRole + '\'' +
-                ", uPost='" + uPost + '\'' +
-                ", uDept='" + uDept + '\'' +
-                ", uEmail='" + uEmail + '\'' +
-                ", uPhone='" + uPhone + '\'' +
-                '}';
-    }
-
-    public AuditUser(Integer uId, String uUsercode, String uPassword, String state, String uPqualification, String uUsername, String uCode, String uRole, String uPost, String uDept, String uEmail, String uPhone) {
-        this.uId = uId;
-        this.uUsercode = uUsercode;
-        this.uPassword = uPassword;
-        this.state = state;
-        this.uPqualification = uPqualification;
-        this.uUsername = uUsername;
-        this.uCode = uCode;
-        this.uRole = uRole;
-        this.uPost = uPost;
-        this.uDept = uDept;
-        this.uEmail = uEmail;
-        this.uPhone = uPhone;
-    }
-
-    public AuditUser() {
-    }
 
     public Integer getuId() {
         return uId;

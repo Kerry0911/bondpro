@@ -3,7 +3,7 @@ package com.bond.bean;
 import javax.persistence.*;
 import java.util.Date;
 @Entity
-@Table(name = "leavemeeting")
+@Table(name ="leavemeeting" )
 public class Leavemeeting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,32 +20,6 @@ public class Leavemeeting {
     private String lmFuzeren;
 
     private String lmLujing;
-
-    @Override
-    public String toString() {
-        return "Leavemeeting{" +
-                "lmId=" + lmId +
-                ", ppId=" + ppId +
-                ", lmName='" + lmName + '\'' +
-                ", lmStarttime=" + lmStarttime +
-                ", lmStoptime=" + lmStoptime +
-                ", lmFuzeren='" + lmFuzeren + '\'' +
-                ", lmLujing='" + lmLujing + '\'' +
-                '}';
-    }
-
-    public Leavemeeting(Integer lmId, Integer ppId, String lmName, Date lmStarttime, Date lmStoptime, String lmFuzeren, String lmLujing) {
-        this.lmId = lmId;
-        this.ppId = ppId;
-        this.lmName = lmName;
-        this.lmStarttime = lmStarttime;
-        this.lmStoptime = lmStoptime;
-        this.lmFuzeren = lmFuzeren;
-        this.lmLujing = lmLujing;
-    }
-
-    public Leavemeeting() {
-    }
 
     public Integer getLmId() {
         return lmId;

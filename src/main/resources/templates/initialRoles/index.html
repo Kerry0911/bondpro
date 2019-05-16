@@ -46,7 +46,7 @@
 <div id="cc" class="easyui-layout" style="height: 800px;">
 	<div data-options="region:'north',title:'West',split:true" >
 		<!-- NAVBAR -->
-		<nav  class="navbar navbar-default navbar-fixed-top" style="height: 67px;">
+		<nav  class="navbar navbar-default navbar-fixed-top" style="height: 80px;">
 			<div class="brand">
 				<a href="roleindex"><img th:src="@{/img/logo-dark.png}" alt="首页" class="img-responsive logo"></a>
 			</div>
@@ -67,7 +67,7 @@
 			</div>
 		</nav>
 	</div>
-	<div data-options="region:'west'" style="padding:5px;width: 220px;" >
+	<div data-options="region:'west'" style="padding:5px;width: 220px;background-color:black" >
 		<div id="sidebar-nav" class="sidebar" >
 			<div class="sidebar-scroll">
 				<nav>
@@ -77,25 +77,25 @@
 							<div id="subPages" class="collapse ">
 								<ul class="nav">
 									<li><a href="javascript:addTab('待办事项','todolist');" >待办事项</a></li>
-									<li><a href="page-login" class="">已审批事项</a></li>
-									<li><a href="page-lockscreen" class="">我的消息</a></li>
-									<li><a href="page-lockscreen" class="">我的文件</a></li>
+									<li><a href="javascript:addTab('已审批事项','approved');" class="">已审批事项</a></li>
+									<li><a href="javascript:addTab('我的消息','message');" class="">我的消息</a></li>
+									<li><a href="javascript:addTab('我的文件','directory');" class="">我的文件</a></li>
 								</ul>
 							</div>
 						</li>
-						<li><a href="panels" class=""><i class="lnr lnr-cog"></i> <span>用户管理</span></a></li>
-						<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>角色管理</span></a></li>
-						<li><a href="typography" class=""><i class="lnr lnr-text-format"></i> <span>属性管理</span></a></li>
-						<li><a href="icons" class=""><i class="lnr lnr-linearicons"></i> <span>属性设置</span></a></li>
-						<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>流程定义</span></a></li>
-						<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>审计知识库管理</span></a></li>
-						<li><a href="notifications" class=""><i class="lnr lnr-alarm"></i> <span>工作日志</span></a></li>
+						<li><a href="javascript:void(0)" onclick="addTab('用户管理','useradmin')"><i class="lnr lnr-cog"></i> <span>用户管理</span></a></li>
+						<li><a href="javascript:void(0)" onclick="addTab('角色管理','')"><i class="lnr lnr-alarm"></i> <span>角色管理</span></a></li>
+						<li><a href="javascript:void(0)" onclick="addTab('属性管理','propertymanage')"><i class="lnr lnr-text-format"></i> <span>属性管理</span></a></li>
+						<li><a href="javascript:void(0)" onclick="addTab('属性设置','propertyset')"><i class="lnr lnr-linearicons"></i> <span>属性设置</span></a></li>
+						<li><a href="javascript:void(0)" onclick="addTab('流程定义','processdefine')"><i class="lnr lnr-alarm"></i> <span>流程定义</span></a></li>
+						<li><a href="javascript:void(0)" onclick="addTab('审计知识库管理','auditlib')"><i class="lnr lnr-alarm"></i> <span>审计知识库管理</span></a></li>
+						<li><a href="javascript:void(0)" onclick="addTab('工作日志','worklog')"><i class="lnr lnr-alarm"></i> <span>工作日志</span></a></li>
 					</ul>
 				</nav>
 			</div>
 		</div>
 	</div>
-	<div data-options="region:'center'" style="padding:1px;">
+	<div data-options="region:'center'" style="padding:0px;">
 		<div id="tab" class="easyui-tabs" style="width: 100%;height:732px;"></div>
 	</div>
 </div>

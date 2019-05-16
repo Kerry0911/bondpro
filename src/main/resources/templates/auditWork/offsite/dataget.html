@@ -14,14 +14,14 @@
     审计要点:<input id="yaodian" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
     <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="">搜索</a>
 </div>
-<table class="easyui-datagrid" style="height: 700px;" toolbar="#search"pagination="true">
+<table class="easyui-datagrid" style="height: 600px;width: 100%" toolbar="#search" data-options="fitColumns:true" pagination="true">
     <thead>
     <tr style="background: #00aff0">
         <th data-options="field:'bianhao'" style="width:20%;">审计编号</th>
         <th data-options="field:'yaodian'" style="width:20%;">审计要点</th>
         <th data-options="field:'renyuan'" style="width:20%;">稽核人员</th>
         <th data-options="field:'状态'" style="width: 20%;">处理状态</th>
-        <th data-options="field:'caozuo'" style="width:20%;">操作</th>
+        <th data-options="field:'caozuo'" style="width:21%;">操作</th>
     </tr>
     </thead>
     <tbody>

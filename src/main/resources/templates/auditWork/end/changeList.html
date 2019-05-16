@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>整改清单</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
+<style>
+    a{text-decoration: none}
+    #a{
+        margin-left : 600px;
+        margin-top: 50px;
+        background: #0ea0db;
+    }
+</style>
 <body>
+<div>
+    <div id="ad" style="background: rgba(0, 0, 255, 0.1)">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="">下文更改清单</a>
+    </div>
+    <div id="win"  style="width:1000px;">
+        <form id="" method="post" >
+            <span style=" margin-left:60px;">项目编号：<input type="text" value="" name="" style=""></span>
+            <span style=" margin-left:60px;">审计编号：<input type="text" value="" name=""></span><br/>
+            <span style=" margin-left:60px;">项目名称：<input type="text" value="" name=""></span>
+            <span style=" margin-left:60px;">项目类型：<input type="text" value="" name=""></span><br/>
+            <span style=" margin-left:70px;">创建人：<input type="text" value="" name=""></span>
+            <span style=" margin-left:60px;">被审核机构：<input type="text" value="" name=""></span><br/>
+            <span style=" margin-left:0px;">具体被审核机构：<input type="" value="" name=""></span>
+            <span style=" margin-left:60px;">审计期间起：<input type="date" value="" name="" style="width: 180px"></span><br/>
+            <span style=" margin-left:20px;">审计期间止：<input type="date" value="" name="" style="width: 180px"></span>
+            <span style=" margin-left:60px;">实际审计起：<input type="date" value="" name="" style="width: 180px"></span><br/>
+            <span style=" margin-left:20px;">实际审计止：<input type="date" value="" name="" style="width: 180px"></span>
+            <span style=" margin-left:60px;">项目成员：<input type="text" value="" name=""></span><br/>
+            <span style=" margin-left:50px;">主审人：<input type="text" value="" name="" style="width: 600px"></span><br/>
+            <span style=" margin-left:20px;">审计负责人：<input type="text" value="" name="" style="width: 600px"></span><br/>
+            <samp>主审得分：<input type="text" value="" name="" style="width: 300px"></samp>
+            <samp>助审得分：<input type="text" value="" name="" style="width: 300px"></samp><br/>
+        </form>
+    </div>
+</div>
+<div>
+    <div id="d" style="background: rgba(0, 0, 255, 0.1)">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-tip" plain="true" onclick="">文件上传</a>
+    </div>
+    <div>
+        <table id="datagrid" class="easyui-datagrid" title="" style="width:100%;height: 370px;"  pagination="true">
+            <thead>
+            <tr>
+                <th data-options="field:'itemid',width:360"> 附件名</th>
+                <th data-options="field:'productid',width:360"> 上传时间</th>
+                <th data-options="field:'productid',width:360"> 操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
 
+    </div>
+</div>
 </body>
 </html>

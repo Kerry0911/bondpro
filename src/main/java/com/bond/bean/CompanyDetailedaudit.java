@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "company_detailedaudit")
+@Table(name ="company_detailedaudit" )
 public class CompanyDetailedaudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,38 +26,6 @@ public class CompanyDetailedaudit {
     private Integer ppId;
 
     private String cddIs;
-
-    @Override
-    public String toString() {
-        return "CompanyDetailedaudit{" +
-                "cddId=" + cddId +
-                ", cddCheckxiang='" + cddCheckxiang + '\'' +
-                ", cddName='" + cddName + '\'' +
-                ", cddRiskthings='" + cddRiskthings + '\'' +
-                ", cddIstrue='" + cddIstrue + '\'' +
-                ", cddBeizhu='" + cddBeizhu + '\'' +
-                ", cddAddriskthings='" + cddAddriskthings + '\'' +
-                ", cddChecktime=" + cddChecktime +
-                ", ppId=" + ppId +
-                ", cddIs='" + cddIs + '\'' +
-                '}';
-    }
-
-    public CompanyDetailedaudit(Integer cddId, String cddCheckxiang, String cddName, String cddRiskthings, String cddIstrue, String cddBeizhu, String cddAddriskthings, Date cddChecktime, Integer ppId, String cddIs) {
-        this.cddId = cddId;
-        this.cddCheckxiang = cddCheckxiang;
-        this.cddName = cddName;
-        this.cddRiskthings = cddRiskthings;
-        this.cddIstrue = cddIstrue;
-        this.cddBeizhu = cddBeizhu;
-        this.cddAddriskthings = cddAddriskthings;
-        this.cddChecktime = cddChecktime;
-        this.ppId = ppId;
-        this.cddIs = cddIs;
-    }
-
-    public CompanyDetailedaudit() {
-    }
 
     public Integer getCddId() {
         return cddId;

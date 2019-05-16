@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
     <meta charset="UTF-8">
-    <title>非现场检查结果公司类</title>
+    <title>非现场检查结果营业部类</title>
 </head>
 <style>
     a{text-decoration: none;}
@@ -39,14 +39,14 @@
     </table>
     <a href="javascript:void(0)" class="easyui-linkbutton" style="background: #00aff0;height: 30px;" onclick="dialog1()">检查项目总结</a>
 </div>
-<div data-options="region:'center'" style="width: 100%">
-    <table class="easyui-datagrid" style="height: 100%;width: 100%">
+<div data-options="region:'center'">
+    <table class="easyui-datagrid" style="height: 100%">
         <thead>
         <tr>
-            <th data-options="field:'list',width:'25%'" >客户信息</th>
-            <th data-options="field:'weifan',width:'25%'" >违反词条</th>
-            <th data-options="field:'jisuan',width:'25%'">计算扣分</th>
-            <th data-options="field:'caozuo',width:'25%'">操作</th>
+            <th data-options="field:'list'" width="420px;">客户信息</th>
+            <th data-options="field:'weifan'" width="420px;">违反词条</th>
+            <th data-options="field:'jisuan'" width="420px;">计算扣分</th>
+            <th data-options="field:'caozuo'" width="420px;">操作</th>
         </tr>
         </thead>
         <tbody >
@@ -71,13 +71,17 @@
                 <input type="radio" class="easyui-validatebox" name="radiotype"><label>异常</label></input>
             </div>
             <div style="margin-bottom:10px;">
-                <textarea class="easyui-textbox" label="风险事项:" required="true"  multiline="true" style="width:100%;height:60px"></textarea>
+                <textarea class="easyui-textbox" label="扣分项目:" name="deduction" multiline="true" style="width:100%;height:60px"></textarea>
             </div>
             <div style="margin-bottom:10px;">
-                <textarea class="easyui-textbox" label="补充风险事项:" required="true"  multiline="true" style="width:100%;height:60px"></textarea>
+                <textarea class="easyui-textbox" label="手工扣分:" name="manual" multiline="true" style="width:100%;height:60px"></textarea>
             </div>
             <div style="margin-bottom:10px;">
-                <textarea class="easyui-textbox" label="备注信息:" required="true"  multiline="true" style="width:100%;height:60px"></textarea>
+                <textarea class="easyui-textbox" label="备注信息:" name="remarks" multiline="true" style="width:100%;height:60px"></textarea>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="计算扣分:" required="true" style="width:48%"></input>
+                <input class="easyui-textbox" label="实际扣分:" required="true" style="width:48%;"></input>
             </div>
             <div style="margin-bottom:10px">
                 <input class="easyui-textbox" label="检查用户:" required="true" style="width:48%"></input>
@@ -118,6 +122,10 @@
         </div>
         <div style="margin-bottom:10px;">
             <textarea class="easyui-textbox" label="备注信息:" name="remarks1" multiline="true" required="true" style="width:100%;height:60px"></textarea>
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="计算扣分:" required="true" style="width:48%"></input>
+            <input class="easyui-textbox" label="实际扣分:" required="true" style="width:48%;"></input>
         </div>
         <div style="margin-bottom:10px">
             <input class="easyui-textbox" label="检查用户:" required="true" style="width:48%"></input>

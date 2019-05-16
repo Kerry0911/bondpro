@@ -2,9 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "audit_knowledge_base")
+@Table(name ="audit_knowledge_base" )
 public class AuditKnowledgeBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,28 +16,6 @@ public class AuditKnowledgeBase {
     private Date time;
 
     private String kpState;
-
-    @Override
-    public String toString() {
-        return "AuditKnowledgeBase{" +
-                "kbId=" + kbId +
-                ", kpInfo='" + kpInfo + '\'' +
-                ", kpName='" + kpName + '\'' +
-                ", time=" + time +
-                ", kpState='" + kpState + '\'' +
-                '}';
-    }
-
-    public AuditKnowledgeBase(Integer kbId, String kpInfo, String kpName, Date time, String kpState) {
-        this.kbId = kbId;
-        this.kpInfo = kpInfo;
-        this.kpName = kpName;
-        this.time = time;
-        this.kpState = kpState;
-    }
-
-    public AuditKnowledgeBase() {
-    }
 
     public Integer getKbId() {
         return kbId;

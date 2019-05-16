@@ -2,12 +2,10 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.util.Date;
-
 @Entity
-@Table(name = "audit_planproject")
+@Table(name ="audit_planproject" )
 public class AuditPlanproject {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ppId;
 
     private String ppName;
@@ -44,56 +42,8 @@ public class AuditPlanproject {
 
     private String ppCheck;
 
-    public AuditPlanproject() {
-    }
-
     public Integer getPpId() {
         return ppId;
-    }
-
-    @Override
-    public String toString() {
-        return "AuditPlanproject{" +
-                "ppId=" + ppId +
-                ", ppName='" + ppName + '\'' +
-                ", ppAudit='" + ppAudit + '\'' +
-                ", ppAudited='" + ppAudited + '\'' +
-                ", ppSpecific='" + ppSpecific + '\'' +
-                ", ppType='" + ppType + '\'' +
-                ", ppCreatepeople='" + ppCreatepeople + '\'' +
-                ", ppCreatedate=" + ppCreatedate +
-                ", ppZhushen='" + ppZhushen + '\'' +
-                ", ppZhushenrole='" + ppZhushenrole + '\'' +
-                ", ppZs='" + ppZs + '\'' +
-                ", ppZszrole='" + ppZszrole + '\'' +
-                ", ppGeneratepeople='" + ppGeneratepeople + '\'' +
-                ", pId=" + pId +
-                ", ppStarttime=" + ppStarttime +
-                ", ppEndstart=" + ppEndstart +
-                ", ppJieduan='" + ppJieduan + '\'' +
-                ", ppCheck='" + ppCheck + '\'' +
-                '}';
-    }
-
-    public AuditPlanproject(Integer ppId, String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppZhushen, String ppZhushenrole, String ppZs, String ppZszrole, String ppGeneratepeople, Integer pId, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck) {
-        this.ppId = ppId;
-        this.ppName = ppName;
-        this.ppAudit = ppAudit;
-        this.ppAudited = ppAudited;
-        this.ppSpecific = ppSpecific;
-        this.ppType = ppType;
-        this.ppCreatepeople = ppCreatepeople;
-        this.ppCreatedate = ppCreatedate;
-        this.ppZhushen = ppZhushen;
-        this.ppZhushenrole = ppZhushenrole;
-        this.ppZs = ppZs;
-        this.ppZszrole = ppZszrole;
-        this.ppGeneratepeople = ppGeneratepeople;
-        this.pId = pId;
-        this.ppStarttime = ppStarttime;
-        this.ppEndstart = ppEndstart;
-        this.ppJieduan = ppJieduan;
-        this.ppCheck = ppCheck;
     }
 
     public void setPpId(Integer ppId) {
