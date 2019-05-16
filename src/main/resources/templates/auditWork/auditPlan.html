@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,62 +9,147 @@
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+<script th:inline="javascript">
+    function formatterDate(date) {
+        //得到日期并转换
+        var oDate = new Date(date),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth() + 1,
+            oDay = oDate.getDate(),
+            oHour = oDate.getHours(),
+            oMin = oDate.getMinutes(),
+            oSen = oDate.getSeconds(),
+            oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':'
+                + getzf(oMin) + ':' + getzf(oSen);// 最后拼接时间
+        return oTime;
+    };
+    //补0操作
+    //传进来的值大于10就返回原值  如果小于10 那么就需要在前面补个0  因为都是两位数 不补0的话会导致当你是小于10的数的时候  只展示出了一位数  这样就可以展示两位数 不管你的值是多少
+    function getzf(num) {
+        if (parseInt(num) < 10) {
+            num = '0' + num;
+        }
+        return num;
+    }
+    function creatuser(value,row,index){
+        var n=$.ajax({
+            url:"selectnamebyuserid",
+            async:false,
+            data:{id:value},
+            type:"post",
+        })
+        var name = n.responseText;
+        return name;
+    }
+    function ClickRow(rowIndex, rowData){
+        var tb = $("#table");
+        $.ajax({
+            url:"selectbypId",
+            dataType:"json",
+            data:{pId:rowData.pId},
+            type:"post",
+            success:function(data){
+                // var code ="<tr id='a'><th>类型</th><th>项目总数</th><th>开展中个数</th><th>完成个数</th><th>完成占比</th></tr>";
+                // code+="<tr id='a'><th>年度计划</th><th>"+data.list.length+"</th><th></th><th></th><th></th></tr>"
+                // code+="<tr id='a'><th>新增计划</th><th>"+data.list.length+"</th></tr>"
+                // alert(code)
+                // tb.append(code);
+                alert(data.list[0].auditPlan.pType);
+                $("#a").text(data.list.length);
+            }
+        })
+    }
+    function selectbypnd(){
+        var pnd = $("#pnd").val();
+        $.ajax({
+            url:"selectbypnd",
+            dataType: "json",
+            data:{pnd:pnd},
+            type:"post",
+            success:function(data){
+                $("#dg1").datagrid("loadData",data);
+            }
+        })
+    }
+    var  url="";
+    function addauditplan(){
+        $("#fm").form("clear")
+       $("#dlg").dialog("open");
+        url="addauditplan";
+    }
+    function saveup(){
+        $.ajax({
+            url:url,
+            obSubmit:function(){
+                return $(this).form("validate");
+            },
+            success:function(data){
+                if(data) {
+                    alert("添加成功")
+                    $("#dg1").datagrid("reload");
+                    $("#dlg").dialog("close");
+                }else{
+                    alert("添加失败")
+                }
+            }
+        })
+    }
+</script>
     <div style="margin-left: 500px;">
         计划年度：
-        <select style="width: 150px;">
-            <option></option>
+        <select style="width: 150px;" id="pnd">
+            <div th:each="list:${session.list1}">
+            <option th:text="${list.pNd}"></option>
+            </div>
         </select><br>
         <div style="padding: 20px;">
-            <a id="search" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+            <button id="search" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" th:onclick="selectbypnd()">搜索</button>
             <a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reset'">重置</a>
         </div>
     </div>
+<div id="dlg" class="easyui-dialog" style="width: 400px;height: auto;margin: 0 auto" data-options="buttons:'#btn',closed:true">
+    <form id="fm" method="post">
+        计划年度:
+        <select id="niandu">
+            <option></option>
+        </select><br>
+        计划类型:
+        <select id="ptype">
+            <option></option>
+        </select><br>
+        计划名称:<textarea name="pname" style="width: 300px;" ></textarea><br>
+    </form>
+</div>
+<div id="btn">
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save'" onclick="saveup()">保存</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="closeWin()">关闭</a>
+</div>
     <div id="tool">
-        <a id="add" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">增加</a>
+        <a id="add" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" th:onclick="addauditplan()">增加</a>
         <a href="#" data-options="iconCls:'icon-hammer'">年度计划确认</a>
     </div>
-    <table class="easyui-datagrid" toolbar="#tool" id="dg1" data-options="pagination:true,fitColumns:true" style="width: 100%;height: 500px;" >
+    <table class="easyui-datagrid" toolbar="#tool" id="dg1"
+           data-options="url:'selectAllAuditPlan',singleSelect:true,pagination:true,fitColumns:true,onClickRow:ClickRow" style="width: 100%;height: 500px;" >
         <thead>
         <tr>
-            <th data-options="field:'price',width:'2%',checkbox:true"></th>
-            <th data-options="field:'code',width:'14%'">计划年度</th>
-            <th data-options="field:'name',width:'14%'">计划名称</th>
-            <th data-options="field:'a',width:'14%'">审计机构</th>
-            <th data-options="field:'c',width:'14%'">计划类型</th>
-            <th data-options="field:'v',width:'14%'">计划状态</th>
-            <th data-options="field:'s',width:'14%'">创建人</th>
-            <th data-options="field:'e',width:'15%'">创建时间</th>
+            <th data-options="field:'pNd',width:'10%'">计划年度</th>
+            <th data-options="field:'pName',width:'14%'">计划名称</th>
+            <th data-options="field:'pJigouname',width:'14%'">审计机构</th>
+            <th data-options="field:'pType',width:'14%'">计划类型</th>
+            <th data-options="field:'pState',width:'14%'">计划状态</th>
+            <th data-options="field:'uId',width:'14%'" formatter="creatuser">创建人</th>
+            <th data-options="field:'pTime',width:'14%',formatter:formatterDate">创建时间</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td></td><td>001</td><td>name1</td><td>2323</td><td>2323</td><td>2323</td><td>001</td><td>001</td>
-        </tr>
-        <tr>
-            <td></td><td>002</td><td>name2</td><td>4612</td><td>2323</td><td>2323</td><td>001</td><td>001</td>
-        </tr>
-        </tbody>
     </table>
-    <table border="1px" style="height: 200px;width: 100%;">
-        <tr>
-            <td>类型</td>
-            <td>项目总数</td>
-            <td>开展中个数</td>
-            <td>完成个数</td>
-            <td>完成占比</td>
-        </tr>
-        <tr>
-            <td>年度计划</td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-            <td>新增计划</td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
-        <tr>
-            <td>合计</td>
-            <td></td><td></td><td></td><td></td>
-        </tr>
+<div style="width: 100%;height: 200px;%;">
+    <table id="table" border="1px;" style="width: 100%;height: 200px;">
+        <tr><th>类型</th><th>项目总数</th><th>开展中个数</th><th>完成个数</th><th>完成占比</th></tr>
+        <tr><th>年度计划</th><th id="a"></th><th id="kz"></th><th id="wanc"></th><th id="bi"></th></tr>
+        <tr><th>新增计划</th><th></th><th></th><th></th><th></th></tr>
     </table>
+</div>
+<table>
+</table>
 </body>
 </html>
