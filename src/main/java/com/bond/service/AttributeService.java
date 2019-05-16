@@ -32,4 +32,8 @@ public class AttributeService {
     public AuditAttribute findAllByAname(String aName){
         return attributeDao.findAuditAttributeByAName(aName);
     }
+
+    public void delpro(Integer aId){
+        attributeDao.deleteById(aId);
+    }
 }

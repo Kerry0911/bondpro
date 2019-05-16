@@ -24,21 +24,36 @@
     function addDialog1() {
         $("#w").window('open');
     }
-    function addDialog3() {
+    function addson() {
         $("#wi").window('open');
     }
     function addDialog4() {
-        var data=$("#dg").datagrid('getSelected')
+        var data=$("#dg").datagrid('getSelected');
         $("#editpro").window('open');
         $("#edit_form").form('load',data);
     }
     function ayo() {
+        var a=$("#dg").datagrid('getSelected');
         $.messager.confirm('提示','确认删除吗?',function (r) {
             if(r){
-                alert('想跳哪去自己写');
+                $.ajax({
+                    url:'delpro?aId='+a.aId,
+                    type:'get',
+                    dataType:'json',
+                    success:function (data) {
+                        if (data>0){
+                            $.messager.alert("系统提示","删除成功");
+                        } else{
+                            $.messager.alert("系统提示","删除失败");
+                        }
+                    }
+                })
             }
         });
     }
+
+
+
     function EditUser() {
         $('#fm').form('submit', {
             url: "ajax/UserMAjax.ashx?cmd=edit&userid=" + userid,
@@ -74,6 +89,28 @@
         })
     }
 
+    //新增属性项
+    function saveson(){
+        var d=$("#dg").datagrid('getSelected');
+        var aname=$("#sonaCode").val();
+        var atype=$("#sonaName").val();
+        $.ajax({
+            url:'addson?sonaCode='+aname+'&sonaName='+atype+'&aId='+d.aId,
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                if (data>0) {
+                    $.messager.alert("系统提示",'新增属性项成功');
+                }else{
+                    $.messager.alert("系统提示",'新增属性项失败');
+                }
+            },
+            error:function (data) {
+                $.messager.alert("系统提示",'新增属性项错误');
+            }
+        })
+    }
+
     $(function () {
         //点击表格在右边弹出编码和名称
         $('#dg').datagrid({
@@ -95,10 +132,10 @@
     <div data-options="region:'west',title:'属性管理',split:true" style="width:280px;" >
         <div style="width: 100%;">
             <div id="d" style="background: rgba(0, 0, 255, 0.1)">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog4()">编辑</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog4()">编辑</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
             </div>
         </div>
 
@@ -121,10 +158,10 @@
              iconCls="icon-add" data-options="title:'增加',modal:true,closed:true">
             <form id="add" method="post" novalidate>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" id="aName" name="aName" label="属性名称:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" id="aName" label="属性名称:" required="true" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" id="aType" name="aType" label="属性类型:" required="true" style="width:100%"></input>
+                    <input class="easyui-combo" id="aType" label="属性类型:" required="true" style="width:100%"></input>
                 </div>
                 <div style="text-align:right">
                     <input class="easyui-linkbutton" type="submit" value="保存" onclick="save()" style="width:80px;height:30px">
@@ -137,13 +174,13 @@
              iconCls="icon-edit" data-options="title:'编辑',modal:true,closed:true">
             <form id="editpro_form" method="post" novalidate>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" name="aName" label="属性名称:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" name="aName" label="属性名称:"  style="width:100%"/>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" name="aType" label="属性类型:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" name="aType" label="属性类型:"  style="width:100%"/>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" name="aJurisdiction" label="权限:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" name="aJurisdiction" label="权限:" style="width:100%"/>
                 </div>
                 <div style="text-align:right">
                     <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
@@ -156,10 +193,10 @@
     <div data-options="region:'center'" style="padding:0px;">
         <div style="width: 100%;">
             <div id="ad" style="background: rgba(0, 0, 255, 0.1)">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog3()">增加</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addson()">增加</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:delson()">删除</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:editson()">编辑</a>
+                <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
             </div>
         </div>
         <div style="width: 100%;">
@@ -174,15 +211,15 @@
         </div>
         <div id="wi" class="easyui-dialog" style="width:400px;padding: 20px;"
              iconCls="icon-add" data-options="title:'增加',modal:true,closed:true">
-            <form id="" method="post" novalidate>
+            <form id="addson" method="post" novalidate>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="代码:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" id="sonaCode" label="代码:" required="true" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="名称:"  required="true"  style="width:100%"></input>
+                    <input class="easyui-textbox" id="sonaName" label="名称:"  required="true"  style="width:100%"></input>
                 </div>
                 <div style="text-align:right">
-                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px" onclick="saveson()">
                     <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
                 </div>
             </form>

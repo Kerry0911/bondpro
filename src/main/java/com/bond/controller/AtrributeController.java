@@ -55,4 +55,12 @@ public class AtrributeController {
             return 0;
         }
     }
+
+    //删除属性
+    @RequestMapping("/delpro")
+    @ResponseBody
+    public int delpro(Integer aId){
+        attservice.delpro(aId);
+        return 1;
+    }
 }

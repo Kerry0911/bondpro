@@ -10,4 +10,6 @@ public interface SonAttrDao extends JpaRepository<AuditSonattribute,Integer> {
 
     @Query(value = "select * from audit_sonattribute where a_id=?1",nativeQuery = true)
     public List<AuditSonattribute> findAuditSonattributesByAttribute(Integer aId);
+
+
 }

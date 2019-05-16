@@ -13,4 +13,6 @@ public interface AttributeDao extends JpaRepository<AuditAttribute,Integer> {
 
     @Query(value = "select a.* from audit_attribute a where a.`a_name`=?1",nativeQuery = true)
     public AuditAttribute findAuditAttributeByAName(String aName);
+
+
 }

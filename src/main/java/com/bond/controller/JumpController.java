@@ -135,6 +135,11 @@ public class JumpController {
     public String auditpro(){
         return "auditWork/auditPro";
     }
+
+    @RequestMapping("/auditplanpro")
+    public String auditplanpro(){
+        return "auditWork/auditplanpro";
+    }
     /**
      * 非现场检查
      * offsite

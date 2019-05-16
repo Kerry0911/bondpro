@@ -15,4 +15,8 @@ public class SonAttrService {
     public List<AuditSonattribute> findbyaid(Integer aId){
         return sonAttrDao.findAuditSonattributesByAttribute(aId);
     }
-}
+
+    public AuditSonattribute addson(AuditSonattribute auditSonattribute){
+        return sonAttrDao.save(auditSonattribute);
+    }
+ }

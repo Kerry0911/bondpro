@@ -13,6 +13,25 @@ public class AuditSonattribute implements Serializable {
 
     private String sonaCode;
 
+    private Integer aId;
+
+    public AuditSonattribute(String sonaCode, Integer aId, String sonaName) {
+        this.sonaCode = sonaCode;
+        this.aId = aId;
+        this.sonaName = sonaName;
+    }
+
+    public AuditSonattribute() {
+    }
+
+    public Integer getaId() {
+        return aId;
+    }
+
+    public void setaId(Integer aId) {
+        this.aId = aId;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditAttribute.class)
     //@JoinColumn(name = "sonaId",referencedColumnName ="aId" )
     private AuditAttribute attribute;
