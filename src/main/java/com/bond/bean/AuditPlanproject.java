@@ -12,7 +12,6 @@ import java.util.Date;
 public class AuditPlanproject implements Serializable {
 
     @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ppId;
 
     private String ppName;
@@ -50,34 +49,12 @@ public class AuditPlanproject implements Serializable {
 
     private String ppCheck;
 
-    public AuditPlanproject() {
-    }
+    private String ppJd;
 
-    @Override
-    public String toString() {
-        return "AuditPlanproject{" +
-                "ppId=" + ppId +
-                ", ppName='" + ppName + '\'' +
-                ", ppAudit='" + ppAudit + '\'' +
-                ", ppAudited='" + ppAudited + '\'' +
-                ", ppSpecific='" + ppSpecific + '\'' +
-                ", ppType='" + ppType + '\'' +
-                ", ppCreatepeople='" + ppCreatepeople + '\'' +
-                ", ppCreatedate=" + ppCreatedate +
-                ", ppZhushen='" + ppZhushen + '\'' +
-                ", ppZhushenrole='" + ppZhushenrole + '\'' +
-                ", ppZs='" + ppZs + '\'' +
-                ", ppZszrole='" + ppZszrole + '\'' +
-                ", ppGeneratepeople='" + ppGeneratepeople + '\'' +
-                ", auditPlan=" + auditPlan +
-                ", ppStarttime=" + ppStarttime +
-                ", ppEndstart=" + ppEndstart +
-                ", ppJieduan='" + ppJieduan + '\'' +
-                ", ppCheck='" + ppCheck + '\'' +
-                '}';
-    }
+    private String ppState;
 
-    public AuditPlanproject(String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppZhushen, String ppZhushenrole, String ppZs, String ppZszrole, String ppGeneratepeople, AuditPlan auditPlan, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck) {
+    public AuditPlanproject(Integer ppId, String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppZhushen, String ppZhushenrole, String ppZs, String ppZszrole, String ppGeneratepeople, AuditPlan auditPlan, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck, String ppJd, String ppState) {
+        this.ppId = ppId;
         this.ppName = ppName;
         this.ppAudit = ppAudit;
         this.ppAudited = ppAudited;
@@ -95,6 +72,27 @@ public class AuditPlanproject implements Serializable {
         this.ppEndstart = ppEndstart;
         this.ppJieduan = ppJieduan;
         this.ppCheck = ppCheck;
+        this.ppJd = ppJd;
+        this.ppState = ppState;
+    }
+
+    public AuditPlanproject() {
+    }
+
+    public String getPpState() {
+        return ppState;
+    }
+
+    public void setPpState(String ppState) {
+        this.ppState = ppState;
+    }
+
+    public String getPpJd() {
+        return ppJd;
+    }
+
+    public void setPpJd(String ppJd) {
+        this.ppJd = ppJd;
     }
 
     public Integer getPpId() {

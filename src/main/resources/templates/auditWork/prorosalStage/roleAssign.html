@@ -13,34 +13,40 @@
     function next() {
         $("#next").dialog('open');
     }
+    // $(function(){
+    //     var ppid = window.parent.ppid;
+    //     $("#feidg").datagrid({
+    //         url:"feixianchang?ppid="+ppid,
+    //     })
+    // })
 </script>
-<div>
+<div style="height: 500px;">
     <form>
-        项目批次时间：<input type="date"/> ———————— <input type="date"> <input type="submit" value="查询">
+        项目批次时间：<input type="date" id="starttime"/> ———————— <input type="date" id="endtime"> <input type="submit" value="查询">
     </form>
     非现场阶段
-    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 100%;height: 245px;">
+    <table id="feidg" class="easyui-datagrid" data-options="fitColumns:true" style="width: 100%;height: 245px;" th:if="${session.o.ppJd =='非现场阶段'}">
         <thead>
         <tr>
-            <th data-options="field:'code',width:'16%'">项目名称</th>
-            <th data-options="field:'name',width:'16%'">被审计阶段</th>
-            <th data-options="field:'code',width:'17%'">主审</th>
-            <th data-options="field:'code',width:'17%'">主审角色</th>
-            <th data-options="field:'code',width:'17%'">助审</th>
-            <th data-options="field:'code',width:'17%'">助审角色</th>
+            <th data-options="field:'ppName',width:'16%'" id="name">项目名称</th>
+            <th data-options="field:'ppAudited',width:'16%'">被审计机构</th>
+            <th data-options="field:'ppZhushen',width:'17%'">主审</th>
+            <th data-options="field:'ppZhushenrole',width:'17%'">主审角色</th>
+            <th data-options="field:'ppZs',width:'17%'">助审</th>
+            <th data-options="field:'ppZszrole',width:'17%'">助审角色</th>
         </tr>
         </thead>
     </table><br><br>
     现场阶段
-    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 100%;height: 245px;">
+    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 100%;height: 245px;" th:if="${session.o.ppJd=='现场阶段'}">
         <thead>
         <tr>
-            <th data-options="field:'code',width:'16%'">项目名称</th>
-            <th data-options="field:'name',width:'16%'">被审计阶段</th>
-            <th data-options="field:'code',width:'17%'">主审</th>
-            <th data-options="field:'code',width:'17%'">主审角色</th>
-            <th data-options="field:'code',width:'17%'">助审</th>
-            <th data-options="field:'code',width:'17%'">助审角色</th>
+            <th data-options="field:'ppName',width:'16%'">项目名称</th>
+            <th data-options="field:'ppAudited',width:'16%'">被审计阶段</th>
+            <th data-options="field:'ppZhushen',width:'17%'">主审</th>
+            <th data-options="field:'ppZhushenrole',width:'17%'">主审角色</th>
+            <th data-options="field:'ppZs',width:'17%'">助审</th>
+            <th data-options="field:'ppZszrole',width:'17%'">助审角色</th>
         </tr>
         </thead>
     </table>

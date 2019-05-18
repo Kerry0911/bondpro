@@ -10,13 +10,54 @@
 </head>
 <body>
 <script>
-    $(function () {
-        //检查项
-        var type=$("#protype").val();
-        if(type==1){
-            $("#next").dialog('open');
+    var checkxiang = "";
+    var ppname = "";
+    var pptype = "";
+    var ppaudited ="";
+    var starttime = "";
+    var endtime = "";
+    var ppjd = "";
+    var url = "";
+    var ppid ="";
+    function check() {
+        //打开检查项
+        var type=$("#pptype").val();
+        if(type=="公司类项目"){
+            $("#checkdlg").dialog('open');
         }
-    })
+    }
+    //关闭检查项
+    function closedialoog(){
+        //通过easyui datagrid得到所选择的数据  然后将此数据通过,拼接成String 全局可用
+        var obj = $("#checkdg").datagrid("getSelections");
+        for(var i = 0 ;i<obj.length;i++) {
+            checkxiang += obj[i].name +",";
+        }
+        $("#checkdlg").dialog("close");
+    }
+    //保存项目
+    function nextbu(){
+        for(var i=0;i<5;i++) {
+            ppid += Math.floor(Math.random() * 10);
+        }
+        ppname = $("#ppname").val();
+        pptype = $("#pptype").val();
+        ppaudited = $("#ppaudited").val();
+        starttime = $("#starttime").val();
+        endtime = $("#endtime").val();
+        ppjd = $('input[class="ppjd"]:checked').val();
+        $.ajax({
+            url:"addproject",
+            dataType:"json",
+            type:"post",
+            data:{ppid:ppid,ppname:ppname,pptype:pptype,ppaudited:ppaudited,starttime:starttime,endtime:endtime,ppjd:ppjd,checkxiang:checkxiang},
+        })
+        url="torole?ppid="+ppid;
+        $("#projectjiben").hide();//点击下一步的时候  隐藏项目基本信息
+     $("#iframe").attr("src",url);//然后给ifram的src一个属性  指定页面给src
+     $("#iframe").show();//然后iframshow出来
+    }
+
     //抽取数据
     function chou() {
         $("#chou").dialog('open');
@@ -29,25 +70,35 @@
         $("#shen").dialog('close');
     }
 </script>
-    <div style="padding: 100px;">
-        项目名称：<input type="text" placeholder="请输入项目名称"/>
+<iframe id="iframe" scrolling="auto" frameborder="0" style="width:100%;height:650px;" hidden="">
+</iframe>
+    <div style="padding: 100px;" id="projectjiben">
+        项目名称：<input type="text" id="ppname" placeholder="请输入项目名称"/>
         项目类型：
-        <select style="width: 150px;" id="protype">
+        <select style="width: 150px;" id="pptype" onblur="check()">
             <option>请输入项目类型</option>
+            <option value="公司类项目">公司类项目</option>
+            <option value="营业部类项目">营业部类项目</option>
+            <option value="专项">专项</option>
         </select><br>
         被审单位：
-        <select style="width: 150px;">
-            <option>请输入项目类型</option>
+        <select style="width: 150px;" id="ppaudited">
+            <option value="请输入被审单位">请输入被审单位</option>
+            <option value="上海分公司">上海分公司</option>
+            <option value="长沙分公司">长沙分公司</option>
+            <option value="北京分公司">北京分公司</option>
         </select><input type="button" value="抽数单位配置" onclick="chou()"/><br>
-        审计时间起：<input type="date">
-        审计时间止：<input type="date"/><br>
-        项目阶段：<input type="radio" name="stage" >仅非现场阶段&nbsp;&nbsp;<input type="radio" name="stage">仅现场阶段&nbsp;&nbsp;<input type="radio" name="stage" >全部<br>
-        <input type="button" value="下一步"/>&nbsp;&nbsp;<input type="button" value="重置"/>
+        审计时间起：<input type="date" id="starttime">
+        审计时间止：<input type="date" id="endtime"/><br>
+        项目阶段：<input type="radio" name="stage" class="ppjd" value="仅非现场阶段">仅非现场阶段&nbsp;&nbsp;
+        <input type="radio" name="stage" class="ppjd" value="仅现场阶段">仅现场阶段&nbsp;&nbsp;
+        <input class="ppjd" type="radio" name="stage" value="全部" >全部<br>
+        <input type="button" onclick="nextbu()" value="下一步"/>&nbsp;&nbsp;<input type="button" value="重置"/>
     </div>
-
-    <div id="next" class="easyui-dialog" title="My Dialog" style="width:500px;height:400px;padding: 30px;"
-         data-options="resizable:true,modal:true,closed:true">
-        <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 400px;height: 300px;">
+    <button id="checkbtn" class="easyui-linkbutton" data-options="iconCls:'icon-OK'" onclick="closedialoog()">确定</button>
+    <div id="checkdlg" class="easyui-dialog" title="My Dialog" style="width:500px;height:400px;padding: 30px;"
+         data-options="resizable:true,modal:true,closed:true,buttons:'#checkbtn'">
+        <table class="easyui-datagrid" id="checkdg" data-options="fitColumns:true" style="width: 400px;height: 300px;">
             <thead>
             <tr>
                 <th data-options="field:'code',checkbox:true"></th>
@@ -119,5 +170,6 @@
     <a id="save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-OK'">保存</a>
     <a id="cancel" href="javascript:close()" class="easyui-linkbutton" data-options="iconCls:'icon-close'">关闭</a>
 </div>
+
 </body>
 </html>

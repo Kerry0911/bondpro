@@ -41,6 +41,7 @@
         var name = n.responseText;
         return name;
     }
+    //easyui datagrid  单击事件
     function ClickRow(rowIndex, rowData){
         var tb = $("#table");
         $.ajax({
@@ -54,11 +55,59 @@
                 // code+="<tr id='a'><th>新增计划</th><th>"+data.list.length+"</th></tr>"
                 // alert(code)
                 // tb.append(code);
-                alert(data.list[0].auditPlan.pType);
-                $("#a").text(data.list.length);
+                var ndjh = 0;
+                var akz = 0;
+                var awanc = 0;
+                var abi = 0;
+                //循环传来的list  list是auditprojectplan的集合  所以循环list 点出里面的auditPlan 在点出里面的pType 这样的话就找到了每个项目的审计计划的的类型
+                for(var i =0;i<data.list.length;i++) {
+                    if (data.list[i].auditPlan.pType == "年度计划") {//通过查到的项目点出他所属于的审计计划然后再点出该审计计划类型  等于就是这个项目的类型
+                        ndjh++;
+                        if (data.list[i].ppJieduan == "开展中") {
+                            akz++;
+                        }
+                        if (data.list[i].ppJieduan == "已完成") {
+                            awanc++;
+                        }
+                    }
+                }
+                if(awanc==0){
+                    abi=0;
+                }else{
+                    abi=awanc/ndjh;
+                }
+                $("#abi").text(abi);
+                $("#a").text(ndjh);
+                $("#akz").text(akz);
+                $("#awanc").text(awanc);
+                var xzjh = 0;
+                var bkz = 0;
+                var bwanc = 0;
+                var bbi = 0;
+                for(var j =0;j<data.list.length;j++) {
+                    if (data.list[j].auditPlan.pType == "asd") {//判断项目所属于的计划是不是指定类型 如果是就在给指定类型的项目数量加一
+                        xzjh++;
+                        if (data.list[j].ppJieduan == "开展中") {//判断阶段是不是在开展中 如果是则开展中的项目数量+1
+                            bkz++;
+                        }
+                        if (data.list[j].ppJieduan == "已完成") {//判断阶段是不是已完成 如果是则已完成的项目数量+1
+                            bwanc++;
+                        }
+                    }
+                }
+                if(bwanc==0){
+                   bbi=0;
+                }else{
+                    bbi=bwanc/xzjh;
+                }
+                $("#bbi").text(bbi);
+                $("#b").text(xzjh);
+                $("#bkz").text(bkz);
+                $("#bwanc").text(bwanc);
             }
         })
     }
+    //通过pnd查到指定年度的审计计划  然后loaddata给datagrid
     function selectbypnd(){
         var pnd = $("#pnd").val();
         $.ajax({
@@ -93,6 +142,10 @@
                 }
             }
         })
+    }
+    //双击事件  双击的时候传此审计计划的id传到后台 然后在后台 查到此计划下面所有的项目  然后传到前台来
+    function DblClickRow(rowIndex, rowData){
+                location.href="auditplantoauditproject?pId="+rowData.pId;
     }
 </script>
     <div style="margin-left: 500px;">
@@ -129,7 +182,7 @@
         <a href="#" data-options="iconCls:'icon-hammer'">年度计划确认</a>
     </div>
     <table class="easyui-datagrid" toolbar="#tool" id="dg1"
-           data-options="url:'selectAllAuditPlan',singleSelect:true,pagination:true,fitColumns:true,onClickRow:ClickRow" style="width: 100%;height: 500px;" >
+           data-options="url:'selectAllAuditPlan',singleSelect:true,pagination:true,fitColumns:true,onClickRow:ClickRow,onDblClickRow:DblClickRow" style="width: 100%;height: 500px;" >
         <thead>
         <tr>
             <th data-options="field:'pNd',width:'10%'">计划年度</th>
@@ -145,8 +198,8 @@
 <div style="width: 100%;height: 200px;%;">
     <table id="table" border="1px;" style="width: 100%;height: 200px;">
         <tr><th>类型</th><th>项目总数</th><th>开展中个数</th><th>完成个数</th><th>完成占比</th></tr>
-        <tr><th>年度计划</th><th id="a"></th><th id="kz"></th><th id="wanc"></th><th id="bi"></th></tr>
-        <tr><th>新增计划</th><th></th><th></th><th></th><th></th></tr>
+        <tr><th>年度计划</th><th id="a"></th><th id="akz"></th><th id="awanc"></th><th id="abi"></th></tr>
+        <tr><th>新增计划</th><th id="b"></th><th id="bkz"></th><th id="bwanc"></th><th id="bbi"></th></tr>
     </table>
 </div>
 <table>

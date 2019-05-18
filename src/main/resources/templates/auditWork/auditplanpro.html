@@ -10,28 +10,56 @@
 </head>
 <body>
     <div id="p">
-        <a id="edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">增加</a>
+        <a id="edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" th:onclick="addauditpro()">增加</a>
         <a id="stop" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">编辑</a>
         <a id="in" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-delete'">删除</a>
         <a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-submit'">提交审核</a>
         <a id="scan" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-in'">生成</a>
     </div>
-<table class="easyui-datagrid" toolbar="#p" id="dg1" data-options="pagination:true" style="width: 100%" >
+<table class="easyui-datagrid" toolbar="#p" id="datag" data-options="pagination:true,singleSelect:true" style="width: 100%;height: 650px;" >
     <thead>
     <tr>
-        <th data-options="field:'price',checkbox:true"></th>
-        <th data-options="field:'code',width:'10%'">项目名称</th>
-        <th data-options="field:'name',width:'10%'">审计机构</th>
-        <th data-options="field:'d',width:'10%'">被审计机构</th>
-        <th data-options="field:'c',width:'10%'">具体被审计机构</th>
-        <th data-options="field:'v',width:'10%'">项目类型</th>
-        <th data-options="field:'f',width:'10%'">创建人</th>
-        <th data-options="field:'r',width:'10%'">创建日期</th>
-        <th data-options="field:'b',width:'9%'">主审</th>
-        <th data-options="field:'b',width:'9%'">助审</th>
-        <th data-options="field:'b',width:'9%'">项目生成人</th>
+        <th data-options="field:'ppId',checkbox:true"></th>
+        <th data-options="field:'ppName',width:'10%'">项目名称</th>
+        <th data-options="field:'ppAudit',width:'10%'">审计机构</th>
+        <th data-options="field:'ppAudited',width:'10%'">被审计机构</th>
+        <th data-options="field:'ppSpecific',width:'10%'">具体被审计机构</th>
+        <th data-options="field:'ppType',width:'10%'">项目类型</th>
+        <th data-options="field:'ppCreatepeople',width:'10%'">创建人</th>
+        <th data-options="field:'ppCreatedate',width:'15%',formatter:formatterDate">创建日期</th>
+        <th data-options="field:'ppZhushen',width:'9%'">主审</th>
+        <th data-options="field:'ppZs',width:'9%'">助审</th>
+        <th data-options="field:'ppGeneratepeople',width:'9%'">项目生成人</th>
     </tr>
     </thead>
 </table>
+<script th:inline="javascript">
+    var pId =[[${session.pId}]];
+    //得到那个datagrid  然后在刚进入页面的时候 指定这个datagrid的url带上参数传到后台  查询出来返回到页面
+    $("#datag").datagrid({
+        url: "selectprobypId?pId="+pId
+    });
+    function formatterDate(date) {
+        //得到日期并转换
+        var oDate = new Date(date),
+            oYear = oDate.getFullYear(),
+            oMonth = oDate.getMonth() + 1,
+            oDay = oDate.getDate(),
+            oHour = oDate.getHours(),
+            oMin = oDate.getMinutes(),
+            oSen = oDate.getSeconds(),
+            oTime = oYear + '-' + getzf(oMonth) + '-' + getzf(oDay) + ' ' + getzf(oHour) + ':'
+                + getzf(oMin) + ':' + getzf(oSen);// 最后拼接时间
+        return oTime;
+    };
+    //补0操作
+    //传进来的值大于10就返回原值  如果小于10 那么就需要在前面补个0  因为都是两位数 不补0的话会导致当你是小于10的数的时候  只展示出了一位数  这样就可以展示两位数 不管你的值是多少
+    function getzf(num) {
+        if (parseInt(num) < 10) {
+            num = '0' + num;
+        }
+        return num;
+    }
+</script>
 </body>
 </html>
