@@ -142,7 +142,6 @@ public class AuditWork {
     @ResponseBody
     public boolean addproject(@RequestParam("ppid") Integer ppid, String ppname, String pptype, String ppaudited, String  starttime, String endtime, String ppjd, String checkxiang){
         boolean b = false;
-        System.out.println(ppid);
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         Date startt = new Date();
         Date endt = new Date();
@@ -158,22 +157,76 @@ public class AuditWork {
         return b;
     }
     @RequestMapping("/torole")
-    public String roleassign(@RequestParam("ppid")Integer ppid,HttpSession session){
-        Optional<AuditPlanproject> optional = service.selectprobyppid(ppid);//如果上面没有添加成功 那么这里就通过这个id查不到东西  所以会报错
-        System.out.println(optional.get().getPpId());
-        session.setAttribute("o",optional.get());
+    public String roleassign(HttpSession session){
+//        Optional<AuditPlanproject> optional = service.selectprobyppid(ppid);//如果上面没有添加成功 那么这里就通过这个id查不到东西  所以会报错
+//        System.out.println(optional.get().getPpId());
+//        session.setAttribute("o",optional.get());
+        String role = "审计人员";
+        List<AuditUser> user = service.selectuserbyrole(role);
+        session.setAttribute("user",user);
         return "auditWork/prorosalStage/roleAssign";
     }
     /**
-     * 角色分配页面的项目显示
+     * 角色分配页面的项目显示非现场的项目
      * @param ppid
      * @return
      */
     @RequestMapping("feixianchang")
     @ResponseBody
-    public AuditPlanproject rolefenpei(@RequestParam("ppid") Integer ppid){
-        Optional<AuditPlanproject> optional = service.selectprobyppid(ppid);
-        return optional.get();
+    public List<AuditPlanproject> feixianchang(@RequestParam("ppid") Integer ppid){
+        List<AuditPlanproject> list = new ArrayList<AuditPlanproject>();
+        String jd = "仅非现场阶段";
+        AuditPlanproject optional = service.selectprobyppid(ppid,jd);
+        list.add(optional);
+        return list;
+    }
+    /**
+     * 角色分配页面的项目显示现场的项目
+     * @param ppid
+     * @return
+     */
+    @RequestMapping("xianchang")
+    @ResponseBody
+    public List<AuditPlanproject> xianchang(@RequestParam("ppid") Integer ppid){
+        List<AuditPlanproject> list = new ArrayList<AuditPlanproject>();
+        String jd = "仅现场阶段";
+        AuditPlanproject optional = service.selectprobyppid(ppid,jd);
+        list.add(optional);
+        return list;
     }
 
+    @RequestMapping("addrole")
+    @ResponseBody
+    public boolean addrole(@RequestParam("name") String [] name,@RequestParam("role") String [] role,@RequestParam("pqualification") String [] pqualification,@RequestParam("ppid") Integer ppid){
+        boolean b = false;
+        String zhushen = "";
+        String zhushenrole = "";
+        String zhushenpq = "";
+        String zs = "";
+        String zsrole = "";
+        String zspq = "";
+        for(int i=0;i<name.length;i++){
+            if(role[i].equals("主审")){
+                zhushen +=name[i]+",";
+                zhushenrole = role[i];
+                zhushenpq += pqualification[i]+"|";
+            }
+            if(role[i].equals("助审")){
+                zs +=name[i]+",";
+                zsrole = role[i];
+                zspq += pqualification[i]+"|";
+            }
+        }
+        Optional<AuditPlanproject> a = service.selectbyppid(ppid);
+        AuditPlanproject auditPlanproject = a.get();
+        auditPlanproject.setPpZhushen(zhushen);
+        auditPlanproject.setPpZhushenrole(zhushenrole);
+        auditPlanproject.setPpZs(zs);
+        auditPlanproject.setPpZszrole(zsrole);
+        AuditPlanproject auditpro = service.addprorole(auditPlanproject);
+        if (auditpro!=null) {
+            b=true;
+        }
+        return b;
+    }
 }

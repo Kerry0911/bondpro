@@ -9,6 +9,7 @@ import com.bond.repository.AuditUserRep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -95,7 +96,24 @@ public class AuditPlanService {
      * 通过项目id查找项目
      * @return
      */
-    public Optional<AuditPlanproject> selectprobyppid(Integer ppid){
+    public AuditPlanproject selectprobyppid(Integer ppid,String ppjd){
+        return auditPlanprojectRep.findByPpIdAndPpJd(ppid,ppjd);
+    }
+
+    /**
+     * 查找所有角色为审计人员的用户
+     * @param role
+     * @return
+     */
+    public List<AuditUser> selectuserbyrole(String role){
+        return auditUserRep.findByURole(role);
+    }
+
+    public Optional<AuditPlanproject> selectbyppid(Integer ppid){
         return auditPlanprojectRep.findById(ppid);
+    }
+    @Transactional
+    public AuditPlanproject addprorole(AuditPlanproject a){
+        return auditPlanprojectRep.save(a);
     }
 }

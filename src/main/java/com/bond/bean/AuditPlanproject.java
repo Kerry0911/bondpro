@@ -10,7 +10,6 @@ import java.util.Date;
 @Table(name = "audit_planproject")
 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class AuditPlanproject implements Serializable {
-
     @Id
     private Integer ppId;
 
