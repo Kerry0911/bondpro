@@ -47,4 +47,10 @@ public class UserAdminService {
     public void  deleteById(Integer uId){
      dao1.deleteById(uId);
     }
+
+    //修改用户
+    @Transactional
+    public void updateById(Integer uId){
+
+    }
 }
