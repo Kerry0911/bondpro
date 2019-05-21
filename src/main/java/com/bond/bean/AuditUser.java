@@ -1,10 +1,11 @@
 package com.bond.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name ="audit_user" )
-public class AuditUser {
+public class AuditUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer uId;
@@ -30,6 +31,18 @@ public class AuditUser {
     private String uEmail;
 
     private String uPhone;
+
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditAuditedInstitutions.class)
+    //@JoinColumn(name = "auditedId",referencedColumnName = "auditedId")
+    private AuditAuditedInstitutions ins;
+
+    public AuditAuditedInstitutions getIns() {
+        return ins;
+    }
+
+    public void setIns(AuditAuditedInstitutions ins) {
+        this.ins = ins;
+    }
 
     public Integer getuId() {
         return uId;

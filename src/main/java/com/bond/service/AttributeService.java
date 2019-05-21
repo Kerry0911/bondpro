@@ -36,4 +36,13 @@ public class AttributeService {
     public void delpro(Integer aId){
         attributeDao.deleteById(aId);
     }
+
+
+    public List<AuditAttribute> findModelId(Integer modelId){
+        return attributeDao.findbymodel(modelId);
+    }
+
+    public int setpro(String aName,String aType,String aJurisdiction,Integer aId){
+        return attributeDao.updatepro(aName,aType,aJurisdiction,aId);
+}
 }

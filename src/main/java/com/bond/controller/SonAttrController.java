@@ -25,4 +25,18 @@ public class SonAttrController {
             return 0;
         }
     }
+
+    @RequestMapping("/editson")
+    @ResponseBody
+    public int editson(String sonaCode,String sonaName,Integer sonaId){
+        return sonAttrService.setson(sonaCode,sonaName,sonaId);
+    }
+
+
+    @RequestMapping("/delson")
+    @ResponseBody
+    public int delson(Integer sonaId){
+        sonAttrService.delson(sonaId);
+        return 1;
+    }
 }

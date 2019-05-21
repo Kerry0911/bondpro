@@ -1,10 +1,11 @@
 package com.bond.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name ="draftforcomments" )
-public class Draftforcomments {
+public class Draftforcomments implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

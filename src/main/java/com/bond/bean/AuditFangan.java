@@ -1,10 +1,11 @@
 package com.bond.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name ="audit_fangan" )
-public class AuditFangan {
+public class AuditFangan implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer fId;

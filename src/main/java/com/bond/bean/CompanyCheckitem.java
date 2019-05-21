@@ -1,10 +1,11 @@
 package com.bond.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 @Entity
 @Table(name ="compoany_checkitem" )
-public class CompanyCheckitem {
+public class CompanyCheckitem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer ccId;

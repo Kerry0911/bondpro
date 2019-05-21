@@ -1,13 +1,36 @@
 package com.bond.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name ="audit_audited_institutions" )
-public class AuditAuditedInstitutions {
+public class AuditAuditedInstitutions implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer auditedId;
+    private Integer preId;
+
+    @OneToMany(fetch = FetchType.LAZY,targetEntity = AuditUser.class,mappedBy = "ins")
+    private List<AuditUser> users;
+
+    public List<AuditUser> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<AuditUser> users) {
+        this.users = users;
+    }
+
+    public Integer getPreId() {
+        return preId;
+    }
+
+    public void setPreId(Integer preId) {
+        this.preId = preId;
+    }
 
     private String auditedHigher;
 

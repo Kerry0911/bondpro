@@ -45,10 +45,10 @@ public class JumpController {
      * 总经理
      * @return
      */
-    @RequestMapping("/auditedmanager")
-    public String manager(){
-        return "auditManager/auditedManage";
-    }
+//    @RequestMapping("/auditedmanager")
+//    public String manager(){
+//        return "auditManager/auditedManage";
+//    }
 
     @RequestMapping("/useradmin")
     public String useradmin(){

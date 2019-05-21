@@ -44,9 +44,6 @@ public class AtrributeController {
     @RequestMapping("/addproperty")
     @ResponseBody
     public int saveproperty(HttpServletRequest request,String aName,String aType){
-//        String aName=request.getParameter("aName");
-//        String aType=request.getParameter("aType");
-        System.out.println(aName+"//"+aType);
         AuditAttribute attribute=new AuditAttribute(aName,aType);
         AuditAttribute a=attservice.insert(attribute);
         if (a!=null){
@@ -62,5 +59,12 @@ public class AtrributeController {
     public int delpro(Integer aId){
         attservice.delpro(aId);
         return 1;
+    }
+
+
+    @RequestMapping("/editpro")
+    @ResponseBody
+    public int editpro(HttpServletRequest request,String aName,Integer aId,String aType,String aJurisdiction){
+        return attservice.setpro(aName,aType,aJurisdiction,aId);
     }
 }

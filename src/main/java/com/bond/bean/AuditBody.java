@@ -3,10 +3,11 @@ package com.bond.bean;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Table(name ="audit_body" )
-public class AuditBody {
+public class AuditBody implements Serializable {
     @Id
     private String abId;
 

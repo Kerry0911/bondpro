@@ -1,5 +1,6 @@
 package com.bond.service;
 
+import com.bond.bean.AuditAttribute;
 import com.bond.bean.AuditSonattribute;
 import com.bond.bean.Model;
 import com.bond.repository.ModelDao;
@@ -21,4 +22,9 @@ public class ModelService {
 //    public List<AuditSonattribute> findbyaId(Integer aId){
 //        return modelDao.findAllByAuditAttributes(aId);
 //    }
+
+    public Model modelById(Integer modelId){
+        return modelDao.findById(modelId).get();
+    }
+
 }

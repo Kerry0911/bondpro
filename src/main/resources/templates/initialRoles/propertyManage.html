@@ -21,52 +21,103 @@
         $("#win").window('open');
     }
 
-    function addDialog1() {
-        $("#w").window('open');
-    }
     function addson() {
         $("#wi").window('open');
     }
     function addDialog4() {
-        var data=$("#dg").datagrid('getSelected');
-        $("#editpro").window('open');
-        $("#edit_form").form('load',data);
+        var s=$("#dg").datagrid('getSelected');
+        if(s){
+            $("#editpro").window('open');
+            $("#editpro_form").form('load',s);
+        }else{
+            $.messager.alert("系统提示","请选择一行");
+        }
+
+    }
+
+    function editson() {
+        var w=$("#code").datagrid('getSelected');
+        if(w){
+            $("#editson").window('open');
+            $("#edititem_form").form('load',w);
+        }else{
+            $.messager.alert("系统提示","请选择一行");
+        }
     }
     function ayo() {
         var a=$("#dg").datagrid('getSelected');
-        $.messager.confirm('提示','确认删除吗?',function (r) {
-            if(r){
-                $.ajax({
-                    url:'delpro?aId='+a.aId,
-                    type:'get',
-                    dataType:'json',
-                    success:function (data) {
-                        if (data>0){
-                            $.messager.alert("系统提示","删除成功");
-                        } else{
-                            $.messager.alert("系统提示","删除失败");
+        if(a) {
+            $.messager.confirm('提示', '确认删除吗?', function (r) {
+                if (r) {
+                    $.ajax({
+                        url: 'delpro?aId=' + a.aId,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data > 0) {
+                                $.messager.alert("系统提示", "删除成功");
+                                $("#dg").datagrid('reload');
+                            } else {
+                                $.messager.alert("系统提示", "删除失败");
+                            }
                         }
-                    }
-                })
-            }
-        });
+                    })
+                }
+            });
+        }else{
+            $.messager.alert("系统提示","请选择一行");
+        }
     }
 
 
+    function delson() {
+        var r=$("#code").datagrid('getSelected');
+        if(r) {
+            $.messager.confirm('提示', '确认删除吗?', function (r) {
+                if (r) {
+                    $.ajax({
+                        url: 'delson?sonaId=' + r.sonaId,
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data > 0) {
+                                $.messager.alert("系统提示", "删除成功");
+                                $("#dg").datagrid('reload');
+                            } else {
+                                $.messager.alert("系统提示", "删除失败");
+                            }
+                        }
+                    })
+                }
+            });
+        }else{
+            $.messager.alert("系统提示","请选择一行");
+        }
+    }
 
-    function EditUser() {
-        $('#fm').form('submit', {
-            url: "ajax/UserMAjax.ashx?cmd=edit&userid=" + userid,
-            success: function (data) {
-                var data = eval('(' + data + ')');  // change the JSON string to javascript object
-                if (data.rbool) {
-                    window.location.reload();
+    function saveeditson() {
+        var acode=$("#ecode").val();
+        var aname=$("#ename").val();
+        var d=$("#code").datagrid('getSelected');
+        if (d){
+        $.ajax({
+            url:'editson?sonaCode='+acode+'&sonaName='+aname+'&sonaId='+d.sonaId,
+            type:'get',
+            dataType:'json',
+            success:function (data) {
+                if (data>0) {
+                    $.messager.alert("系统提示",'编辑属性项成功');
+                }else{
+                    $.messager.alert("系统提示",'编辑属性项失败');
                 }
-                else {
-                    $.messager.alert('提示', data.infor);
-                }
+            },
+            error:function (data) {
+                $.messager.alert("系统提示",'编辑属性项错误');
             }
-        });
+        })
+        }else{
+                $.messager.alert("系统提示","请选择一行");
+            }
     }
 
     function save(){
@@ -94,22 +145,55 @@
         var d=$("#dg").datagrid('getSelected');
         var aname=$("#sonaCode").val();
         var atype=$("#sonaName").val();
-        $.ajax({
-            url:'addson?sonaCode='+aname+'&sonaName='+atype+'&aId='+d.aId,
-            type:'get',
-            dataType:'json',
-            success:function (data) {
-                if (data>0) {
-                    $.messager.alert("系统提示",'新增属性项成功');
-                }else{
-                    $.messager.alert("系统提示",'新增属性项失败');
+        if (d) {
+            $.ajax({
+                url: 'addson?sonaCode=' + aname + '&sonaName=' + atype + '&aId=' + d.aId,
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    if (data > 0) {
+                        $.messager.alert("系统提示", '新增属性项成功');
+                    } else {
+                        $.messager.alert("系统提示", '新增属性项失败');
+                    }
+                },
+                error: function (data) {
+                    $.messager.alert("系统提示", '新增属性项错误');
                 }
-            },
-            error:function (data) {
-                $.messager.alert("系统提示",'新增属性项错误');
-            }
-        })
+            })
+        }else{
+            $.messager.alert("系统提示","请选择一行");
+        }
     }
+
+    function editp(){
+        var aName=$('#a').val();
+        var aType=$("#b").val();
+        var aJurisdiction=$("#c").val();
+        var g=$("#dg").datagrid('getSelected');
+        if (g) {
+            $.ajax({
+                url: 'editpro?aName=' + aName + '&aType=' + aType + '&aJurisdiction=' + aJurisdiction + '&aId=' + g.aId,
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    if (data > 0) {
+                        $.messager.alert("系统提示", '编辑属性成功');
+                    } else {
+                        $.messager.alert("系统提示", '编辑属性失败');
+                    }
+                },
+                error: function (data) {
+                    $.messager.alert("系统提示", '编辑属性错误');
+                }
+            })
+        }else{
+            $.messager.alert("系统提示","请选择一行");
+        }
+    }
+
+
+
 
     $(function () {
         //点击表格在右边弹出编码和名称
@@ -128,19 +212,15 @@
 </script>
 <body>
 
-<div class="easyui-layout" style="width: 100%;height:800px;">
+<div class="easyui-layout" style="width: 100%;height: 100%">
     <div data-options="region:'west',title:'属性管理',split:true" style="width:280px;" >
-        <div style="width: 100%;">
             <div id="d" style="background: rgba(0, 0, 255, 0.1)">
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog4()">编辑</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
             </div>
-        </div>
-
-        <div style="width: 100%;height:30px;background: rgba(0, 0, 255, 0.1)">
-            <table id="dg" class="easyui-datagrid"  style="width:272px;height: 767px;" toolbar="#d"
+            <table id="dg" class="easyui-datagrid"  style="width:273px;height: 604px;" toolbar="#d"
                     data-options="url:'attlist',singleSelect:true">
                 <thead>
                 <tr>
@@ -150,95 +230,89 @@
                 </tr>
                 </thead>
             </table>
-        </div>
-
-
-
-        <div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
-             iconCls="icon-add" data-options="title:'增加',modal:true,closed:true">
-            <form id="add" method="post" novalidate>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" id="aName" label="属性名称:" required="true" style="width:100%"></input>
-                </div>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-combo" id="aType" label="属性类型:" required="true" style="width:100%"></input>
-                </div>
-                <div style="text-align:right">
-                    <input class="easyui-linkbutton" type="submit" value="保存" onclick="save()" style="width:80px;height:30px">
-                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
-                </div>
-
-            </form>
-        </div>
-        <div id="editpro" class="easyui-dialog" style="width:400px;padding: 20px;"
-             iconCls="icon-edit" data-options="title:'编辑',modal:true,closed:true">
-            <form id="editpro_form" method="post" novalidate>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" name="aName" label="属性名称:"  style="width:100%"/>
-                </div>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" name="aType" label="属性类型:"  style="width:100%"/>
-                </div>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" name="aJurisdiction" label="权限:" style="width:100%"/>
-                </div>
-                <div style="text-align:right">
-                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
-                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
-                </div>
-
-            </form>
-        </div>
     </div>
-    <div data-options="region:'center'" style="padding:0px;">
-        <div style="width: 100%;">
+
+    <div data-options="region:'center'" style="padding:0px;height: 640px;">
             <div id="ad" style="background: rgba(0, 0, 255, 0.1)">
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addson()">增加</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:delson()">删除</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:editson()">编辑</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
             </div>
-        </div>
-        <div style="width: 100%;">
-            <table id="code" class="easyui-datagrid" pagination="true" style="width:1411px;height:797px;" toolbar="#ad">
+            <table id="code" class="easyui-datagrid" pagination="true" style="width:1103px;height:634px;" toolbar="#ad" singleSelect="true">
                 <thead>
                 <tr>
-                    <th field="sonaCode" width="50%">代码</th>
-                    <th field="sonaName" width="50%">名称</th>
+                    <th field="sonaCode" align="center" width="555">代码</th>
+                    <th field="sonaName" align="center" width="545">名称</th>
                 </tr>
                 </thead>
             </table>
-        </div>
-        <div id="wi" class="easyui-dialog" style="width:400px;padding: 20px;"
-             iconCls="icon-add" data-options="title:'增加',modal:true,closed:true">
-            <form id="addson" method="post" novalidate>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" id="sonaCode" label="代码:" required="true" style="width:100%"></input>
-                </div>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" id="sonaName" label="名称:"  required="true"  style="width:100%"></input>
-                </div>
-                <div style="text-align:right">
-                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px" onclick="saveson()">
-                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
-                </div>
-            </form>
-        </div>
-        <div id="w" class="easyui-dialog" style="width:400px;padding: 20px;"
-             iconCls="icon-edit" data-options="title:'编辑',modal:true,closed:true">
-            <form id="" method="post" novalidate>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="代码:" required="true" style="width:100%"></input>
-                </div>
-                <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="名称:"  required="true"  style="width:100%"></input>
-                </div>
-                <div style="text-align:right">
-                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
-                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
-                </div>
-            </form>
-        </div>
+    </div>
+    <div id="wi" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-add" data-options="title:'增加属性项',modal:true,closed:true">
+        <form id="addson" method="post">
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="sonaCode" label="代码:" required="true" style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="sonaName" label="名称:"  required="true"  style="width:100%"></input>
+            </div>
+            <div style="text-align:right">
+                <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px" onclick="saveson()">
+                <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+        </form>
+    </div>
+    <div id="editson" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-edit" data-options="title:'编辑属性项',modal:true,closed:true">
+        <form id="edititem_form" method="post" >
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="ecode" name="sonaCode" label="代码:" required="true" style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="ename" name="sonaName" label="名称:"  required="true"  style="width:100%"></input>
+            </div>
+            <div style="text-align:right">
+                <input class="easyui-linkbutton" type="submit" value="保存" onclick="saveeditson()" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+        </form>
+    </div>
+
+    <div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-add" data-options="title:'增加属性',modal:true,closed:true">
+        <form id="add" method="post" novalidate>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="aName" label="属性名称:" required="true" style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-combo" id="aType" label="属性类型:" required="true" style="width:100%"></input>
+            </div>
+            <div style="text-align:center">
+                <input class="easyui-linkbutton" type="submit" value="保存" onclick="save()" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+
+        </form>
+    </div>
+    <div id="editpro" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-edit" data-options="title:'编辑属性',modal:true,closed:true">
+        <form id="editpro_form" method="post" >
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="a" name="aName" label="属性名称:"  style="width:100%"/>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="b" name="aType" label="属性类型:"  style="width:100%"/>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="c" name="aJurisdiction" label="权限:" style="width:100%"/>
+            </div>
+            <div style="text-align:right">
+                <input class="easyui-linkbutton" type="submit" value="保存" onclick="editp()" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+
+        </form>
     </div>
 </div>
 </body>

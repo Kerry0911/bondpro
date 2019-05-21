@@ -8,34 +8,133 @@
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
+<script>
+    $(function () {
+        $('#dg').datagrid({loadFilter: pagerFilter}).datagrid('loadData', getData());
+    })
+    function getData(){
+        var rows = [];
+        for(var i=1; i<=800; i++){
+            var amount = Math.floor(Math.random()*1000);
+            var price = Math.floor(Math.random()*1000);
+            rows.push({
+                inv: 'Inv No '+i,
+                date: $.fn.datebox.defaults.formatter(new Date()),
+                name: 'Name '+i,
+                amount: amount,
+                price: price,
+                cost: amount*price,
+                note: 'Note '+i
+            });
+        }
+        return rows;
+    }
+    function pagerFilter(data){
+        if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage:function(pageNum, pageSize){
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh',{
+                    pageNumber:pageNum,
+                    pageSize:pageSize
+                });
+                dg.datagrid('loadData',data);
+            }
+        });
+        if (!data.originalRows){
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+
+    function gaosearch() {
+        $("#win").window('open');
+    }
+
+    function searchall() {
+        $("#form").form({
+            url:'findby',
+            success:function (data) {
+                if(data!=null){
+                    $("#win").window('close');
+                    //parent.parent.$..openner_dataGrid.datagrid('loadData',data);
+                    $("#dg").datagrid('loadData',data);
+                }else{
+                    alert("抱歉，没有您要查询的数据");
+                    //$("#dg").datagrid('loadData',data);
+                }
+            }
+        });
+        $("#form").submit();
+    }
+</script>
 <body>
-    <div id="tool">
-        用户：<input type="text" width="100px"/><br>
-        用户所在机构：<input type="text" width="100px"/><br>
-        操作日期：<input type="date" width="100px"/>-<input type="date" width="100px"/><br>
-        模块：<input type="text" width="100px"/><br>
-        模块内容：<textarea style="width: 200px"></textarea><br>
-        <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" style="width: 100px;">高级查询</a>
+    <div id="p" align="right">
+        <!--<input id="con" type="text" placeholder="请输入关键字"  style="width:200px">-->
+        <input class="easyui-searchbox" data-options="prompt:'Please input somthing'" style="width:200px"></input>
+        <!--<a id="btn" href="javascript:search()" class="easyui-linkbutton" data-options="iconCls:'icon-search'"></a>-->
+        <a href="javascript:gaosearch()" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" style="width: 100px;">高级查询</a>
+        <div id="win" class="easyui-window" title="高级查询"  style="width:500px;height:300px;padding: 20px;"
+             data-options="iconCls:'icon-save',closed:true,minimizable:false,maximizable:false,resizable:false">
+        <form id="form" method="post">
+                <table width="445px" height="220px">
+                    <tr>
+                        <td>用户：</td>
+                        <td><input type="text" name="lName" width="100px"/></td>
+                    </tr>
+                    <tr>
+                        <td>用户所在机构：</td>
+                        <td><input type="text" name="lDept" width="100px"/></td>
+                    </tr>
+                    <tr>
+                        <td>操作日期：</td>
+                        <td><input type="date" name="lTime" width="100px"/>-<input name="eTime" type="date" width="100px"/></td>
+                    </tr>
+                    <tr>
+                        <td>模块：</td>
+                        <td><input type="text" name="lMk" width="100px"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" text-align="center">
+                            <a id="save" href="javascript:searchall();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a id="reset" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-reset'">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <a id="cancel" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
     </div>
-    <table class="easyui-datagrid" id="dg1"  toolbar="#tool" data-options="fitColumns:true" style="width: 100%;">
+    <table class="easyui-datagrid" id="dg"  toolbar="#p"
+           data-options="url:'logs',
+           fitColumns:true,
+           pagination:true,
+           pageSize:10,
+           singleSelect:true
+            "
+           style="width: 100%;">
         <thead>
         <tr>
-            <th data-options="field:'code',width:'16%'">操作人</th>
-            <th data-options="field:'name',width:'16%'">操作时间</th>
-            <th data-options="field:'price',width:'16%'">操作单位</th>
-            <th data-options="field:'price',width:'17%'">模块</th>
-            <th data-options="field:'price',width:'17%'">操作类型</th>
-            <th data-options="field:'price',width:'17%'">操作内容</th>
+            <th data-options="field:'lName',width:'16.4%'">操作人</th>
+            <th data-options="field:'lTime',width:'16.5%'">操作时间</th>
+            <th data-options="field:'lDept',width:'17%'">操作单位</th>
+            <th data-options="field:'lMk',width:'17%'">模块</th>
+            <th data-options="field:'lType',width:'17%'">操作类型</th>
+            <th data-options="field:'lInfo',width:'17%'">操作内容</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>001</td><td>name1</td><td>2323</td><td>001</td><td>name1</td><td>2323</td>
-        </tr>
-        <tr>
-            <td>002</td><td>name2</td><td>4612</td><td>001</td><td>name1</td><td>2323</td>
-        </tr>
-        </tbody>
     </table>
 </body>
 </html>

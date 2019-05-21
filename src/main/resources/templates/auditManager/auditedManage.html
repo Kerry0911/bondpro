@@ -13,208 +13,155 @@
 </style>
 
 <script>
-   function OpenDiv(){
-           document.getElementById("div1").style.display="block";
-   }
-   
-   function addDialog() {
-       $("#win").window('open');
-   }
+    $(function () {
+        $('#dgs').datagrid({loadFilter: pagerFilter}).datagrid('loadData', getData());
 
-   function addDialog1() {
-       $("#win").window('open');
-   }
+        // $('#dgs').datagrid({
+        //     onSelect:function (rowIndex,rowData) {
+        //         alert(rowData.auditedId)
+        //         $.ajax({
+        //             url:'seleusers?auditedId='+rowData.auditedId,
+        //             type:'get',
+        //             success:function (data) {
+        //                 $("#tab1").datagrid('loadData',data);
+        //             }
+        //         });
+        //     }
+        // });
+    })
 
-   function ayo() {
-       $.messager.confirm('提示','确认删除吗?',function (r) {
-                  if(r){
-                      alert('想跳哪去自己写');
-                  }
-       });
+    function onSelect() {
+        var row=$("#dgs").datagrid('getSelected');
+        $.ajax({
+            url:'seleusers?auditedId='+row.auditedId,
+            type:'post',
+            dataType:"json",
+            success:function (data) {
+                alert(data)
+                $("#tab1").datagrid('loadData',data);
+            }
+        })
+    }
+
+    function getData(){
+        var rows = [];
+        for(var i=1; i<=800; i++){
+            var amount = Math.floor(Math.random()*1000);
+            var price = Math.floor(Math.random()*1000);
+            rows.push({
+                inv: 'Inv No '+i,
+                date: $.fn.datebox.defaults.formatter(new Date()),
+                name: 'Name '+i,
+                amount: amount,
+                price: price,
+                cost: amount*price,
+                note: 'Note '+i
+            });
+        }
+        return rows;
+    }
+    function pagerFilter(data){
+        if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage:function(pageNum, pageSize){
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh',{
+                    pageNumber:pageNum,
+                    pageSize:pageSize
+                });
+                dg.datagrid('loadData',data);
+            }
+        });
+        if (!data.originalRows){
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+   function selectson(id) {
+       $.ajax({
+           url:'sons?preId='+id,
+           type:'get',
+           success:function (data) {
+               $("#dgs").datagrid('loadData',data);
+           }
+       })
+   }
+   function bus() {
+       var businuss=$("#se  option:selected").val();
+       $.ajax({
+           url:'sons?auditedBusiness='+businuss,
+           type:'get',
+           success:function (data) {
+               $("#dgs").datagrid('loadData',data);
+           }
+       })
    }
 </script>
 <body>
 <div class="easyui-layout" style="width: 100%;height: 800px;">
     <div data-options="region:'west',title:'被审计机构用户',split:true" style="width:230px;" >
-        <div style="width: 100%;height: 20px;background: rgba(0, 0, 255, 0.1)">
-      业务类型:<select>
-                <option>HelloWord</option>
-               </select>f
+        <form>
+        <div style="width: 100%;height: 30px;background: rgba(0, 0, 255, 0.1)">
+        业务类型:<select style="width: 150px;height: 30px;" id="se" th:onchange="bus()">
+                <option>请选择业务类型</option>
+                <option  th:each="s:${auditeds}" th:text="${s.auditedBusiness}"></option>
+               </select>
         </div>
         <div id="ad" style="background: rgba(0, 0, 255, 0.1)">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
         </div>
         <div id="tree">
             <ul class="easyui-tree">
                 <li>
-                    <span>文档没看清</span>
-                    <ul>
+                    <span>直属部门</span>
+                    <ul th:each="s:${auditeds}">
                         <li>
-                            <span>XX部1</span>
-                            <ul>
-                                <li><a href="javascript:void(0)" onclick="OpenDiv()" id="open"><span>XX部1子节点</span></a></li>
-                                <li><span>XX部1子节点</span></li>
-                                <li><span>XX部1子节点</span></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>
-                            <span>XX部2</span>
-                            <ul>
-                                <li><span>XX部2子节点</span></li>
-                                <li><span>XX部2子节点</span></li>
-                                <li><span>XX部2子节点</span></li>
-                            </ul>
+                            <a href="javascript:void(0)" id="name" th:text="${s.auditedName}" th:onclick="selectson([[${s.auditedId}]])"></a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </div>
+        </form>
     </div>
 <div data-options="region:'center',title:'详细信息'" style="padding:5px;" >
-    <div id="div1" style="display: none;">
-         <table class="easyui-datagrid" pagination="true" rownumbers="true" style="width:100%;height: 370px;">
+         <table id="dgs" class="easyui-datagrid" toolbar="#ad" pagination="true" style="width:100%;height: 370px;"
+         data-options="url:'all',singleSelect:true,onSelect:onSelect">
              <thead>
              <tr>
-                 <th field="name1" width="200">机构名称</th>
-                 <th field="name2" width="200">部门开展业务</th>
-                 <th field="name3" width="200">上次稽核时间</th>
-                 <th field="name4" width="200">成立时间</th>
-                 <th field="name5" width="200">财务帐套</th>
-                 <th field="name6" width="200">使用柜台编码</th>
+                 <th field="auditedName" width="16%">机构名称</th>
+                 <th field="auditedBusiness" width="16%">部门开展业务</th>
+                 <th field="auditedBeforetime" width="16%">上次稽核时间</th>
+                 <th field="auditedCreatetime" width="17%">成立时间</th>
+                 <th field="auditedAccounting" width="17%">财务帐套</th>
+                 <th field="auditedCreditCode" width="17%">使用柜台编码</th>
              </tr>
              </thead>
-             <tbody>
-             <tr>
-                 <td>Data 1</td>
-                 <td>Data 2</td>
-                 <td>Data 3</td>
-                 <td>Data 4</td>
-                 <td>Data 5</td>
-                 <td>Data 6</td>
-             </tr>
-             <tr>
-                 <td>Data 1</td>
-                 <td>Data 2</td>
-                 <td>Data 3</td>
-                 <td>Data 4</td>
-                 <td>Data 5</td>
-                 <td>Data 6</td>
-             </tr>
-             <tr>
-                 <td>Data 1</td>
-                 <td>Data 2</td>
-                 <td>Data 3</td>
-                 <td>Data 4</td>
-                 <td>Data 5</td>
-                 <td>Data 6</td>
-             </tr>
-             <tr>
-                 <td>Data 1</td>
-                 <td>Data 2</td>
-                 <td>Data 3</td>
-                 <td>Data 4</td>
-                 <td>Data 5</td>
-                 <td>Data 6</td>
-             </tr>
-             <tr>
-                 <td>Data 1</td>
-                 <td>Data 2</td>
-                 <td>Data 3</td>
-                 <td>Data 4</td>
-                 <td>Data 5</td>
-                 <td>Data 6</td>
-             </tr>
-             <tr>
-                 <td>Data 1</td>
-                 <td>Data 2</td>
-                 <td>Data 3</td>
-                 <td>Data 4</td>
-                 <td>Data 5</td>
-                 <td>Data 6</td>
-             </tr>
-             <tr>
-                 <td>Data 1</td>
-                 <td>Data 2</td>
-                 <td>Data 3</td>
-                 <td>Data 4</td>
-                 <td>Data 5</td>
-                 <td>Data 6</td>
-             </tr>
-             </tbody>
          </table>
-        <table id="tab1" class="easyui-datagrid" pagination="true" rownumbers="true" toolbar="#tb" style="width:100%;height: 370px;">
+        <table id="tab1" class="easyui-datagrid" pagination="true" rownumbers="true" toolbar="#p" style="width:100%;height: 370px;">
             <thead>
             <tr>
-                <th field="name1" width="200">用户名</th>
-                <th field="name2" width="200">姓名</th>
-                <th field="name3" width="200">邮箱</th>
-                <th field="name4" width="200">电话</th>
-                <th field="name5" width="200">RTX</th>
-                <th field="name6" width="200">状态</th>
+                <th field="uUsercode" width="20%">用户名</th>
+                <th field="uUsername" width="20%">姓名</th>
+                <th field="uEmail" width="20%">邮箱</th>
+                <th field="uPhone" width="20%">电话</th>
+                <th field="state" width="20%">状态</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
-            <tr>
-                <td>Data 1</td>
-                <td>Data 2</td>
-                <td>Data 3</td>
-                <td>Data 4</td>
-                <td>Data 5</td>
-                <td>Data 6</td>
-            </tr>
-            </tbody>
         </table>
         <div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
              iconCls="icon-add" data-options="title:'增加被审机构',modal:true,closed:true">
@@ -250,12 +197,14 @@
 
             </form>
         </div>
-    </div>
 </div>
-    <div style="padding: 3px;">
+    <div id="p" style="padding: 3px;">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:alert('增加')">增加</a>
-        <input id="productid" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字,按回车查询">
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="">搜索</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:alert('增加')">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:alert('增加')">编辑</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-use" plain="true" onclick="javascript:alert('增加')">使用</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reset" plain="true" onclick="javascript:alert('增加')">重置密码</a>
+        <input align="right" class="easyui-searchbox" data-options="prompt:'Please input somthing'" style="width:200px"></input>
     </div>
     </div>
 </div>

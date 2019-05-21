@@ -21,6 +21,22 @@ public class AuditAttribute implements Serializable {
 
     private String aJurisdiction;
 
+    private Integer modelId;
+
+
+    public AuditAttribute(String aName, Integer modelId) {
+        this.aName = aName;
+        this.modelId = modelId;
+    }
+
+    public Integer getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(Integer modelId) {
+        this.modelId = modelId;
+    }
+
     @OneToMany(fetch = FetchType.LAZY,targetEntity = AuditSonattribute.class,mappedBy = "attribute")
     private List<AuditSonattribute> sonattributes=new ArrayList<>();
 
@@ -29,6 +45,14 @@ public class AuditAttribute implements Serializable {
     private Model model;
 
     public AuditAttribute() {
+    }
+
+    public AuditAttribute(String aName, String aType, String aJurisdiction, List<AuditSonattribute> sonattributes, Model model) {
+        this.aName = aName;
+        this.aType = aType;
+        this.aJurisdiction = aJurisdiction;
+        this.sonattributes = sonattributes;
+        this.model = model;
     }
 
     public AuditAttribute(String aName, String aType) {
