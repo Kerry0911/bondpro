@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface AuditUserRep extends JpaRepository<AuditUser,Integer> {
     public List<AuditUser> findByURole(String role);
+    List<AuditUser> findByIns_AuditedId(Integer auditedId);
 }
