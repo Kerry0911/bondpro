@@ -9,56 +9,125 @@
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
-<script>
-    function next() {
-        $("#next").dialog('open');
+<script th:inline="javascript">
+    $(function(){
+        var ppid = window.parent.ppid;
+        $("#feidg").datagrid({
+            url:"feixianchang?ppid="+96005,
+        })
+    })
+    $(function(){
+        var ppid = window.parent.ppid;
+        $("#xianc").datagrid({
+            url:"xianchang?ppid="+96005,
+        })
+    })
+    function click(rowIndex,rowData){
+        $("#role").dialog("open");
     }
+
+    function save(){
+        var name = [];
+        var pqualification = [];
+        var role = [];
+        var allxinxi = [];
+        var ppid = 96005;
+        $('input[class="all"]:checked').each(function(){
+            var all = $(this).val();//得到每一个value String类型
+            allxinxi = all.split("+");//将得到的value通过+分割 然后给数组
+            name.push(allxinxi[0]);//将得到的数组 通过下标得到不同的值付给不同的数组对象
+            pqualification.push(allxinxi[1]);
+        })
+
+        $("input[class='zs']:checked").each(function(){
+            var r = $(this).val();//得到每一个角色
+            role.push(r);//将每一个角色都付给role数组
+        })
+        $.ajax({
+            url:"addrole?name="+name+"&role="+role+"&pqualification="+pqualification+"&ppid="+ppid,
+            dataType:"json",
+            type:"post",
+            success:function(data){
+                if(data){
+                    $("#role").dialog("close");
+                    $("#feidg").datagrid("reload");
+                    $("#xianc").datagrid("reload");
+                }
+            }
+        })
+    }
+    // function doallcheck(a){
+    //     //找到this的上上级来找指定class属性值的text
+    //     // var name=$(a).parent("td").parent("tr").find(".name").text()
+    //     // var role = $("input[class='zs']:checked").val();
+    //
+    // }
 </script>
-<div>
+<div style="height: 500px;">
     <form>
-        项目批次时间：<input type="date"/> ———————— <input type="date"> <input type="submit" value="查询">
+        项目批次时间：<input type="date" id="starttime"/> ———————— <input type="date" id="endtime"> <input type="submit" value="查询">
     </form>
     非现场阶段
-    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 100%;height: 245px;">
+    <table id="feidg" class="easyui-datagrid" data-options="fitColumns:true,onClickRow:click" style="width: 100%;height: 245px;">
         <thead>
         <tr>
-            <th data-options="field:'code',width:'16%'">项目名称</th>
-            <th data-options="field:'name',width:'16%'">被审计阶段</th>
-            <th data-options="field:'code',width:'17%'">主审</th>
-            <th data-options="field:'code',width:'17%'">主审角色</th>
-            <th data-options="field:'code',width:'17%'">助审</th>
-            <th data-options="field:'code',width:'17%'">助审角色</th>
+            <th data-options="field:'ppName',width:'16%'">项目名称</th>
+            <th data-options="field:'ppAudited',width:'16%'">被审计机构</th>
+            <th data-options="field:'ppZhushen',width:'17%'">主审</th>
+            <th data-options="field:'ppZhushenrole',width:'17%'">主审角色</th>
+            <th data-options="field:'ppZs',width:'17%'">助审</th>
+            <th data-options="field:'ppZszrole',width:'17%'">助审角色</th>
         </tr>
         </thead>
     </table><br><br>
     现场阶段
-    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 100%;height: 245px;">
+    <table class="easyui-datagrid" id="xianc" data-options="fitColumns:true" style="width: 100%;height: 245px;">
         <thead>
         <tr>
-            <th data-options="field:'code',width:'16%'">项目名称</th>
-            <th data-options="field:'name',width:'16%'">被审计阶段</th>
-            <th data-options="field:'code',width:'17%'">主审</th>
-            <th data-options="field:'code',width:'17%'">主审角色</th>
-            <th data-options="field:'code',width:'17%'">助审</th>
-            <th data-options="field:'code',width:'17%'">助审角色</th>
+            <th data-options="field:'ppName',width:'16%'">项目名称</th>
+            <th data-options="field:'ppAudited',width:'16%'">被审计机构</th>
+            <th data-options="field:'ppZhushen',width:'17%'">主审</th>
+            <th data-options="field:'ppZhushenrole',width:'17%'">主审角色</th>
+            <th data-options="field:'ppZs',width:'17%'">助审</th>
+            <th data-options="field:'ppZszrole',width:'17%'">助审角色</th>
         </tr>
         </thead>
     </table>
-    <input type="button" value="下一步" onclick="next()">
+    <input type="button" value="下一步" onclick="">
 </div>
-<div id="next" class="easyui-dialog" title="My Dialog" style="width:500px;height:400px;padding: 30px;"
+<div id="role" class="easyui-dialog" title="角色分配" style="width:600px;height:500px;padding: 30px;"
      data-options="resizable:true,modal:true,closed:true">
-    <table class="easyui-datagrid" data-options="fitColumns:true" style="width: 400px;height: 300px;">
-        <thead>
+    <table border="1px;" style="width: 500px;height: 350px;">
         <tr>
-            <th data-options="field:'code',checkbox:true"></th>
-            <th data-options="field:'name',width:'33%'">人员</th>
-            <th data-options="field:'name',width:'33%'">角色</th>
-            <th data-options="field:'name',width:'33%'">人员资质</th>
+            <td width="30px;"></td>
+            <td width="30px;">人员</td>
+            <td width="30px;">角色</td>
+            <td width="30px;">资质</td>
         </tr>
-        </thead>
+        <!--循环传来的list 一个一个将用户对象展示出来 list里面有几个用户对象  就会有几行-->
+        <tr th:each="user:${session.user}">
+            <td width="10%;">
+                <input type="checkbox" class="all" th:value="${user.uUsername}+'+'+${user.uPqualification}">
+            </td>
+            <td width="30%;" id="name" class="name" th:text="${user.uUsername}"></td>
+            <td width="30%;">
+                <input type="radio" th:name="zhushen+${user.uUsername}" class="zs" value="主审">主审
+                <input type="radio" th:name="zhushen+${user.uUsername}" class="zs" value="助审">助审
+            </td>
+            <td width="30%;" class="uPqualification" th:text="${user.uPqualification}"></td>
+        </tr>
     </table>
-    <input type="button" value="保存"> <input type="button" value="取消">
+    <!--<table class="easyui-datagrid" data-options="url:'',fitColumns:true" style="width: 400px;height: 300px;">-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th data-options="field:'code',checkbox:true"></th>-->
+            <!--<th data-options="field:'name',width:'33%'">人员</th>-->
+            <!--<th data-options="field:'name',width:'33%'">角色</th>-->
+            <!--<th data-options="field:'name',width:'33%'">人员资质</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+    <!--</table>-->
+    <input type="button" value="保存" th:onclick="save()"> <input type="button" value="取消">
 </div>
 </body>
 </html>
