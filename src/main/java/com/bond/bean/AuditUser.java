@@ -32,6 +32,16 @@ public class AuditUser implements Serializable {
 
     private String uPhone;
 
+    private Integer auditedId;
+
+    public Integer getAuditedId() {
+        return auditedId;
+    }
+
+    public void setAuditedId(Integer auditedId) {
+        this.auditedId = auditedId;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditAuditedInstitutions.class)
     //@JoinColumn(name = "auditedId",referencedColumnName = "auditedId")
     private AuditAuditedInstitutions ins;
