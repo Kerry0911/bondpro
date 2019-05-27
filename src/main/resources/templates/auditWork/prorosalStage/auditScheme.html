@@ -1,10 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>审计方案</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
-
+<script th:inline="javascript">
+    $(function(){
+        $("#prorol tr").slice(1,2).remove();//删除tablea 下面的指定的id为多少的tr
+        var zhushen1 = [];
+        var zs1 = [];
+        var zhushenpq1 = [];
+        var zspq1 = [];
+        var zhushenrole1 = [[${session.p.zhushenrole}]];
+        var zsrole1 = [[${session.p.zsrole}]];
+        var zhushens = [[${session.p.zhushen}]];
+        var zss = [[${session.p.zs}]];
+        var zhushenpqpq = [[${session.p.zhushenpqualification}]];
+        var zspqpq = [[${session.p.zspqualification}]];
+        zhushenpq1 = zhushenpqpq.split("|");
+        zspq1 = zspqpq.split("|");
+        zhushen1 = zhushens.split(",");//将主审人员通过，分割给数组 然后通过下标一个一个展示出来
+        zs1 = zss.split(",");
+        for(var i = 0;i<zhushen1.length;i++) {
+            $("#prorol").append("<tr><td>"+zhushen1[i]+"</td><td>"+zhushenrole1+"</td><td>"+zhushenpq1[i]+"</td></tr>")
+        }
+        for(var j = 0;j<zs1.length;j++){
+            $("#prorol").append("<tr><td>"+zs1[j]+"</td><td>"+zsrole1+"</td><td>"+zspq1[j]+"</td></tr>")
+        }
+    })
+</script>
+<div style="width: 100%;">
+    <div style="background-color: #6ab8f7;border: 1px solid black;width: 900px;height:30px;margin: 0 auto;">基本信息</div>
+        <div style="margin:0 auto;text-align:center;width: 900px;height: 180px;border: 1px solid black">
+            <div style="margin-top:15px;font-size: 16px;">
+                项目名称：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.a.ppName}">
+                项目编号：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.a.ppId}">
+                项目类型：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.a.ppType}"><br>
+                <div style="margin-top: 15px;">
+                    <span>被审计机构：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.a.ppAudited}"></span>
+                    <span style="margin-left: 50px;">具体被审计机构：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.a.ppSpecific}"></span>
+                </div>
+                <div style="margin-top: 15px;">
+                    <span style="margin-right: 33px;">审计期间起：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.a.ppStarttime}"></span>
+                    <span style="margin-left: 50px;">审计期间止：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.a.ppEndstart}"></span>
+                </div>
+            </div>
+        </div>
+    <div style="margin-top: 20px;">
+            <div style="text-align:center;width: 425px;height: 300px;border: 1px solid black;margin-left: 225px;float: left;">
+                <div style="background-color: #6ab8f7;border: 1px solid black;width: 425px;height:30px">项目成员</div>
+                <div>
+                    <table id="prorol" border="1px" style="width: 400px;margin: 0 auto;margin-top: 10px;">
+                        <tr>
+                            <td width="33%">姓名</td>
+                            <td width="33%">角色</td>
+                            <td width="33%">人员姿质</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div style="text-align:center;width: 425px;height: 300px;border: 1px solid black;margin-left:50px;float: left;">
+                <div style="background-color: #6ab8f7;border: 1px solid black;width: 425px;height:30px">任务分配</div>
+                <div>
+                    <table border="1px" style="width: 400px;margin: 0 auto;margin-top: 10px;">
+                        <tr>
+                            <td width="50%">姓名</td>
+                            <td width="50%">检查项</td>
+                        </tr>
+                        <tr th:each="t:${session.t}">
+                            <td th:text="${t.tName}"></td>
+                            <td th:text="${t.tCode}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+    </div>
+</div>
 </body>
 </html>
