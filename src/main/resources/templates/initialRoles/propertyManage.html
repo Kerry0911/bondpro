@@ -54,7 +54,7 @@
                         type: 'get',
                         dataType: 'json',
                         success: function (data) {
-                            if (data > 0) {
+                            if (data==1) {
                                 $.messager.alert("系统提示", "删除成功");
                                 $("#dg").datagrid('reload');
                             } else {
@@ -71,12 +71,12 @@
 
 
     function delson() {
-        var r=$("#code").datagrid('getSelected');
-        if(r) {
+        var rs=$("#code").datagrid('getSelected');
+        if(rs) {
             $.messager.confirm('提示', '确认删除吗?', function (r) {
                 if (r) {
                     $.ajax({
-                        url: 'delson?sonaId=' + r.sonaId,
+                        url: 'delson?sonaId=' + rs.sonaId,
                         type: 'get',
                         dataType: 'json',
                         success: function (data) {

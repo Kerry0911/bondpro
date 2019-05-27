@@ -1,18 +1,19 @@
 package com.bond.controller;
 
+import com.bond.bean.AuditAuditedInstitutions;
 import com.bond.bean.AuditUser;
 import com.bond.bean.Systemconfiguration;
 import com.bond.repository.DeptDao;
+import com.bond.service.AuditedService;
 import com.bond.service.UserAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +21,14 @@ import java.util.List;
 public class UserAdminController {
 
     @Autowired
-    private UserAdminService service1;
+    private UserAdminService service1=new UserAdminService();
 
     @Autowired
     private DeptDao dao1;
+
+    @Resource
+    private AuditedService auditedService=new AuditedService();
+
 
     //查询部门
     @RequestMapping("/useradmin")
@@ -78,4 +83,48 @@ public class UserAdminController {
     }
 
 
+    @RequestMapping("/addauser")
+    @ResponseBody
+    public int addauser(AuditUser auditUser){
+        List<AuditUser> list=new ArrayList<>();
+        AuditAuditedInstitutions institutions=new AuditAuditedInstitutions();
+        list.add(auditUser);
+        institutions.setUsers(list);
+        AuditAuditedInstitutions a=auditedService.insert(institutions);
+        if (a!=null){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    @RequestMapping("/editauser")
+    @ResponseBody
+    public int editauser(AuditUser auditUser){
+        AuditUser user=service1.insert(auditUser);
+        if (user!=null){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    @RequestMapping("/allusers")
+    @ResponseBody
+    public List<AuditUser> findall(){
+        return service1.findAll();
+    }
+
+    @RequestMapping("/resetpwd")
+    @ResponseBody
+    public int reset(Integer uid,String pwd){
+        int i=service1.resetpwd(uid,pwd);
+        return i;
+    }
+
+    @RequestMapping("/use")
+    @ResponseBody
+    public int use(Integer uId,String state){
+        return service1.use(uId,state);
+    }
 }

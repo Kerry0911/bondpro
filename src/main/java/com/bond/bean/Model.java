@@ -14,7 +14,8 @@ public class Model  implements Serializable {
 
     private String modelName;
 
-    @OneToMany(fetch =FetchType.LAZY,targetEntity = AuditAttribute.class,mappedBy = "model")
+    @OneToMany(fetch =FetchType.LAZY,targetEntity = AuditAttribute.class,cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "modelId",referencedColumnName = "modelId")
     private List<AuditAttribute> auditAttributes=new ArrayList<>();
 
     public Integer getModelId() {

@@ -14,4 +14,6 @@ public interface AuditedDao  extends JpaRepository<AuditAuditedInstitutions,Inte
 //    @Query(value = "select * from audit_audited_institutions where pre_id =?1",nativeQuery = true)
 //    public List<AuditAuditedInstitutions> findson(Integer preId);
 
+//    @Query(value = "",nativeQuery = true)
+//    public int update();
 }

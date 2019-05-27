@@ -69,9 +69,9 @@
             success:function (data) {
                 if(data!=null){
                     $("#win").window('close');
-                    //parent.parent.$..openner_dataGrid.datagrid('loadData',data);
                     $("#dg").datagrid('loadData',data);
-                }else{
+                }
+                if(data==null){
                     alert("抱歉，没有您要查询的数据");
                     //$("#dg").datagrid('loadData',data);
                 }
@@ -122,8 +122,8 @@
            fitColumns:true,
            pagination:true,
            pageSize:10,
-           singleSelect:true
-            "
+           singleSelect:true,
+            autoRowHeight:true"
            style="width: 100%;">
         <thead>
         <tr>

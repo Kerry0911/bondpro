@@ -18,9 +18,6 @@ public class UserAdminService {
     @Autowired
     private DeptDao dao2;
 
-
-
-
     //查部门
     public List<Systemconfiguration>  findBydept(String configcode){
         return dao2.findByConfigcode(configcode);
@@ -52,5 +49,21 @@ public class UserAdminService {
     @Transactional
     public void updateById(Integer uId){
 
+    }
+
+    public AuditUser insert(AuditUser user){
+        return dao1.save(user);
+    }
+
+    public List<AuditUser> findAll(){
+        return dao1.findAll();
+    }
+
+    public int resetpwd(Integer uId,String uPassword){
+        return dao1.resetpwd(uId,uPassword);
+    }
+
+    public int use(Integer uId,String state){
+        return dao1.use(uId,state);
     }
 }

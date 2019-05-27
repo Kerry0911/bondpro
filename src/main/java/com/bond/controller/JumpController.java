@@ -50,10 +50,10 @@ public class JumpController {
 //        return "auditManager/auditedManage";
 //    }
 
-    @RequestMapping("/useradmin")
-    public String useradmin(){
-        return "auditManager/auditUserAdministration";
-    }
+//    @RequestMapping("/useradmin")
+//    public String useradmin(){
+//        return "auditManager/auditUserAdministration";
+//    }
 
     @RequestMapping("/managerindex")
     public String index(){
@@ -70,9 +70,11 @@ public class JumpController {
         return "auditManager/opLog";
     }
 
-    @RequestMapping("/auditormanage")
-    public String auditormanage(){
-        return "auditManager/auditorManage";
+
+
+    @RequestMapping("/rolemanage")
+    public String rolemanage(){
+        return "auditManager/roleManage";
     }
 
 

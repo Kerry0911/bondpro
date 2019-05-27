@@ -5,9 +5,9 @@ import java.io.Serializable;
 import java.util.Date;
 @Entity
 @Table(name = "approachmeeting")
-public class Approachmeeting implements Serializable {
+public class Approachmeeting{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer amId;
 
     private Integer ppId;

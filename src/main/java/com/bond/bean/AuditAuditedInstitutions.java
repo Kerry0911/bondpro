@@ -2,6 +2,7 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +12,12 @@ public class AuditAuditedInstitutions implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer auditedId;
+    @Column(insertable = false,updatable = false)
     private Integer preId;
 
-    @OneToMany(fetch = FetchType.LAZY,targetEntity = AuditUser.class,mappedBy = "ins")
-    private List<AuditUser> users;
+    @OneToMany(fetch = FetchType.LAZY,targetEntity = AuditUser.class,cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "auditedId",referencedColumnName = "auditedId")
+    private List<AuditUser> users=new ArrayList<>();
 
     public List<AuditUser> getUsers() {
         return users;
@@ -49,6 +52,16 @@ public class AuditAuditedInstitutions implements Serializable {
     private String auditedCreditCode;
 
     private String auditedAccounting;
+
+    private String roleName;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
     public Integer getAuditedId() {
         return auditedId;
