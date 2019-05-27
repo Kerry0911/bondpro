@@ -11,40 +11,60 @@
 <body>
 <script th:inline="javascript">
     $(function(){
-        var ppid = window.parent.ppid;
+        //得到刚创建的项目的id
+        var ppid =window.parent.ppid;
+        var ppjd =window.parent.ppjd;
         $("#feidg").datagrid({
-            url:"feixianchang?ppid="+96005,
+            url:"feixianchang?ppid="+ppid+"&ppjd="+ppjd,
         })
     })
     $(function(){
         var ppid = window.parent.ppid;
+        var ppjd = window.parent.ppjd;
         $("#xianc").datagrid({
-            url:"xianchang?ppid="+96005,
+            url:"xianchang?ppid="+ppid+"&ppjd="+ppjd,
         })
     })
-    function click(rowIndex,rowData){
+    var jieduan = "";
+    var rid = "";
+    var shifouyiqiupdate =0;
+    function click(rowIndex,rowData){//点击非现场阶段的项目的时候 就赋非现场阶段的值给他
+        jieduan = rowData.jd;
+        rid = rowData.id;
+        $.messager.confirm("系统提示","是否要现场阶段也一起修改",function(data){
+            if(data){
+                shifouyiqiupdate = 1;
+                $("#role").dialog("open");
+            }else{
+                $("#role").dialog("open");
+            }
+        })
+    }
+    function xianclick(rowIndex,rowData){//点击现场阶段的项目的时候 就赋现场阶段的值给他
+        jieduan = rowData.jd;
+        rid = rowData.id;
         $("#role").dialog("open");
     }
-
     function save(){
         var name = [];
         var pqualification = [];
         var role = [];
         var allxinxi = [];
-        var ppid = 96005;
+        var ppid =window.parent.ppid;//得到刚刚添加的这个项目的id
+        var ppjd =jieduan;//这两个值的来源是看你选择的是哪个阶段来选择的
+        var ridd = rid;
         $('input[class="all"]:checked').each(function(){
-            var all = $(this).val();//得到每一个value String类型
-            allxinxi = all.split("+");//将得到的value通过+分割 然后给数组
+            var all = $(this).val();//得到每一个value
+            allxinxi = all.split("+");//将得到的value通过+分割 然后给数String类型组
             name.push(allxinxi[0]);//将得到的数组 通过下标得到不同的值付给不同的数组对象
             pqualification.push(allxinxi[1]);
         })
-
         $("input[class='zs']:checked").each(function(){
             var r = $(this).val();//得到每一个角色
             role.push(r);//将每一个角色都付给role数组
         })
         $.ajax({
-            url:"addrole?name="+name+"&role="+role+"&pqualification="+pqualification+"&ppid="+ppid,
+            url:"addrole?name="+name+"&role="+role+"&pqualification="+pqualification+"&ppid="+ppid+"&ppjd="+ppjd+"&rid="+rid+"&shifou="+shifouyiqiupdate,
             dataType:"json",
             type:"post",
             success:function(data){
@@ -52,48 +72,102 @@
                     $("#role").dialog("close");
                     $("#feidg").datagrid("reload");
                     $("#xianc").datagrid("reload");
+                    $("input:checkbox").removeAttr("checked");
+                    $("input:radio").removeAttr("checked");
+                    shifouyiqiupdate=0;
                 }
             }
         })
+
     }
     // function doallcheck(a){
     //     //找到this的上上级来找指定class属性值的text
     //     // var name=$(a).parent("td").parent("tr").find(".name").text()
     //     // var role = $("input[class='zs']:checked").val();
-    //
+    //  我记得我当时是传一个this过来 然后得到this  然后通过点parent和children和find找到不同级别的标签  并且得到标签的值
     // }
-</script>
+    function toauditscheme(){
+        var url = "totask";
+        window.parent.$("#iframe").hide();
+        window.parent.$("#iframe").attr("src",url);//然后给ifram的src一个属性  指定页面给src
+        window.parent.$("#iframe").show();//然后iframshow出来
+    }
+    function byppid(value,row,index){
+        row.b=value;
+        var n=$.ajax({
+            url:"feibyproppid",
+            async:false,
+            data:{id:value.ppId},
+            type:"post",
+        })
+        var name = n.responseText;
+        return name;
+    }
+    function bypppid(value,row,index){
+        var n=$.ajax({
+            url:"feibypppid",
+            async:false,
+            data:{id:value.ppId},
+            type:"post",
+        })
+        var name = n.responseText;
+        return name;
+    }
+    function xbyppid(value,row,index){
+        row.a=value;
+        var n=$.ajax({
+            url:"xbyproppid",
+            async:false,
+            data:{id:value.ppId},
+            type:"post",
+        })
+        var name = n.responseText;
+        return name;
+    }
+    function xbypppid(value,row,index){
+        var n=$.ajax({
+            url:"xbypppid",
+            async:false,
+            data:{id:value.ppId},
+            type:"post",
+        })
+        var name = n.responseText;
+        return name;
+    }
+</script>>
 <div style="height: 500px;">
     <form>
         项目批次时间：<input type="date" id="starttime"/> ———————— <input type="date" id="endtime"> <input type="submit" value="查询">
     </form>
+    <div id="feixianchang">
     非现场阶段
     <table id="feidg" class="easyui-datagrid" data-options="fitColumns:true,onClickRow:click" style="width: 100%;height: 245px;">
         <thead>
         <tr>
-            <th data-options="field:'ppName',width:'16%'">项目名称</th>
-            <th data-options="field:'ppAudited',width:'16%'">被审计机构</th>
-            <th data-options="field:'ppZhushen',width:'17%'">主审</th>
-            <th data-options="field:'ppZhushenrole',width:'17%'">主审角色</th>
-            <th data-options="field:'ppZs',width:'17%'">助审</th>
-            <th data-options="field:'ppZszrole',width:'17%'">助审角色</th>
+            <th data-options="field:'auditPlanproject',width:'16%'" formatter="byppid">项目名称</th>
+            <th data-options="field:'b',width:'16%'" formatter="bypppid">被审计机构</th>
+            <th data-options="field:'zhushen',width:'17%'" >主审</th>
+            <th data-options="field:'zhushenrole',width:'17%'">主审角色</th>
+            <th data-options="field:'zs',width:'17%'">助审</th>
+            <th data-options="field:'zsrole',width:'17%'">助审角色</th>
         </tr>
         </thead>
     </table><br><br>
+    </div>
     现场阶段
-    <table class="easyui-datagrid" id="xianc" data-options="fitColumns:true" style="width: 100%;height: 245px;">
+    <table class="easyui-datagrid" id="xianc" data-options="fitColumns:true,onClickRow:xianclick" style="width: 100%;height: 245px;">
         <thead>
         <tr>
-            <th data-options="field:'ppName',width:'16%'">项目名称</th>
-            <th data-options="field:'ppAudited',width:'16%'">被审计机构</th>
-            <th data-options="field:'ppZhushen',width:'17%'">主审</th>
-            <th data-options="field:'ppZhushenrole',width:'17%'">主审角色</th>
-            <th data-options="field:'ppZs',width:'17%'">助审</th>
-            <th data-options="field:'ppZszrole',width:'17%'">助审角色</th>
+            <th data-options="field:'auditPlanproject',width:'16%'" formatter="xbyppid">项目名称</th>
+            <th data-options="field:'a',width:'16%'" formatter="xbypppid">被审计机构</th>
+            <th data-options="field:'zhushen',width:'17%'">主审</th>
+            <th data-options="field:'zhushenrole',width:'17%'">主审角色</th>
+            <th data-options="field:'zs',width:'17%'">助审</th>
+            <th data-options="field:'zsrole',width:'17%'">助审角色</th>
         </tr>
         </thead>
     </table>
-    <input type="button" value="下一步" onclick="">
+    <input type="button" value="下一步" onclick="toauditscheme()">
 </div>
 <div id="role" class="easyui-dialog" title="角色分配" style="width:600px;height:500px;padding: 30px;"
      data-options="resizable:true,modal:true,closed:true">

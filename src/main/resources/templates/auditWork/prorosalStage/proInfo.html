@@ -45,7 +45,10 @@
         ppaudited = $("#ppaudited").val();
         starttime = $("#starttime").val();
         endtime = $("#endtime").val();
-        ppjd = $('input[class="ppjd"]:checked').val();
+        $('input[class="ppjd"]:checked').each(function(){//得到class属性为ppjd的checkbox或者radio
+            var al = $(this).val();
+            ppjd +=al+",";
+        })
         $.ajax({
             url:"addproject",
             dataType:"json",
@@ -70,7 +73,7 @@
         $("#shen").dialog('close');
     }
 </script>
-<iframe id="iframe" scrolling="auto" frameborder="0" style="width:100%;height:650px;" hidden="">
+<iframe name="ifram" id="iframe" scrolling="auto" frameborder="0" style="width:100%;height:650px;" hidden="">
 </iframe>
     <div style="padding: 100px;" id="projectjiben">
         项目名称：<input type="text" id="ppname" placeholder="请输入项目名称"/>
@@ -91,7 +94,7 @@
         审计时间起：<input type="date" id="starttime">
         审计时间止：<input type="date" id="endtime"/><br>
         项目阶段：<input type="radio" name="stage" class="ppjd" value="仅非现场阶段">仅非现场阶段&nbsp;&nbsp;
-        <input type="radio" name="stage" class="ppjd" value="仅现场阶段">仅现场阶段&nbsp;&nbsp;
+        <input type="radio" name="stage1" class="ppjd" value="仅现场阶段">仅现场阶段&nbsp;&nbsp;
         <input class="ppjd" type="radio" name="stage" value="全部" >全部<br>
         <input type="button" onclick="nextbu()" value="下一步"/>&nbsp;&nbsp;<input type="button" value="重置"/>
     </div>

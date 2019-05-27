@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Entity
 
 @Table(name = "audit_planproject")
@@ -27,14 +30,6 @@ public class AuditPlanproject implements Serializable {
 
     private Date ppCreatedate;
 
-    private String ppZhushen;
-
-    private String ppZhushenrole;
-
-    private String ppZs;
-
-    private String ppZszrole;
-
     private String ppGeneratepeople;
 @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditPlan.class)
 @JoinColumn(name = "pId",referencedColumnName = "pId")
@@ -51,8 +46,15 @@ public class AuditPlanproject implements Serializable {
     private String ppJd;
 
     private String ppState;
+    @OneToMany(fetch = FetchType.LAZY,targetEntity =Projectrole.class,mappedBy = "auditPlanproject")
+    private List<Projectrole> projectroles = new ArrayList<Projectrole>();
+    @OneToMany(fetch = FetchType.LAZY,targetEntity =AuditFangan.class,mappedBy = "auditPlanproject")
+    private List<AuditFangan> auditFangans = new ArrayList<AuditFangan>();
+    @OneToMany(fetch = FetchType.LAZY,targetEntity =Task.class,mappedBy = "auditPlanproject")
+    private List<Task> tasks = new ArrayList<Task>();
 
-    public AuditPlanproject(Integer ppId, String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppZhushen, String ppZhushenrole, String ppZs, String ppZszrole, String ppGeneratepeople, AuditPlan auditPlan, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck, String ppJd, String ppState) {
+
+    public AuditPlanproject(Integer ppId, String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppGeneratepeople, AuditPlan auditPlan, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck, String ppJd, String ppState) {
         this.ppId = ppId;
         this.ppName = ppName;
         this.ppAudit = ppAudit;
@@ -61,10 +63,6 @@ public class AuditPlanproject implements Serializable {
         this.ppType = ppType;
         this.ppCreatepeople = ppCreatepeople;
         this.ppCreatedate = ppCreatedate;
-        this.ppZhushen = ppZhushen;
-        this.ppZhushenrole = ppZhushenrole;
-        this.ppZs = ppZs;
-        this.ppZszrole = ppZszrole;
         this.ppGeneratepeople = ppGeneratepeople;
         this.auditPlan = auditPlan;
         this.ppStarttime = ppStarttime;
@@ -156,38 +154,6 @@ public class AuditPlanproject implements Serializable {
 
     public void setPpCreatedate(Date ppCreatedate) {
         this.ppCreatedate = ppCreatedate;
-    }
-
-    public String getPpZhushen() {
-        return ppZhushen;
-    }
-
-    public void setPpZhushen(String ppZhushen) {
-        this.ppZhushen = ppZhushen;
-    }
-
-    public String getPpZhushenrole() {
-        return ppZhushenrole;
-    }
-
-    public void setPpZhushenrole(String ppZhushenrole) {
-        this.ppZhushenrole = ppZhushenrole;
-    }
-
-    public String getPpZs() {
-        return ppZs;
-    }
-
-    public void setPpZs(String ppZs) {
-        this.ppZs = ppZs;
-    }
-
-    public String getPpZszrole() {
-        return ppZszrole;
-    }
-
-    public void setPpZszrole(String ppZszrole) {
-        this.ppZszrole = ppZszrole;
     }
 
     public String getPpGeneratepeople() {

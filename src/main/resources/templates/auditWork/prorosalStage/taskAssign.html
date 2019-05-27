@@ -1,10 +1,209 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>任务分配</title>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
 </head>
 <body>
+<script th:inline="javascript">
+    function findperson(){
+        var n = [];
+        var proid = $("#pro").val();//得到现在选择的项目的id
+        var sel = $("#properson");//得到整个select
+        sel.find("option").remove();//获得select然后通过find方法找到select下面的option  然后进行清除
+        $.ajax({
+            url:"selectbyproid",
+            datType:"json",
+            data:{proid:proid},//通过项目名字查到这个项目的所有内容
+            type:"post",
+            success:function(data){//返回这个项目
+                n = data.split(",");
+                alert(n)
+                for(var i = 0;i<n.length;i++) {
+                    $("#properson").append("<option>" + n[i] + "</option>")
+                }
+                // var s =0;
+                // var zhushenper =[];
+                // var zsper = [];
+                // var zhushen = data[0].ppZhushen;//得到主审的人员
+                // zhushenper = zhushen.split(",");//主审人员通过，分割 然后给数组
+                // var zs = data[0].ppZs;//得到助审的人员
+                // zsper = zs.split(",");//助审人员通过，分割 然后给数组
+                // for(var i = 0;i<zhushenper.length;i++) {//只循环主审的人员 然后给option
+                //     $("#zhushen").append("<option>" +zhushenper[i]+ "</option>");
+                // }
+                // for(var i = 0;i<zsper.length;i++) {//只循环助审的人员 然后给option
+                //     $("#zs").append("<option>" +zsper[i]+ "</option>");
+                // }
+                // pro.option[1].text =
+            }
+        })
+    }
+    $(function(){
+        var na = [];
+        var  p = [[${session.auditpro}]][0];
+        var pid = p.ppId;
+        $.ajax({
+            url:"selectbyproid",
+            datType:"json",
+            data:{proid:pid},//通过项目名字查到这个项目的所有内容
+            type:"post",
+            success:function(data){
+                na = data.split(",");
+                for(var i = 0;i<na.length;i++) {
+                    $("#properson").append("<option>" + na[i] + "</option>")
+                }
+            }
+        })
+        // var p = [[${session.auditpro}]][0];//得到后台传来的所有项目的第一个
+        // var zhushen = p.ppZhushen;//将主审和助审分别给不同的变量
+        // var zs = p.ppZs;
+        // var zhushenper =[];
+        // var zsper = [];
+        // zhushenper = zhushen.split(",");//主审人员通过，分割 然后给数组
+        // zsper = zs.split(",");//助审人员通过，分割 然后给数组
+        // for(var i = 0;i<zhushenper.length;i++) {//只循环主审的人员 然后给option
+        //     $("#zhushen").append("<option>" +zhushenper[i]+ "</option>");
+        // }
+        // for(var i = 0;i<zsper.length;i++) {//只循环助审的人员 然后给option
+        //     $("#zs").append("<option>" +zsper[i]+ "</option>");
+        // }
+    })
 
+    function selectlike(){
+        var auditpoints = $("#auditp").val();
+        $("#tablea tr").slice(1,4).remove();//删除tablea 下面的指定的id为多少的tr
+        $.ajax({
+            url:"selectbyauditpcode",
+            dataType:"json",
+            data:{auditpoints:auditpoints},
+            type:"post",
+            success:function(data){
+                //如果这里我用hide  那么我每次进来就会把我tr隐藏 一旦tr隐藏了   那么我在这个tr下面通过js添加的td也会被隐藏
+                for(var i =0;i<data.length;i++) {
+                    $("#tablea").append("<tr><td id='che'><input class='renwu' type='checkbox' value='"+data[i].configvalueid+","+data[i].configvaluename+"'></td><td>" + data[i].configvalueid +"</td><td>"+data[i].configvaluename+"</td><td></td><td></td></tr>");
+                }
+            }
+        })
+    }
+    /*通过时间进行查找 将时间传到后台 然后查找完返回值给页面*/
+    function selectbytime(){
+        var starttime = $("#starttime").val();
+        var endtime = $("#endtime").val();
+        $("#pro").find("option").remove();//先是通过id得到整个select  然后通过select得到他下面的option  然后进行移除
+        $.ajax({
+            url:"selectbytime",
+            dataType:"json",
+            data:{starttime:starttime,endtime:endtime},
+            type:"post",
+            success:function(data){
+                for(var a = 0;a<data.length;a++) {
+                    $("#pro").append("<option value='"+data[a].ppId+"'>" + data[a].ppName + "</option>")
+                }
+                findperson();
+            }
+        })
+    }
+    function fenpei(){
+        var rw = "";
+        var ppid =$("#pro").val();
+        var people = $("#properson").val();
+        $("input[class='renwu']:checked").each(function(){
+            var renwu = $(this).val();
+            rw +=renwu+"-";
+        })
+        $.ajax({
+            url:"fenpeirenwu",
+            dataType:"json",
+            data:{rw:rw,people:people,ppid:ppid},
+            type:"post",
+            success:function(data){
+                if(data){
+                    alert("分配成功");
+                }
+            }
+        })
+
+    }
+</script>
+<div id="layout" class="easyui-layout" style="width:100%;height:600px;">
+    <div data-options="region:'west',split:true" style="width: 20%;height: 80px;">
+        <form>
+            <div style="margin: 20px;">
+                项目时间起：<input type="text" id="starttime" style="width: 100px;"><br><br><br>
+                项目时间止：<input type="text" id="endtime" style="width: 100px;">
+            </div>
+            <div style="margin: 30px;">
+                <button type="button" th:onclick="selectbytime()">查询</button>
+                <button type="button" style="margin-left: 40px;">重置</button>
+            </div>
+        </form>
+    </div>
+    <div data-options="region:'center',split:true" style="width: 100%;height: 80px;">
+        <div style="margin-left: 150px;margin-top: 30px;">
+            <span>项目：
+                <select style="height: 30px;" id="pro" onblur="findperson()">
+                    <span th:each="auditpro:${session.auditpro}">
+                        <option th:text="${auditpro.ppName}" th:value="${auditpro.ppId}"></option>
+                    </span>
+                </select>
+            </span>
+            <span style="margin-left: 100px;">项目人员：
+                <select style="height: 30px;width: 200px;" id="properson">
+                    <!--<optgroup label="主审" id = "zhushen">-->
+                        <!--&lt;!&ndash;<option></option>&ndash;&gt;-->
+                    <!--</optgroup>-->
+                    <!--<optgroup label="助审" id="zs">-->
+                        <!--&lt;!&ndash;<option></option>&ndash;&gt;-->
+                    <!--</optgroup>-->
+                </select>
+            </span>
+        </div>
+        <div style="margin-left: 150px;margin-top: 30px;">
+        审计要点编号查询：<input type="text" style="height: 30px;" id="auditp" onblur="selectlike()"><button type="button" style="width: 100px;height: 30px;margin-left: 30px;" onclick="fenpei()">分配</button><button type="button" style="width: 100px;height: 30px;margin-left: 30px;">刷新</button><input type="checkbox">锁定
+        </div>
+        <div style="margin-left: 150px;margin-top: 50px;">
+            <table border="1px" style="width: 500px;height: 350px;" id="tablea">
+                <tr>
+                    <td width="30px;" height="40px;"><input type="checkbox"></td>
+                    <td width="30px;">审计要点编号</td>
+                    <td width="30px;">审计要点</td>
+                    <td width="30px;">审计要点说明</td>
+                    <td width="30px">人员</td>
+                </tr>
+                <tr th:each="auditpoints:${session.Auditpoints}" id="tabletr">
+                    <td id="che"><input class="renwu" type="checkbox" th:value="${auditpoints.configvalueid}+','+${auditpoints.configvaluename}"></td>
+                    <td th:text="${auditpoints.configvalueid}"></td>
+                    <td th:text="${auditpoints.configvaluename}"></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <input type="button" value="下一步" onclick="tofa()">
+    </div>
+</div>
+<script th:inline="javascript">
+    function tofa(){
+        var id = $("#pro").val();//得到选择的项目的id
+        var url = "toauditscheme?id="+id;
+        window.parent.$("#iframe").hide();
+        window.parent.$("#iframe").attr("src",url);//然后给ifram的src一个属性 会先访问url这个路径 在里面将查到的值返回给页面 在iframe里面显示出来
+        window.parent.$("#iframe").show();//然后iframshow出来
+        // $.ajax({
+        //     url:"tofangan",
+        //     dataType:"json",
+        //     data:{id:id},
+        //     type:"post",
+        //     success:function(data){
+        //
+        //     }
+        // })
+    }
+</script>
 </body>
 </html>

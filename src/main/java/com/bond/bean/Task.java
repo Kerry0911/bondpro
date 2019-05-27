@@ -9,8 +9,17 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer tId;
+    @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditPlanproject.class)
+    @JoinColumn(name = "ppId",referencedColumnName = "ppId")
+    private AuditPlanproject auditPlanproject;
 
-    private Integer ppId;
+    public AuditPlanproject getAuditPlanproject() {
+        return auditPlanproject;
+    }
+
+    public void setAuditPlanproject(AuditPlanproject auditPlanproject) {
+        this.auditPlanproject = auditPlanproject;
+    }
 
     private String tName;
 
@@ -28,13 +37,6 @@ public class Task implements Serializable {
         this.tId = tId;
     }
 
-    public Integer getPpId() {
-        return ppId;
-    }
-
-    public void setPpId(Integer ppId) {
-        this.ppId = ppId;
-    }
 
     public String gettName() {
         return tName;
