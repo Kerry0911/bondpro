@@ -9,10 +9,10 @@ public class JumpController {
     @RequestMapping("/todolist")
     public String todolist(){return "todoList"; }
 
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
+//    @RequestMapping("/login")
+//    public String login(){
+//        return "login";
+//    }
 
     @RequestMapping("/worklog")
     public String worklog(){
@@ -72,10 +72,10 @@ public class JumpController {
 
 
 
-    @RequestMapping("/rolemanage")
-    public String rolemanage(){
-        return "auditManager/roleManage";
-    }
+//    @RequestMapping("/rolemanage")
+//    public String rolemanage(){
+//        return "auditManager/roleManage";
+//    }
 
 
     /**

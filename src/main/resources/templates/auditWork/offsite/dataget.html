@@ -6,32 +6,100 @@
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
     <meta charset="UTF-8">
-    <title>数据获取</title>
+    <title>数据抽取</title>
 </head>
 <body>
-<div id="search">
-    审计编号:<input id="productid" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
-    审计要点:<input id="yaodian" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
-    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="">搜索</a>
+<script>
+    $(function () {
+        $('#dg').datagrid({loadFilter: pagerFilter}).datagrid('loadData', getData());
+
+    })
+    //easyUI前分页代码
+    function getData(){
+        var rows = [];
+        for(var i=1; i<=800; i++){
+            var amount = Math.floor(Math.random()*1000);
+            var price = Math.floor(Math.random()*1000);
+            rows.push({
+                inv: 'Inv No '+i,
+                date: $.fn.datebox.defaults.formatter(new Date()),
+                name: 'Name '+i,
+                amount: amount,
+                price: price,
+                cost: amount*price,
+                note: 'Note '+i
+            });
+        }
+        return rows;
+    }
+    function pagerFilter(data){
+        if (typeof data.length == 'number' && typeof data.splice == 'function'){	// is array
+            data = {
+                total: data.length,
+                rows: data
+            }
+        }
+        var dg = $(this);
+        var opts = dg.datagrid('options');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            onSelectPage:function(pageNum, pageSize){
+                opts.pageNumber = pageNum;
+                opts.pageSize = pageSize;
+                pager.pagination('refresh',{
+                    pageNumber:pageNum,
+                    pageSize:pageSize
+                });
+                dg.datagrid('loadData',data);
+            }
+        });
+        if (!data.originalRows){
+            data.originalRows = (data.rows);
+        }
+        var start = (opts.pageNumber-1)*parseInt(opts.pageSize);
+        var end = start + parseInt(opts.pageSize);
+        data.rows = (data.originalRows.slice(start, end));
+        return data;
+    }
+    function searchBy() {
+        var tId=$("#productid").val();
+        var tPoint=$("#yaodian").val();
+        $.ajax({
+            url:'searchtask?tId='+tId+'&tAuditpoints='+tPoint,
+            type:'get',
+            success:function (data) {
+                $("#dg").datagrid('loadData',data);
+            }
+        })
+    }
+    function redo(tId) {
+        $.messager.confirm('确认','是否确认重新抽取数据，重新抽取数据会导致检查结果清空，请谨慎处理！！',function (r) {
+            if(r){
+
+            }
+        })
+    }
+
+</script>
+<div id="search" align="center">
+    <input class="easyui-textbox" id="productid" label="审计编号:" name="tId" style="width:300px"></input>
+    <input class="easyui-textbox" id="yaodian" label="审计要点:" name="tAuditpoints" style="width:300px"></input>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search"  onclick="searchBy()">搜索</a>
 </div>
-<table class="easyui-datagrid" style="height: 600px;width: 100%" toolbar="#search" data-options="fitColumns:true" pagination="true">
+<table class="easyui-datagrid" id="dg" style="height:423px;width: 100%" toolbar="#search"  data-options="fitColumns:true,url:'datas',fitColumns:true" pagination="true">
     <thead>
-    <tr style="background: #00aff0">
-        <th data-options="field:'bianhao'" style="width:20%;">审计编号</th>
-        <th data-options="field:'yaodian'" style="width:20%;">审计要点</th>
-        <th data-options="field:'renyuan'" style="width:20%;">稽核人员</th>
-        <th data-options="field:'状态'" style="width: 20%;">处理状态</th>
-        <th data-options="field:'caozuo'" style="width:21%;">操作</th>
+    <tr style="background: #00aff0;">
+        <th field="ck" data-options="checkbox:true"></th>
+        <th data-options="field:'tId'" style="width:20%;">审计编号</th>
+        <th data-options="field:'tAuditpoints'" style="width:20%;">审计要点</th>
+        <th data-options="field:'tName'" style="width:20%;">稽核人员</th>
+        <th data-options="field:'tState'" style="width: 20%;">处理状态</th>
+        <th data-options="field:'s',formatter:function(value,row){
+                return '<a href=\'javascript:void(0)\' onclick=\'redo('+row.id+')\'>重做</a>'
+            }"
+            style="width:19.3%;">操作</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td>A01</td><td>资产前20户</td><td>李明</td><td>完成</td><td><a href="javascript:void(0)">重做</a></td>
-    </tr>
-    <tr>
-        <td>B01</td><td>重点账户</td><td>李冰</td><td>重采中</td><td><a href="javascript:void(0)">重做</a></td>
-    </tr>
-    </tbody>
 </table>
 </body>
 </html>

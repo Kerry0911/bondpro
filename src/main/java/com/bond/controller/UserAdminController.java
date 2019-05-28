@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +83,81 @@ public class UserAdminController {
         return 1;
     }
 
+    //用户批量删除
+    @RequestMapping("/delpiliang")
+    @ResponseBody
+    public void delpiliang(Integer [] uId){
+        service1.delpiliang(uId);
+    }
+
+    //修改用户信息
+    @RequestMapping("/upById")
+    @ResponseBody
+    public int upById(AuditUser auditUser){
+        AuditUser user= service1.insert(auditUser);
+        if (user!=null){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    //修改用户状态
+    @RequestMapping("/upByState")
+    @ResponseBody
+    public int upByState(AuditUser auUser,Integer uId){
+        AuditUser a=service1.findOne(uId);
+        String c= a.getState();
+        System.out.println(c);
+        if(c.equals("禁用")){
+            a.setState("正常");
+        }else {
+            a.setState("禁用");
+        }
+
+        AuditUser user= service1.insert(a);
+        if (user!=null){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    //查询角色
+    @RequestMapping("/rolemanage")
+    public String rolemanage(Model model){
+        List<Systemconfiguration> rolelist=service1.findByrole("role");
+        model.addAttribute("rolelist",rolelist);
+        return "auditManager/roleManage";
+    }
+
+
+    //根据角色查询用户
+    @RequestMapping("/rolesshow")
+    @ResponseBody
+    public List<AuditUser> findByrole(String uRole){
+        List<AuditUser> byroles=service1.findByroles(uRole);
+        return byroles;
+    }
+
+    //增加角色
+    @RequestMapping("/adduRole")
+    @ResponseBody
+    public void adduRole(String configvaluename,String description){
+        Systemconfiguration syscon=new Systemconfiguration();
+        syscon.setConfigvaluename(configvaluename);
+        syscon.setDescription(description);
+        syscon.setConfigcode("role");
+        service1.adduRole(syscon);
+    }
+
+    //角色批量删除
+    @RequestMapping("/delRolePiLiang")
+    @ResponseBody
+    public void delRolePiLiang(Integer [] id){
+        service1.delRolePiLiang(id);
+    }
+
 
     @RequestMapping("/addauser")
     @ResponseBody
@@ -126,5 +202,43 @@ public class UserAdminController {
     @ResponseBody
     public int use(Integer uId,String state){
         return service1.use(uId,state);
+    }
+
+
+    //角色修改
+    @RequestMapping("/upRole")
+    @ResponseBody
+    public void upRole(Systemconfiguration sys,Integer id){
+        System.out.println(id);
+        service1.upRole(sys);
+    }
+
+    @RequestMapping("/loginshow")
+    public String loginshow(){
+        return "login";
+    }
+    //登录
+    @RequestMapping("/login")
+    public String  login(String uUsercode, String uPassword, HttpSession session){
+        System.out.println(uUsercode+"----------"+uPassword  );
+        AuditUser user=service1.getUser(uUsercode,uPassword);
+        if(user==null){
+            session.setAttribute("a","用户名或密码错误");
+        }
+        if (user!=null&&!user.getState().equals("禁用")){
+            session.setAttribute("a","登陆成功");
+            session.setAttribute("users",user);
+            if(user.getuRole().equals("审计人员")){
+                return "";
+            }else if(user.getuRole().equals("审计部总经理")){
+                return "auditManager/index";
+            }else if(user.getuRole().equals("系统初始化角色")){
+                return "initialRoles/index";
+            }
+        }else{
+            session.setAttribute("c","你的账号因涉嫌违规不可描述的事已被封号，请联系管理员解封");
+        }
+        return "redirect:loginshow";
+
     }
 }

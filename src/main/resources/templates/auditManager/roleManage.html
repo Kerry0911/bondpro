@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -19,18 +20,8 @@
             $("#win").window('open');
         }
 
-        function addDialog1() {
-            $("#wi").window('open');
-        }
         function a() {
             $("#w").window('open');
-        }
-        function ayo() {
-            $.messager.confirm('提示','确认删除吗?',function (r) {
-                if(r){
-                    alert('666');
-                }
-            });
         }
         function da() {
             alert("aaa")
@@ -38,87 +29,188 @@
             alert(obj)
             $("#d").datagrid("load", obj);
         }
+
+        //根据角色查询用户
+        $(function () {
+            $("#tab1").datagrid({
+                onSelect:function (rowIndex,rowData) {
+                    $.ajax({
+                        url:'rolesshow?uRole='+rowData.configvaluename,
+                        type:'get',
+                        success:function (data) {
+                            $("#tab2").datagrid('loadData',data);
+                        }
+                    })
+                }
+            })
+        })
+
+
+        //增加角色
+        function adduRole() {
+            var uRolename=$("#configvaluename").val();
+            var description=$("#description").val();
+            $.ajax({
+                url:"adduRole?configvaluename="+uRolename+"&&description="+description,
+                datatype:"json",
+                type:"post",
+                success:function (data) {
+                    if(data!=""||data!=null){
+                        $("#tab1").datagrid('loadData',data);
+                        $("#win").window('close');
+                    }else{
+                        alert("添加失败");
+                    }
+                }
+            })
+        }
+
+
+        //批量删除
+        function delRolePiLiang() {
+            var rows=$("#tab1").datagrid("getSelections");
+            if(rows.length>0){
+                $.messager.confirm('提示','确认删除吗?',function (r) {
+                    if (r){
+                        var roleId=new Array();
+                        for (var i=0;i<rows.length;i++){
+                            roleId.push(rows[i].id);
+                        }
+                        $.ajax({
+                            type: "post",
+                            url: "delRolePiLiang?id="+ roleId,
+                            success : function(data) {
+                                $.messager.alert("系统提示","删除成功");
+                                $("#tab1").datagrid('reload');
+                            }
+                        });
+                    }
+                })
+            }else{
+                $.messager.alert("系统提示","请选择需要删除的行");
+            }
+        }
+
+
+        //修改前先展示需要修改的数据
+        function upRole(){
+            $("#upRoleForm").form("clear");
+            var obj = $("#tab1").datagrid("getSelected");
+            alert(obj);
+            if(obj!=null){
+                $("#wi").dialog("open");
+                $("#upRoleForm").form("load",obj);
+            }
+        }
+
+        //修改角色信息
+        function upRoleForm() {
+            var id=$("#id").val();
+            alert(id);
+            $("#upRoleForm").form({
+                url:'upRole?id='+id,
+                onSubmit:function () {
+                },
+                success:function (data) {
+                    if (data==1){
+                        $.messager.alert("系统提示","修改成功");
+                        $("#win2").window('close');
+                    } else{
+                        $.messager.alert("系统提示","修改失败");
+                    }
+                }
+            })
+            $("#upRoleForm").submit();
+        }
+
+        //根据名称模糊查询
+        function uname() {
+            var i=$("#uUsername").val();
+            $.ajax({
+                url:"nameshow?username="+i,
+                datatype: "json",
+                type:"post",
+                success:function(data){
+                    $("#tab2").datagrid("loadData",data);
+                }
+            })
+        }
     </script>
 </head>
 <body>
 <div id="ad" style="background: rgba(0, 0, 255, 0.1)">
     <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" th:onclick="delRolePiLiang()">删除</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="upRole()">编辑</a>
     <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:a()">分配权限</a>
 </div>
 <div>
-    <table id="datagrid" class="easyui-datagrid" title="" style="width:100%;height: 370px;"  pagination="true">
+    <table id="tab1" class="easyui-datagrid" title="" style="width:1495px;height: 250px;"  pagination="true">
         <thead>
         <tr>
-            <th data-options="field:'itemid',width:550">名称</th>
-            <th data-options="field:'productid',width:550">描述</th>
+            <th data-options="field:'id',width:'50%'" th:hidden="true" th:id="id" th:name="id">id</th>
+            <th data-options="field:'configvaluename',width:747">名称</th>
+            <th data-options="field:'description',width:743">描述</th>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Data 1</td>
-            <td>Data 2</td>
+        <tr th:each="role:${rolelist}">
+            <td th:text="${role.id}">1</td>
+            <td th:text="${role.configvaluename}">Data 1</td>
+            <td th:text="${role.description}">Data2</td>
         </tr>
         </tbody>
     </table>
 </div>
 <div>
-
+    <div id="s">
     <input type="text" class="search" placeholder="输入关键字">
-    <input type="button"  class="btn" value="查询">
-
-    <table class="easyui-datagrid" id="d" title="" style="width:100%;height: 370px;"  pagination="true" >
+    <input type="button"  class="btn" value="查询" th:onclick="uname()" />
+    </div>
+    <table toolbar="#s" class="easyui-datagrid" id="tab2" title="" style="width:1495px;height: 330px;"  pagination="true" >
         <thead>
         <tr>
-            <th data-options="field:'itemid',width:180">用户名</th>
-            <th data-options="field:'productid',width:180">姓名</th>
-            <th data-options="field:'productid',width:180">邮箱</th>
-            <th data-options="field:'productid',width:180">电话</th>
-            <th data-options="field:'productid',width:180">状态</th>
-            <th data-options="field:'productid',width:180">部门</th>
+            <th data-options="field:'uUsercode',width:249">用户名</th>
+            <th data-options="field:'uUsername',width:249">姓名</th>
+            <th data-options="field:'uEmail',width:249">邮箱</th>
+            <th data-options="field:'uPhone',width:249">电话</th>
+            <th data-options="field:'state',width:249">状态</th>
+            <th data-options="field:'uDept',width:242">部门</th>
         </tr>
         </thead>
-        <tbody>
-        <tr>
-            <td>Data 1</td>
-            <td>Data 2</td>
-            <td>Data 1</td>
-            <td>Data 2</td>
-            <td>Data 1</td>
-            <td>Data 2</td>
-        </tr>
-        </tbody>
     </table>
 </div>
 <div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
      iconCls="icon-add" data-options="title:'增加角色',modal:true,closed:true">
     <form id="" method="post" novalidate>
         <div style="margin-bottom:10px">
-            <input class="easyui-textbox" label="名称:" required="true" style="width:80%"></input>
+            <input class="easyui-textbox" label="名称:" required="true" style="width:80%" th:id="configvaluename" th:name="configvaluename"></input>
         </div>
         <div style="margin-bottom:10px">
-            描述：<textarea  style="width:60% ;height: 60%;">
+            描述：<textarea  style="width:60% ;height: 60%;" th:id="description" th:name="description">
         </textarea>
         </div>
         <div style="text-align:right">
-            <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+            <input class="easyui-linkbutton"  value="保存" style="width:80px;height:30px" th:onclick="adduRole()">
             <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
         </div>
     </form>
 </div>
 <div id="wi" class="easyui-dialog" style="width:400px;padding: 20px;"
      iconCls="icon-edic" data-options="title:'编辑角色',modal:true,closed:true">
-    <form id="" method="post" novalidate>
-        <div style="margin-bottom:10px">
-            <input class="easyui-textbox" label="名称:" required="true" style="width:80%"></input>
+    <form id="upRoleForm" method="post" novalidate>
+        <div style="margin-bottom:10px" hidden="true">
+            <input class="easyui-textbox" label="id:" required="true" style="width:80%" th:id="id" th:name="id"></input>
         </div>
         <div style="margin-bottom:10px">
-            描述：<textarea  style="width:60% ;height: 60%;">
+            <input class="easyui-textbox" label="名称:" required="true" style="width:80%" id="configvaluename" name="configvaluename"></input>
+        </div>
+        <div style="margin-bottom:10px">
+            描述：<textarea  style="width:60% ;height: 60%;" id="description" name="description">
         </textarea>
         </div>
         <div style="text-align:right">
-            <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+            <input class="easyui-linkbutton" type="submit" value="修改" style="width:80px;height:30px" th:onclick="upRoleForm()">
             <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
         </div>
     </form>

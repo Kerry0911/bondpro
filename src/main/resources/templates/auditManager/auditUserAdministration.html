@@ -9,55 +9,197 @@
     <title>用户管理</title>
 </head>
 <style>
-
+    a{text-decoration: none;}
 </style>
 
 <script>
     function addDialog() {
         $("#win1").window('open');
     }
+
+    //传部门,根据部门展示用户
+    function usersshows(udept) {
+        $.ajax({
+            url:"usersshow?udept="+udept,
+            datatype: "json",
+            type:"post",
+            success:function(data){
+                $("#yh").datagrid("loadData",data);
+            }
+        })
+    }
+
+    //分页
+
+    //根据名称模糊查询
+    function uname() {
+        var i=$("#productid").val();
+        $.ajax({
+            url:"nameshow?username="+i,
+            datatype: "json",
+            type:"post",
+            success:function(data){
+                $("#yh").datagrid("loadData",data);
+            }
+        })
+    }
+
+    //添加用户
+    function adduser() {
+        var uCode=$("#uCode").val();
+        var uUsername=$("#uUsername").val();
+        var uRole=$("#uRole").val();
+        var uDept=$("#uDept").val();
+        var uPost=$("#uPost").val();
+        var uPqualification=$("#uPqualification").val();
+        var uPassword=$("#uPassword").val();
+        alert(uCode+uUsername+uRole+uDept+uPost+uPqualification+uPassword);
+        $.ajax({
+            url:"save?uCode="+uCode+"&&uUsername="+uUsername+"&&uRole="+uRole+"&&uDept="+uDept+"&&uPost="+uPost+"&&uPqualification="+uPqualification+"&uPassword="+uPassword,
+            type:"post",
+            success:function(data){
+                $("#win1").window('close');
+                usersshows(uDept);
+            }
+        })
+    }
+
+    //删除用户
+    function delById() {
+        var a=$("#yh").datagrid('getSelected');
+        $.messager.confirm('提示','确认删除吗?',function (r) {
+            if(r){
+                $.ajax({
+                    url:'delById?uId='+a.uId,
+                    type:'post',
+                    dataType:'json',
+                    success:function (data) {
+                        if (data>0){
+                            $.messager.alert("系统提示","删除成功");
+                        } else{
+                            $.messager.alert("系统提示","删除失败");
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+    //修改前先展示需要修改的数据
+    function uptStu(){
+        $("#upform").form("clear");
+        var obj = $("#yh").datagrid("getSelected");
+        alert(obj);
+        if(obj!=null){
+            $("#win2").dialog("open");
+            $("#upform").form("load",obj);
+        }
+    }
+
+    //修改用户信息
+    function update() {
+        $("#upform").form({
+            url:'upById',
+            onSubmit:function () {
+            },
+            success:function (data) {
+                if (data==1){
+                    $.messager.alert("系统提示","修改成功");
+                    $("#win2").window('close');
+                } else{
+                    $.messager.alert("系统提示","修改失败");
+                }
+            }
+        })
+        $("#upform").submit();
+    }
+
+    //修改用户状态
+    function upByState() {
+        var state=$("#yh").datagrid('getSelected');
+        alert(state.uId);
+        $.ajax({
+            url:"upByState?uId="+state.uId,
+            type:"post",
+            success:function(data){
+                if(data>0){
+                    $.messager.alert("系统提示","修改用户状态成功");
+                }else{
+                    $.messager.alert("系统提示","修改用户状态失败");
+                }
+            }
+        })
+    }
+
+    //批量删除
+    function delpiliang() {
+        var rows=$("#yh").datagrid("getSelections");
+        if(rows.length>0){
+            $.messager.confirm('提示','确认删除吗?',function (r) {
+                if (r){
+                    var id=new Array();
+                    for (var i=0;i<rows.length;i++){
+                        id.push(rows[i].uId);
+                    }
+                    $.ajax({
+                        type: "post",
+                        url: "delpiliang?uId="+id,
+                        success : function(data) {
+                            $.messager.alert("系统提示","删除成功");
+                            $("#yh").datagrid('reload');
+                        }
+                    });
+                }
+            })
+        }else{
+            $.messager.alert("系统提示","请选择需要删除的行");
+        }
+
+    }
+
 </script>
 <body>
 <div class="easyui-layout" style="width: 100%;height: 600px;">
     <div data-options="region:'center',title:'详细信息'" >
-        <table class="easyui-datagrid" pagination="true" rownumbers="true" toolbar="#user" style="width:1163px;height:566px;">
+        <table class="easyui-datagrid" pagination="true" rownumbers="true" toolbar="#user" style="width:1163px;height:566px;" id="yh" >
             <thead>
-            <th field="name1" width="150">用户id</th>
-            <th field="name2" width="150">姓名</th>
-            <th field="name3" width="150">角色</th>
-            <th field="name4" width="150">xxx</th>
-            <th field="name5" width="150">xxxx</th>
-            <th field="name6" width="150">状态</th>
-            <th field="name6" width="150">人员资质</th>
+            <th data-options="field:'uId'" th:hidden="true" th:name="uId" th:id="uId">id</th>
+            <th data-options="field:'uCode'"  width="150">用户id</th>
+            <th data-options="field:'uUsername'"  width="150">姓名</th>
+            <th data-options="field:'uRole'"  width="150">角色</th>
+            <th data-options="field:'uDept'"  width="150">部门</th>
+            <th data-options="field:'uPost'"  width="150">岗位</th>
+            <th data-options="field:'state'"  width="150">状态</th>
+            <th data-options="field:'uPqualification'" width="150">人员资质</th>
             </thead>
             <tbody>
-            <tr>
-                <td>xm</td>
-                <td>小明</td>
-                <td>审计人员</td>
-                <td>xxx</td>
-                <td>xxxx</td>
-                <td>正常</td>
-                <td>xxxxx</td>
-            </tr>
-            <tr>
-                <td>xh</td>
-                <td>小红</td>
-                <td>系统初始化角色</td>
-                <td>xxx</td>
-                <td>xxxx</td>
-                <td>正常</td>
-                <td>xxxxx</td>
-            </tr>
-            <tr>
-                <td>mogul</td>
-                <td>大佬</td>
-                <td>审计部总经理</td>
-                <td>xxx</td>
-                <td>xxxx</td>
-                <td>正常</td>
-                <td>xxxxx</td>
-            </tr>
+            <!-- <tr>
+                 <td>xm</td>
+                 <td>小明</td>
+                 <td>审计人员</td>
+                 <td>xxx</td>
+                 <td>xxxx</td>
+                 <td>正常</td>
+                 <td>xxxxx</td>
+             </tr>
+             <tr>
+                 <td>xh</td>
+                 <td>小红</td>
+                 <td>系统初始化角色</td>
+                 <td>xxx</td>
+                 <td>xxxx</td>
+                 <td>正常</td>
+                 <td>xxxxx</td>
+             </tr>
+             <tr>
+                 <td>mogul</td>
+                 <td>大佬</td>
+                 <td>审计部总经理</td>
+                 <td>xxx</td>
+                 <td>xxxx</td>
+                 <td>正常</td>
+                 <td>xxxxx</td>
+             </tr>-->
             </tbody>
         </table>
     </div>
@@ -65,58 +207,79 @@
          iconCls="icon-add" data-options="title:'增加用户',modal:true,closed:true">
         <form id="" method="post" novalidate>
             <div style="margin-bottom:10px">
-                <input class="easyui-textbox" label="用户id:" required="true" style="width:100%"></input>
+                <input class="easyui-textbox" label="用户id:" required="true" style="width:100%" th:id="uCode"></input>
             </div>
             <div style="margin-bottom:10px">
-                <input class="easyui-textbox" label="姓名:"  required="true" validType="email" style="width:100%"></input>
+                <input class="easyui-textbox" label="姓名:"  required="true"  style="width:100%" th:id="uUsername"></input>
             </div>
             <div style="margin-bottom:10px">
-                <input class="easyui-textbox" label="部门:" required="true" style="width:100%"></input>
+                <input class="easyui-textbox" label="角色:"  required="true" style="width:100%" th:id="uRole"></input>
             </div>
             <div style="margin-bottom:10px">
-                <input class="easyui-textbox" label="岗位:" required="true" style="width:100%"></input>
+                <input class="easyui-textbox" label="部门:" required="true" style="width:100%" th:id="uDept"></input>
             </div>
             <div style="margin-bottom:10px">
-                <input class="easyui-textbox" label="人员资质:" required="true" style="width:100%"></input>
+                <input class="easyui-textbox" label="岗位:" required="true" style="width:100%" th:id="uPost"></input>
             </div>
             <div style="margin-bottom:10px">
-                <input class="easyui-textbox" label="密码:" required="true" style="width:100%"></input>
+                <input class="easyui-textbox" label="人员资质:" required="true" style="width:100%" th:id="uPqualification"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="密码:" required="true" style="width:100%" th:id="uPassword"></input>
             </div>
             <div style="text-align:right">
-                <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" value="保存" style="width:80px;height:30px" th:onclick="adduser()">
+                <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+        </form>
+    </div>
+    <div id="win2" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-add" data-options="title:'编辑用户',modal:true,closed:true">
+        <form id="upform" method="post" novalidate>
+            <input type="hidden" name="uId">
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="用户id:" style="width:100%" id="uCode1" name="uCode"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="姓名:"   style="width:100%" id="uUsername1" name="uUsername"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="角色:"  style="width:100%" id="uRole1" name="uRole"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="部门:"  style="width:100%" id="uDept1" name="uDept"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="岗位:"  style="width:100%" id="uPost1" name="uPost"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="人员资质:" style="width:100%" id="uPqualification1" name="uPqualification"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="密码:"  style="width:100%" id="uPassword1" name="uPassword"></input>
+            </div>
+            <div style="text-align:right">
+                <input type="submit" value="修改" style="width:80px;height:30px" th:onclick="update()">
                 <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
             </div>
         </form>
     </div>
     <div id="user">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:alert('删除')">删除</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:alert('编辑')">编辑</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:alert('设置角色')">设置角色</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:alert('禁用|启用')">禁用|启用</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" th:onclick="addDialog()">增加</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" th:onclick="delpiliang()">删除</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" th:onclick="uptStu()">编辑</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" th:onclick="upByState()" >禁用|启用</a>
         <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:alert('重置密码')">重置密码</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" onclick="javascript:alert('分配XX属性')">分配XX属性</a>
-        <input id="productid" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="">搜索</a>
+        <input id="productid" name="username" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" th:onclick="uname()">搜索</a>
     </div>
 
     <div data-options="region:'west',title:'用户管理',split:true" style="width:230px;" >
         <div style="width: 100%;height: 20px;background: rgba(0, 0, 255, 0.1)">审计部门</div>
-        <div id="tree">
+        <div id="tree" >
             <ul class="easyui-tree">
-                <li>
-                    <span>XXX</span>
-                    <ul>
-                        <li>
-                            <span>XXXX</span>
-                            <ul>
-                                <li><a href="javascript:void(0)"><span>XXXXXX</span></a></li>
-                                <li><span>XXXXX</span></li>
-                                <li><span>XXXXXX</span></li>
-                            </ul>
-                        </li>
-                    </ul>
-
+                <li th:each="dept:${depts}">
+                    <a href="javascript:void(0)" th:id="aj" th:text="${dept.configvaluename}" th:onclick="usersshows([[${dept.configvaluename}]])"></a>
                 </li>
             </ul>
         </div>

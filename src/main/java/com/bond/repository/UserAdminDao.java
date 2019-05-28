@@ -25,4 +25,10 @@ public interface UserAdminDao extends JpaRepository<AuditUser,Integer>, JpaSpeci
     @Modifying
     @Query(value = "update audit_user set state=?2 where u_id=?1",nativeQuery = true)
     public int use(Integer uId,String state);
+
+    //登录
+    public AuditUser findByUUsercodeAndUPassword(String uUsercode,String uPassword);
+
+    //根据角色查询用户
+    List<AuditUser> findByURole(String uRole);
  }

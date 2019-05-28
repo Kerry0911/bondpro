@@ -2,6 +2,7 @@ package com.bond.repository;
 
 import com.bond.bean.AuditPlan;
 import com.bond.bean.AuditPlanproject;
+import com.bond.bean.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,5 @@ public interface AuditPlanprojectRep extends JpaRepository<AuditPlanproject,Inte
     public List<AuditPlanproject> findByPpName(String ppname);
 
     public List<AuditPlanproject> findByPpCreatedateBetween(Date starttime,Date endtime);
+
 }
