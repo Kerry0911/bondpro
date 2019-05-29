@@ -9,57 +9,29 @@
     <title>数据获取</title>
 </head>
 <body>
-<script th:inline="javascript">
-    function sousuo(){
-        var tauditpoints = $("#tauditpoints").val();
-        var tcode = $("#tcode").val();
-        $.ajax({
-            url:"sousuobycodeandaudit",
-            dataType:"json",
-            data:{tauditpoints:tauditpoints,tcode:tcode},
-            type:"post",
-            success:function(data){
-                $("#taskdatagrid").datagrid("loadData",data)
-            }
-        })
-    }
-    function chongzuo(){
-        var obj = $("#taskdatagrid").datagrid("getSelected");
-        var id = obj.tId;
-        var name = obj.tName;
-        var tAuditpoints = obj.tAuditpoints;
-        var tCode = obj.tCode;
-        $.messager.confirm("系统提示","确定要重做吗？？？",function(data){
-            if(data==true){
-                $.ajax({
-                    url:"chongzuo",
-                    dataType:"json",
-                    data:{id:id,name:name,tAuditpoints:tAuditpoints,tCode:tCode},
-                    type:"post",
-                    success:function(data){
-                        $("#taskdatagrid").datagrid("reload");
-                    }
-                })
-            }
-        })
-    }
-</script>
 <div id="search">
-    审计编号:<input id="tauditpoints" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
-    审计要点:<input id="tcode" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
-    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="sousuo()">搜索</a>
+    审计编号:<input id="productid" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
+    审计要点:<input id="yaodian" style="line-height:26px;border:1px solid #ccc;text-align: center;" placeholder="输入关键字搜索">
+    <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" onclick="">搜索</a>
 </div>
-<table id="taskdatagrid" class="easyui-datagrid" toolbar="#filetool" style="height: 600px;width: 100%" data-options="url:'chouqu',fitColumns:true,singleSelect:true" pagination="true">
+<table class="easyui-datagrid" style="height: 600px;width: 100%" toolbar="#search" data-options="fitColumns:true" pagination="true">
     <thead>
     <tr style="background: #00aff0">
-        <th data-options="field:'tAuditpoints'" style="width:20%;">审计编号</th>
-        <th data-options="field:'tCode'" style="width:20%;">审计要点</th>
-        <th data-options="field:'tName'" style="width:20%;">稽核人员</th>
-        <th data-options="field:'tState'" style="width: 20%;">处理状态</th></tr>
+        <th data-options="field:'bianhao'" style="width:20%;">审计编号</th>
+        <th data-options="field:'yaodian'" style="width:20%;">审计要点</th>
+        <th data-options="field:'renyuan'" style="width:20%;">稽核人员</th>
+        <th data-options="field:'状态'" style="width: 20%;">处理状态</th>
+        <th data-options="field:'caozuo'" style="width:21%;">操作</th>
+    </tr>
     </thead>
+    <tbody>
+    <tr>
+        <td>A01</td><td>资产前20户</td><td>李明</td><td>完成</td><td><a href="javascript:void(0)">重做</a></td>
+    </tr>
+    <tr>
+        <td>B01</td><td>重点账户</td><td>李冰</td><td>重采中</td><td><a href="javascript:void(0)">重做</a></td>
+    </tr>
+    </tbody>
 </table>
-<div id="filetool">
-    <button class="easyui-linkbutton" data-options="" onclick="chongzuo()">重做</button>
-</div>
 </body>
 </html>

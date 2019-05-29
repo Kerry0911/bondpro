@@ -159,15 +159,15 @@ html.fullscreen-bg #wrapper {
   padding: 0;
   margin: 0;
   border: none;
-  background-color: #fff; }
+  background-color:lightblue; }
   .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
-    background-color: #fafafa; }
+    background-color: lightblue; }
   .navbar-default .navbar-toggle, .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-    background-color: #f8f8f8; }
+    background-color: lightblue; }
   .navbar-default .brand {
     float: left;
     padding: 30px 39px;
-    background-color: #fff; }
+    background-color: lightblue; }
   @media screen and (max-width: 1024px) {
     .navbar-default .brand {
       padding-left: 30px;
@@ -354,15 +354,15 @@ ul.notifications > li {
   z-index: 9; }
   .sidebar .nav > li > a {
     padding: 18px 30px;
-    color: #AEB7C2;
+    color: black;
     border-left: 5px solid transparent; }
     .sidebar .nav > li > a:hover, .sidebar .nav > li > a:focus, .sidebar .nav > li > a.active {
       color: #fff;
-      background-color: transparent; }
+      background-color: lightblue; }
       .sidebar .nav > li > a:hover i, .sidebar .nav > li > a:focus i, .sidebar .nav > li > a.active i {
         color: #00AAFF; }
     .sidebar .nav > li > a:focus, .sidebar .nav > li > a.active {
-      background-color: #252c35;
+      background-color: lightblue;
       border-left-color: #00AAFF; }
     .sidebar .nav > li > a[data-toggle="collapse"] .icon-submenu {
       display: inline-block;
@@ -391,7 +391,7 @@ ul.notifications > li {
       transform: rotate(0deg); }
     .sidebar .nav > li > a .badge {
       font-weight: 400;
-      background-color: #F9354C; }
+      background-color: lightblue; }
   .sidebar .nav {
     /* submenu */ }
     .sidebar .nav i {
@@ -406,14 +406,14 @@ ul.notifications > li {
       position: relative;
       top: -2px; }
     .sidebar .nav .nav {
-      background-color: #252c35; }
+      background-color: lightblue; }
       .sidebar .nav .nav > li > a {
         padding-left: 60px;
         padding-top: 10px;
         padding-bottom: 10px; }
         .sidebar .nav .nav > li > a:focus, .sidebar .nav .nav > li > a.active {
-          background-color: transparent;
-          border-left-color: transparent; }
+          background-color: lightblue;
+          border-left-color: lightblue; }
         .sidebar .nav .nav > li > a.active a {
           color: #fff; }
 
@@ -1012,7 +1012,7 @@ ul.activity-list > li {
     width: 58%;
     height: 100%;
     position: relative;
-    background-image: url("../../assets/img/login-bg.jpg");
+    background-image: url("../img/login-bg.jpg");
     background-repeat: no-repeat;
     background-size: cover; }
     .auth-box .right:before {

@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,6 +34,25 @@ public class AuditedService {
 
     public List<AuditAuditedInstitutions> findAll(){
         return auditedDao.findAll();
+    }
+
+    //增加被审部门
+    public AuditAuditedInstitutions insert(AuditAuditedInstitutions institutions){
+        return auditedDao.save(institutions);
+    }
+
+    public AuditAuditedInstitutions findById(Integer auditedId){
+        return auditedDao.findById(auditedId).get();
+    }
+
+    //删除被审计部门
+    @Transactional
+    public void del(Integer auditedId){
+        auditedDao.deleteById(auditedId);
+    }
+
+    public void saveAll(List<AuditAuditedInstitutions> users){
+        auditedDao.saveAll(users);
     }
 
     //多条件查询

@@ -54,7 +54,7 @@
                         type: 'get',
                         dataType: 'json',
                         success: function (data) {
-                            if (data > 0) {
+                            if (data==1) {
                                 $.messager.alert("系统提示", "删除成功");
                                 $("#dg").datagrid('reload');
                             } else {
@@ -71,12 +71,12 @@
 
 
     function delson() {
-        var r=$("#code").datagrid('getSelected');
-        if(r) {
+        var rs=$("#code").datagrid('getSelected');
+        if(rs) {
             $.messager.confirm('提示', '确认删除吗?', function (r) {
                 if (r) {
                     $.ajax({
-                        url: 'delson?sonaId=' + r.sonaId,
+                        url: 'delson?sonaId=' + rs.sonaId,
                         type: 'get',
                         dataType: 'json',
                         success: function (data) {
@@ -220,7 +220,7 @@
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog4()">编辑</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
             </div>
-            <table id="dg" class="easyui-datagrid"  style="width:273px;height: 604px;" toolbar="#d"
+            <table id="dg" class="easyui-datagrid"  style="width:273px;height: 615px;" toolbar="#d"
                     data-options="url:'attlist',singleSelect:true">
                 <thead>
                 <tr>
@@ -239,7 +239,7 @@
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:editson()">编辑</a>
                 <a href="javascript:void(0);" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="">刷新</a>
             </div>
-            <table id="code" class="easyui-datagrid" pagination="true" style="width:1103px;height:634px;" toolbar="#ad" singleSelect="true">
+            <table id="code" class="easyui-datagrid" pagination="true" style="width:1191px;height:647px;" toolbar="#ad" singleSelect="true">
                 <thead>
                 <tr>
                     <th field="sonaCode" align="center" width="555">代码</th>

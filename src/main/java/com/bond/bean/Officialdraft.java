@@ -2,6 +2,8 @@ package com.bond.bean;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+
 @Entity
 @Table(name = "officialdraft")
 public class Officialdraft implements Serializable {
@@ -15,6 +17,15 @@ public class Officialdraft implements Serializable {
     private String oCaozuo;
     private String oJianyi;
     private Integer state;
+    private Date oTime;
+
+    public Date getoTime() {
+        return oTime;
+    }
+
+    public void setoTime(Date oTime) {
+        this.oTime = oTime;
+    }
 
     public Integer getoId() {
         return oId;

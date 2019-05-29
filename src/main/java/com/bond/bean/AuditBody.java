@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name ="audit_body" )
-public class AuditBody implements Serializable {
+public class AuditBody  {
     @Id
     private String abId;
 

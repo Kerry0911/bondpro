@@ -12,7 +12,6 @@ import java.util.List;
 public class AuditAttribute implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(insertable = false,updatable = false)
     private Integer aId;
 
     private String aName;
@@ -21,6 +20,7 @@ public class AuditAttribute implements Serializable {
 
     private String aJurisdiction;
 
+    @Column(insertable = false,updatable = false)
     private Integer modelId;
 
 
@@ -37,11 +37,11 @@ public class AuditAttribute implements Serializable {
         this.modelId = modelId;
     }
 
-    @OneToMany(fetch = FetchType.LAZY,targetEntity = AuditSonattribute.class,mappedBy = "attribute")
+    @OneToMany(fetch = FetchType.LAZY,targetEntity = AuditSonattribute.class,cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "aId",referencedColumnName ="aId" )
     private List<AuditSonattribute> sonattributes=new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity = Model.class)
-    //@JoinColumn(name = "aId",referencedColumnName = "modelId")
+   // @ManyToOne(fetch = FetchType.LAZY,targetEntity = Model.class)
     private Model model;
 
     public AuditAttribute() {

@@ -71,6 +71,6 @@ public class LogService {
             ll.setlTime(l.getlTime());
             results.add(ll);
         }
-        return results;
+        return logs;
     }
 }

@@ -68,12 +68,10 @@
             url:'findby',
             success:function (data) {
                 if(data!=null){
-                    $("#win").window('close');
-                    //parent.parent.$..openner_dataGrid.datagrid('loadData',data);
                     $("#dg").datagrid('loadData',data);
-                }else{
+                }
+                if(null==data){
                     alert("抱歉，没有您要查询的数据");
-                    //$("#dg").datagrid('loadData',data);
                 }
             }
         });
@@ -81,33 +79,24 @@
     }
 </script>
 <body>
-    <div id="p" align="right">
+    <div id="p" >
         <!--<input id="con" type="text" placeholder="请输入关键字"  style="width:200px">-->
-        <input class="easyui-searchbox" data-options="prompt:'Please input somthing'" style="width:200px"></input>
+        <!--<input class="easyui-searchbox" data-options="prompt:'Please input somthing'" style="width:200px"></input>-->
         <!--<a id="btn" href="javascript:search()" class="easyui-linkbutton" data-options="iconCls:'icon-search'"></a>-->
-        <a href="javascript:gaosearch()" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" style="width: 100px;">高级查询</a>
-        <div id="win" class="easyui-window" title="高级查询"  style="width:500px;height:300px;padding: 20px;"
-             data-options="iconCls:'icon-save',closed:true,minimizable:false,maximizable:false,resizable:false">
         <form id="form" method="post">
-                <table width="445px" height="220px">
+                <table >
                     <tr>
                         <td>用户：</td>
                         <td><input type="text" name="lName" width="100px"/></td>
-                    </tr>
-                    <tr>
                         <td>用户所在机构：</td>
                         <td><input type="text" name="lDept" width="100px"/></td>
-                    </tr>
-                    <tr>
+                        <td>模块：</td>
+                        <td><input type="text" name="lMk" width="100px"/></td>
                         <td>操作日期：</td>
                         <td><input type="date" name="lTime" width="100px"/>-<input name="eTime" type="date" width="100px"/></td>
                     </tr>
                     <tr>
-                        <td>模块：</td>
-                        <td><input type="text" name="lMk" width="100px"/></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" text-align="center">
+                        <td colspan="8" align="center">
                             <a id="save" href="javascript:searchall();" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查询</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="reset" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-reset'">重置</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <a id="cancel" href="javascript:void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
@@ -116,14 +105,13 @@
                 </table>
             </form>
         </div>
-    </div>
     <table class="easyui-datagrid" id="dg"  toolbar="#p"
            data-options="url:'logs',
            fitColumns:true,
            pagination:true,
            pageSize:10,
-           singleSelect:true
-            "
+           singleSelect:true,
+           autoRowHeight:true"
            style="width: 100%;">
         <thead>
         <tr>

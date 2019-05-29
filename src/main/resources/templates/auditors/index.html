@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<!-- VENDOR CSS -->
 	<link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
 	<link rel="stylesheet" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}">
@@ -22,12 +24,6 @@
 
 	<script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
 	<script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
-
-	<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
-	<script th:src="@{/vendor/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
-	<script th:src="@{/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js}"></script>
-	<script th:src="@{/vendor/chartist/js/chartist.min.js}"></script>
-	<script th:src="@{/scripts/klorofil-common.js}"></script>
 	<title>审计人员首页</title>
 </head>
 <style>
@@ -68,21 +64,21 @@
 				<div id="navbar-menu">
 					<ul class="nav navbar-nav navbar-right">
 						<li>
-							<a href="#" class="notification-item"><span class="dot bg-danger"></span>修改信息</a>
-						</li>>
+							<a href="javascript:void(0)" class="notification-item"><span class="dot bg-danger"></span>修改信息</a>
+						</li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#" class="notification-item"><span class="dot bg-success"></span>查看个人信息</a></li>>
+						<li><a href="javascript:void(0)" class="notification-item"><span class="dot bg-success"></span>查看个人信息</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>注销</a></li>>
+						<li><a href="javascript:void(0)" class="notification-item"><span class="dot bg-warning"></span>注销</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 	</div>
 </div>
-<div data-options="region:'west',split:true" style="width:300px;background-color:black">
+<div data-options="region:'west',split:true" style="width:300px;background-color:lightblue">
 	<div id="sidebar-nav" class="sidebar" >
 		<div class="sidebar-scroll">
 			<nav>
@@ -103,9 +99,9 @@
 						<div id="subPages1" class="collapse ">
 							<ul class="nav">
 								<li><a href="javascript:void(0);" onclick="addTab('项目基本信息','proinfo')" >项目基本信息</a></li>
-								<li><a href="javascript:void(0)" onclick="addTab('角色分配','roleassign')">角色分配</a></li>
-								<li><a href="javascript:void(0)" onclick="addTab('任务分配','taskassign')">任务分配</a></li>
-								<li><a href="javascript:void(0)" onclick="addTab('审计方案','auditscheme')">审计方案</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('角色分配','roleassign')">我的项目</a></li>
+								<!--<li><a href="javascript:void(0)" onclick="addTab('任务分配','taskassign')">任务分配</a></li>-->
+								<!--<li><a href="javascript:void(0)" onclick="addTab('审计方案','auditscheme')">审计方案</a></li>-->
 							</ul>
 						</div>
 					</li>
@@ -124,7 +120,7 @@
 						<div id="subPages3" class="collapse ">
 							<ul class="nav">
 								<li><a href="javascript:void(0);" onclick="addTab('进场会','inmeeting')" >进场会</a></li>
-								<li><a href="javascript:void(0)" onclick="addTab('离场会议','outmeeting')">离场会议</a></li>
+								<li><a href="javascript:void(0)" onclick="addTab('离场会议','outmetting')">离场会议</a></li>
 								<li><a href="javascript:void(0)" onclick="addTab('现场检查结果','insiteresult')">现场检查结果</a></li>
 								<li><a href="javascript:void(0)" onclick="addTab('稽核清单','list')">稽核清单</a></li>
 								<li><a href="javascript:void(0)" onclick="addTab('量化打分','score')">量化打分</a></li>
@@ -144,12 +140,14 @@
 							</ul>
 						</div>
 					</li>
-					<li><a href="notifications" onclick="addTab('审计计划管理','riskmatrix')"><i class="lnr lnr-alarm"></i> <span>审计计划管理</span></a></li>
-					<li><a href="typography" onclick="addTab('被审单位管理','auditedmanage')"><i class="lnr lnr-text-format"></i> <span>被审单位管理</span></a></li>
-					<li><a href="icons" onclick="addTab('审计项目','auditpro')"><i class="lnr lnr-linearicons"></i> <span>审计项目</span></a></li>
-					<li><a href="notifications" onclick="addTab('流程定义','processdefine')"><i class="lnr lnr-alarm"></i> <span>流程定义</span></a></li>
-					<li><a href="notifications" onclick="addTab('审计知识库管理','auditlib')"><i class="lnr lnr-alarm"></i> <span>审计知识库管理</span></a></li>
-					<li><a href="notifications" onclick="addTab('工作日志','worklog')"><i class="lnr lnr-alarm"></i> <span>工作日志</span></a></li>
+					<li><a href="javascript:void(0);" onclick="addTab('审计计划管理','auditplanpro')"><i class="lnr lnr-alarm"></i> <span>审计计划管理</span></a></li>
+					<li><a href="javascript:void(0);" onclick="addTab('审计项目','auditpro')"><i class="lnr lnr-alarm"></i> <span>审计项目</span></a></li>
+					<!--<li><a href="javascript:void(0)" onclick="addTab('审计计划管理','riskmatrix')"><i class="lnr lnr-alarm"></i> <span>审计计划管理</span></a></li>-->
+					<!--<li><a href="javascript:void(0)" onclick="addTab('被审单位管理','auditedmanage')"><i class="lnr lnr-text-format"></i> <span>被审单位管理</span></a></li>-->
+					<!--<li><a href="javascript:void(0)" onclick="addTab('审计项目','auditpro')"><i class="lnr lnr-linearicons"></i> <span>审计项目</span></a></li>-->
+					<!--<li><a href="javascript:void(0)" onclick="addTab('流程定义','processdefine')"><i class="lnr lnr-alarm"></i> <span>流程定义</span></a></li>-->
+					<!--<li><a href="javascript:void(0)" onclick="addTab('审计知识库管理','auditlib')"><i class="lnr lnr-alarm"></i> <span>审计知识库管理</span></a></li>-->
+					<!--<li><a href="javascript:void(0)" onclick="addTab('工作日志','worklog')"><i class="lnr lnr-alarm"></i> <span>工作日志</span></a></li>-->
 				</ul>
 			</nav>
 		</div>
@@ -166,6 +164,10 @@
 	</div>
 </footer>
 
-
+<script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/vendor/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+<script th:src="@{/vendor/jquery.easy-pie-chart/jquery.easypiechart.min.js}"></script>
+<script th:src="@{/vendor/chartist/js/chartist.min.js}"></script>
+<script th:src="@{/scripts/klorofil-common.js}"></script>
 </body>
 </html>

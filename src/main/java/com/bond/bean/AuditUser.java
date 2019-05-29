@@ -1,5 +1,7 @@
 package com.bond.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -31,18 +33,6 @@ public class AuditUser implements Serializable {
     private String uEmail;
 
     private String uPhone;
-
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditAuditedInstitutions.class)
-    //@JoinColumn(name = "auditedId",referencedColumnName = "auditedId")
-    private AuditAuditedInstitutions ins;
-
-    public AuditAuditedInstitutions getIns() {
-        return ins;
-    }
-
-    public void setIns(AuditAuditedInstitutions ins) {
-        this.ins = ins;
-    }
 
     public Integer getuId() {
         return uId;

@@ -13,6 +13,7 @@ public class AuditSonattribute implements Serializable {
 
     private String sonaCode;
 
+    @Column(insertable = false,updatable = false)
     private Integer aId;
 
     public AuditSonattribute(String sonaCode, Integer aId, String sonaName) {
@@ -32,8 +33,8 @@ public class AuditSonattribute implements Serializable {
         this.aId = aId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditAttribute.class)
-    //@JoinColumn(name = "sonaId",referencedColumnName ="aId" )
+   // @ManyToOne(fetch = FetchType.LAZY,targetEntity = AuditAttribute.class)
+
     private AuditAttribute attribute;
 
     private String sonaName;

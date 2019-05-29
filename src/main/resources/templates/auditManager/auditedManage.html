@@ -15,6 +15,7 @@
 <script>
     $(function () {
         $('#dgs').datagrid({loadFilter: pagerFilter}).datagrid('loadData', getData());
+        $('#tab1').datagrid({loadFilter: pagerFilter}).datagrid('loadData', getData());
 
         // $('#dgs').datagrid({
         //     onSelect:function (rowIndex,rowData) {
@@ -30,6 +31,7 @@
         // });
     })
 
+    //点击上边表格的记录在下面表格展示该部门的所有用户
     function onSelect() {
         var row=$("#dgs").datagrid('getSelected');
         $.ajax({
@@ -37,12 +39,12 @@
             type:'post',
             dataType:"json",
             success:function (data) {
-                alert(data)
                 $("#tab1").datagrid('loadData',data);
             }
         })
     }
 
+    //easyUI前分页代码
     function getData(){
         var rows = [];
         for(var i=1; i<=800; i++){
@@ -89,6 +91,11 @@
         data.rows = (data.originalRows.slice(start, end));
         return data;
     }
+
+    /**
+     * 查找选择的机构下的所有的子部门
+     * @param id
+     */
    function selectson(id) {
        $.ajax({
            url:'sons?preId='+id,
@@ -98,6 +105,10 @@
            }
        })
    }
+
+    /**
+     * 查找所有的业务类型，在左边的下拉框展示
+     */
    function bus() {
        var businuss=$("#se  option:selected").val();
        $.ajax({
@@ -108,6 +119,303 @@
            }
        })
    }
+
+    /**
+     * 展示选择的部门的详细信息
+     */
+    function editaudited() {
+        var d=$("#dgs").datagrid('getSelected');
+        if (d){
+            $("#editaudited").dialog('open');
+            $("#editaudited_form").form('load',d);
+        }else{
+            alert("您还没有选择部门，请选择");
+        }
+    }
+
+    /**
+     * 提交添加被审机构
+     */
+    function save() {
+        $("#addaudited_form").form({
+            url:'addaudited',
+            onSubmit:function () {
+                if($("#code").val()==""){
+                    alert("编码不能为空，请填写编码");
+                    return false;
+                }else if($("#auname").val()==""){
+                    alert("名称不能为空，请填写名称");
+                    return false;
+                }
+                else if($("#level").val()=="请选择营业部等级"){
+                    alert("请选择营业部等级");
+                    return false;
+                }
+                else if($("#create").val()==""){
+                    alert("创建时间不能为空，请填写创建时间");
+                    return false;
+                }
+                else if($("#before").val()==""){
+                    alert("上次稽核时间不能为空，请填写上次稽核时间");
+                    return false;
+                }
+                else if($("#dept").val()==""){
+                    alert("请选择部门开展业务");
+                    return false;
+                } else if($("#acount").val()==""){
+                    alert("财务账套不能为空，请填写财务账套");
+                    return false;
+                }else if($("#credit").val()==""){
+                    alert("信用柜台编码不能为空，请填写信用柜台编码");
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+            success:function (data) {
+                if (data==1){
+                    alert("增加被审计机构成功！");
+                    $("#addaudited").dialog('close');
+                    $("#dgs").datagrid('reload');
+                }else{
+                    alert("增加被审计机构失败！");
+                }
+            }
+        })
+    }
+
+    /**
+     * 提交编辑被审机构
+     */
+    function edit() {
+        $("#editaudited_form").form({
+            url: 'editaudited',
+            onSubmit: function () {
+                if ($("#code1").val() == "") {
+                    alert("编码不能为空，请填写编码");
+                    return false;
+                } else if ($("#auname1").val() == "") {
+                    alert("名称不能为空，请填写名称");
+                    return false;
+                }
+                else if ($("#level1").val() == "请选择营业部等级") {
+                    alert("请选择营业部等级");
+                    return false;
+                }
+                else if ($("#create1").val() == "") {
+                    alert("创建时间不能为空，请填写创建时间");
+                    return false;
+                }
+                else if ($("#before1").val() == "") {
+                    alert("上次稽核时间不能为空，请填写上次稽核时间");
+                    return false;
+                }
+                else if ($("#dept1").val() == "") {
+                    alert("请选择部门开展业务");
+                    return false;
+                } else if ($("#acount1").val() == "") {
+                    alert("财务账套不能为空，请填写财务账套");
+                    return false;
+                } else if ($("#credit1").val() == "") {
+                    alert("信用柜台编码不能为空，请填写信用柜台编码");
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+            success: function (data) {
+                if (data == 1) {
+                    alert("编辑被审计机构成功！");
+                    $("#editaudited").dialog('close');
+                    $("#dgs").datagrid('reload');
+                } else {
+                    alert("编辑被审计机构失败！");
+                }
+            }
+        })
+    }
+
+    /**
+     * 删除被审计机构
+     */
+    function deladited() {
+        var row=$("#dgs").datagrid('getSelected');
+        if(row){
+            $.messager.confirm("提示","确认删除吗？",function (r) {
+                if(r){
+                    $.ajax({
+                        url:'delaudited?auditedId='+row.auditedId,
+                        type:'get',
+                        success:function (data) {
+                            if(data==1){
+                                alert("删除成功");
+                                $("dgs").datagrid('reload');
+                            }else{
+                                alert("删除失败");
+                            }
+                        }
+                    })
+                }
+            })
+        }else{
+            alert("请选择一行");
+        }
+    }
+
+    /**
+     * 添加用户
+     */
+    function addauser() {
+        $("#addauser_form").form({
+            url:'addauser',
+            onSubmit:function () {
+                if($("#uUsercode").val()==""){
+                    alert("用户名不能为空，请填写用户名");
+                    return false;
+                }else if($("#uUsername").val()==""){
+                    alert("姓名不能为空，请填写姓名");
+                    return false;
+                } else if($("#uPassword").val()==""){
+                    alert("密码不能为空，请填写创建密码");
+                    return false;
+                } else if($("#uRole").val()==""){
+                    alert("角色不能为空，请填写角色");
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+            success:function (data) {
+                if (data==1){
+                    $("#addauser").dialog('close');
+                    $("#tab1").datagrid('reload');
+                }else{
+                    alert("增加用户失败！");
+                }
+            }
+        });
+        $("#addauser_form").submit();
+    }
+
+    function editauser1() {
+        $("#editauser_form").form({
+            url:'editauser',
+            onSubmit:function () {
+                if($("#uUsercode1").val()==""||$("#uUsercode1").val()==null){
+                    alert("用户名不能为空，请填写用户名");
+                    return false;
+                }else if($("#uUsername1").val()==""){
+                    alert("姓名不能为空，请填写姓名");
+                    return false;
+                } else if($("#uPassword1").val()==""){
+                    alert("密码不能为空，请填写创建密码");
+                    return false;
+                } else if($("#uRole1").val()==""){
+                    alert("角色不能为空，请填写角色");
+                    return false;
+                }else{
+                    return true;
+                }
+            },
+            success:function (data) {
+                alert(data)
+                if (data==1){
+                    alert("修改用户成功！");
+                    $("#editauser").dialog('close');
+                    $("#tab1").datagrid('reload');
+                }else{
+                    alert("修改用户失败！");
+                }
+            }
+        })
+        $("#editauser_form").submit();
+    }
+
+    /**
+     * 展示选择的用户的信息
+     */
+    function editauser() {
+        var d=$("#tab1").datagrid('getSelected');
+        if (d){
+            $("#editauser").dialog('open');
+            $("#editauser_form").form('load',d);
+        }else{
+            alert("您还没有选择用户，请选择");
+        }
+    }
+
+    /**
+     * 删除用户
+     */
+    function delauser() {
+        var row=$("#tab1").datagrid('getSelected');
+        if(row){
+            $.messager.confirm("提示","确认删除吗？",function (r) {
+                if(r){
+                    $.ajax({
+                        url:'delById?uId='+row.uId,
+                        type:'get',
+                        success:function (data) {
+                            if(data==1){
+                                alert("删除成功");
+                                $("#tab1").datagrid('reload');
+                            }else{
+                                alert("删除失败");
+                            }
+                        }
+                    })
+                }
+            })
+        }else{
+            alert("请选择用户");
+        }
+    }
+
+    function resetp() {
+        var s=$("#tab1").datagrid('getSelected');
+        if (s){
+            $("#dd").dialog('open');
+            $("#pwd_form").form('load',s);
+        }else{
+            alert("您还没有选择用户，请选择用户");
+        }
+    }
+
+    function resetpwd() {
+        var id=$("#uid").val();
+        var pwd=$("#pwd").val();
+        $.ajax({
+            url:'resetpwd?uid='+id+'&pwd='+pwd,
+            type:'get',
+            success:function (data) {
+                if(data==1){
+                    alert("重置密码成功！")
+                }else{
+                    alert("重置密码失败！")
+                }
+            }
+        })
+    }
+
+    function use() {
+        var o=$("#tab1").datagrid('getSelected');
+        alert(o)
+        var stat;
+        if(o.state=='正常'){
+            stat='禁用';
+        }else{
+            stat='正常';
+        }
+        $.ajax({
+            url:'use?uId='+o.uId+'&state='+stat,
+            type:'get',
+            success:function (data) {
+                if(data==1){
+                    alert('禁用/启用成功');
+                }
+            }
+        })
+    }
 </script>
 <body>
 <div class="easyui-layout" style="width: 100%;height: 800px;">
@@ -120,9 +428,9 @@
                </select>
         </div>
         <div id="ad" style="background: rgba(0, 0, 255, 0.1)">
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:addDialog()">增加</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:ayo()">删除</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:addDialog1()">编辑</a>
+            <a href="javascript:void(0)" id="a" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#addaudited').dialog('open')">增加</a>
+            <a href="javascript:void(0)" id="b" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:deladited()">删除</a>
+            <a href="javascript:void(0)" id="c" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:editaudited()">编辑</a>
         </div>
         <div id="tree">
             <ul class="easyui-tree">
@@ -138,7 +446,7 @@
         </div>
         </form>
     </div>
-<div data-options="region:'center',title:'详细信息'" style="padding:5px;" >
+<div data-options="region:'center',title:'详细信息'">
          <table id="dgs" class="easyui-datagrid" toolbar="#ad" pagination="true" style="width:100%;height: 370px;"
          data-options="url:'all',singleSelect:true,onSelect:onSelect">
              <thead>
@@ -152,7 +460,8 @@
              </tr>
              </thead>
          </table>
-        <table id="tab1" class="easyui-datagrid" pagination="true" rownumbers="true" toolbar="#p" style="width:100%;height: 370px;">
+        <table id="tab1" class="easyui-datagrid" pagination="true" toolbar="#p" style="width:100%;height: 370px;"
+            data-options="singleSelect:true,url:'allusers'">
             <thead>
             <tr>
                 <th field="uUsercode" width="20%">用户名</th>
@@ -163,50 +472,231 @@
             </tr>
             </thead>
         </table>
-        <div id="win" class="easyui-dialog" style="width:400px;padding: 20px;"
+
+        <!--增加被审计部门窗口-->
+        <div id="addaudited" class="easyui-dialog" style="width:400px;padding: 20px;"
              iconCls="icon-add" data-options="title:'增加被审机构',modal:true,closed:true">
-            <form id="" method="post" novalidate>
+            <form id="addaudited_form" method="post" >
+                <select id="higher" label="上级" class="easyui-combobox" name="preId" style="width:100%;">
+                    <option>请选择上级</option>
+                    <option th:each="l:${auditeds}" th:text="${l.auditedName}" th:value="${l.auditedId}"></option>
+                </select>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="编码:" required="true" style="width:100%"></input>
+                    <input id="code" class="easyui-textbox" label="编码:" name="auditedCode"  style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="名称:"  required="true" validType="email" style="width:100%"></input>
+                    <input id="auname" class="easyui-textbox" label="名称:"   name="auditedName" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-datetimespinner" label="成立时间:" required="true" style="width:100%"></input>
+                    <input id="create" class="easyui-datebox" label="成立时间:" name="auditedCreatetime" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-combo" label="部门开展业务:" required="true" style="width:100%"></input>
+                    <select id="dept" label="部门开展业务：" class="easyui-combobox" name="auditedBusiness" style="width:100%;">
+                        <option value="aa">请选择部门开展业务</option>
+                        <option th:each="j:${auditeds}" th:text="${j.auditedBusiness}"></option>
+                    </select>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-datetimespinner" label="上次稽核时间:" required="true" style="width:100%"></input>
+                    <input class="easyui-datebox" id="before" label="上次稽核时间:" name="auditedBeforetime" style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-combo" label="营业部等级:" required="true" style="width:100%"></input>
+                    <select id="level" label="营业部等级：" class="easyui-combobox" name="auditedLevel" style="width:100%;">
+                        <option value="aa">请选择等级</option>
+                        <option>初级</option>
+                        <option>中级</option>
+                        <option>高级</option>
+                    </select>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="信用柜台编码:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" id="credit" label="信用柜台编码:" name="auditedCreditCode"  style="width:100%"></input>
                 </div>
                 <div style="margin-bottom:10px">
-                    <input class="easyui-textbox" label="财务帐套:" required="true" style="width:100%"></input>
+                    <input class="easyui-textbox" id="acount" label="财务帐套:" name="auditedAccounting"  style="width:100%"></input>
                 </div>
                 <div style="text-align:right">
-                    <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
-                    <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+                    <input class="easyui-linkbutton" id="d" type="submit" onclick="save()" value="保存" style="width:80px;height:30px">
+                    <input class="easyui-linkbutton" id="e" type="reset" value="取消" style="width:80px;height:30px">
                 </div>
 
             </form>
         </div>
+
+    <!--编辑被审计部门信息-->
+    <div id="editaudited" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-edit" data-options="title:'编辑被审机构',modal:true,closed:true">
+        <form id="editaudited_form" method="post" novalidate>
+            <input type="hidden" name="auditedId">
+            <select id="higher1" label="上级" class="easyui-combobox" name="preId" style="width:100%;">
+                <option th:each="l:${auditeds}" th:text="${l.auditedName}" th:value="${l.auditedId}"></option>
+            </select>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="code1" label="编码:" name="auditedCode" style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="name1" label="名称:" name="auditedName"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-datebox" id="create1" label="成立时间:" name="auditedCreatetime"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="dept1" label="部门开展业务：" class="easyui-combobox" name="auditedBusiness" style="width:100%;">
+                    <option th:each="j:${auditeds}" th:text="${j.auditedBusiness}"></option>
+                </select>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-datebox" id="before1" label="上次稽核时间:"  name="auditedBeforetime" style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="level1" label="营业部等级：" class="easyui-combobox" name="auditedLevel" style="width:100%;">
+                    <option>初级</option>
+                    <option>中级</option>
+                    <option>高级</option>
+                </select>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="credit1" label="信用柜台编码:" name="auditedCreditCode"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="acount1" label="财务帐套:" name="auditedAccounting"  style="width:100%"></input>
+            </div>
+            <div style="text-align:right">
+                <input class="easyui-linkbutton" id="w" type="submit" value="保存" onclick="edit()" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" id="q" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+
+        </form>
+    </div>
 </div>
     <div id="p" style="padding: 3px;">
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:alert('增加')">增加</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:alert('增加')">删除</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:alert('增加')">编辑</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-use" plain="true" onclick="javascript:alert('增加')">使用</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reset" plain="true" onclick="javascript:alert('增加')">重置密码</a>
+        <a href="javascript:void(0)" id="f" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:$('#addauser').dialog('open')">增加</a>
+        <a href="javascript:void(0)" id="g" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:delauser()">删除</a>
+        <a href="javascript:void(0)" id="h" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="javascript:editauser()">编辑</a>
+        <a href="javascript:void(0)" id="i" class="easyui-linkbutton" iconCls="icon-use" plain="true" onclick="javascript:useauser()">禁用||启用</a>
+        <a href="javascript:void(0)" id="j" class="easyui-linkbutton" iconCls="icon-reset" plain="true" onclick="javascript:resetp()">重置密码</a>
         <input align="right" class="easyui-searchbox" data-options="prompt:'Please input somthing'" style="width:200px"></input>
     </div>
+
+    <!--添加用户窗口-->
+    <div id="addauser" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-add" data-options="title:'增加用户',modal:true,closed:true">
+        <form id="addauser_form" method="post" >
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uUsercode" name="uUsercode" label="用户名:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uUsername" name="uUsername" label="姓名:"   validType="email" style="width:100%"></input>
+            </div>
+            <div stye="margin-bottom:10px">
+                <select id="uDept" label="部门" class="easyui-combobox" name="uDept" style="width:100%;">
+                    <option>请选择部门</option>
+                    <option th:each="dep:${depts}" th:text="${dep.configvaluename}" th:value="${dep.id}"></option>
+                </select>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="uPost" label="岗位" class="easyui-combobox" name="uPost" style="width:100%;">
+                    <option>请选择岗位</option>
+                    <option th:each="pos:${posts}" th:text="${pos.configvaluename}" th:value="${pos.id}"></option>
+                </select>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uPqualification" name="uPqualification" label="人员资质:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uCode" name="uCode" label="用户编码:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uEmail" name="uEmail" label="邮箱:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uRole" name="uRole" label="角色:"style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uPhone" name="uPhone" label="电话:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="auditedId" label="上级" class="easyui-combobox" name="auditedId" style="width:100%;">
+                    <option>请选择上级</option>
+                    <option th:each="l:${auditeds}" th:text="${l.auditedName}" th:value="${l.auditedId}"></option>
+                </select>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uPassword" name="uPassword" label="密码:" style="width:100%"></input>
+            </div>
+            <div style="text-align:center">
+                <input class="easyui-linkbutton" id="k" type="submit" onclick="addauser()" value="保存" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" id="l" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+        </form>
     </div>
+
+    <!--编辑用户-->
+    <div id="editauser" class="easyui-dialog" style="width:400px;padding: 20px;"
+         iconCls="icon-add" data-options="title:'修改用户',modal:true,closed:true">
+        <form id="editauser_form" method="post">
+            <input type="hidden" name="uId">
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uUsercode1" name="uUsercode" label="用户名:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uUsername1" name="uUsername" label="姓名:"  validType="email" style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="uDept1" label="部门" class="easyui-combobox" name="uDept" style="width:100%;">
+                    <option>请选择部门</option>
+                    <option th:each="dep1:${depts}" th:text="${dep1.configvaluename}" th:value="${dep1.id}"></option>
+                </select></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="uPost1" label="岗位" class="easyui-combobox" name="uPost" style="width:100%;">
+                    <option>请选择岗位</option>
+                    <option th:each="pos1:${posts}" th:text="${pos1.configvaluename}" th:value="${pos1.id}"></option>
+                </select></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uPqualification1" name="uPqualification" label="人员资质:" style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uCode1" name="uCode" label="用户编码:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uEmail1" name="uEmail" label="邮箱:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uRole1" name="uRole" label="角色:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uPhone1" name="uPhone" label="电话:"  style="width:100%"></input>
+            </div>
+            <div style="margin-bottom:10px">
+                <select id="auditedId1" label="上级" class="easyui-combobox" name="auditedId" style="width:100%;">
+                    <option>请选择上级</option>
+                    <option th:each="o:${auditeds}" th:text="${o.auditedName}" th:value="${o.auditedId}"></option>
+                </select>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" id="uPassword1" name="uPassword" label="密码:" style="width:100%"></input>
+            </div>
+            <div style="text-align:right">
+                <input  type="submit" value="保存" onclick="editauser1()" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" id="m" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+        </form>
+    </div>
+
+    <div id="dd" class="easyui-dialog" title="My Dialog" style="width:400px;height:200px;"
+         data-options="iconCls:'icon-save',resizable:true,modal:true,closed:true">
+        <form method="post" id="pwd_form">
+            <input type="hidden" name="uId" id="uid">
+            <div style="margin-bottom:10px">
+                密码：<input type="password" name="uPassword" id="pwd">
+            </div>
+            <div style="text-align:center">
+                <input class="easyui-linkbutton" id="n" type="submit" value="保存" onclick="resetpwd()" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" id="o" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+        </form>
+    </div>
+</div>
 </div>
 </body>
 </html>

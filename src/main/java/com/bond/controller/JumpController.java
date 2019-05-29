@@ -9,10 +9,10 @@ public class JumpController {
     @RequestMapping("/todolist")
     public String todolist(){return "todoList"; }
 
-    @RequestMapping("/login")
-    public String login(){
-        return "login";
-    }
+//    @RequestMapping("/login")
+//    public String login(){
+//        return "login";
+//    }
 
     @RequestMapping("/worklog")
     public String worklog(){
@@ -34,10 +34,10 @@ public class JumpController {
      * 领导工作台
      * @return
      */
-    @RequestMapping("/persontask")
+    @RequestMapping("/personTask")
     public String persontask(){return "leadWorkbench/personTask"; }
 
-    @RequestMapping("/proprocess")
+    @RequestMapping("/proProcess")
     public String proprocess(){return "leadWorkbench/proProcess"; }
 
 
@@ -50,10 +50,10 @@ public class JumpController {
 //        return "auditManager/auditedManage";
 //    }
 
-    @RequestMapping("/useradmin")
-    public String useradmin(){
-        return "auditManager/auditUserAdministration";
-    }
+//    @RequestMapping("/useradmin")
+//    public String useradmin(){
+//        return "auditManager/auditUserAdministration";
+//    }
 
     @RequestMapping("/managerindex")
     public String index(){
@@ -70,10 +70,12 @@ public class JumpController {
         return "auditManager/opLog";
     }
 
-    @RequestMapping("/auditormanage")
-    public String auditormanage(){
-        return "auditManager/auditorManage";
-    }
+
+
+//    @RequestMapping("/rolemanage")
+//    public String rolemanage(){
+//        return "auditManager/roleManage";
+//    }
 
 
     /**
