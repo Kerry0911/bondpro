@@ -34,10 +34,10 @@
                 // var zs = data[0].ppZs;//得到助审的人员
                 // zsper = zs.split(",");//助审人员通过，分割 然后给数组
                 // for(var i = 0;i<zhushenper.length;i++) {//只循环主审的人员 然后给option
-                //     $("#zhushen").append("<option>" +zhushenper[i]+ "</option>");
+                //     $("#zhushen").append("<option>" +zhushenper[i]+ "</option>");这里是只给id为zhushen的opgroup下面添加option
                 // }
                 // for(var i = 0;i<zsper.length;i++) {//只循环助审的人员 然后给option
-                //     $("#zs").append("<option>" +zsper[i]+ "</option>");
+                //     $("#zs").append("<option>" +zsper[i]+ "</option>");这里是只给id为zs的opgroup下面添加助审人员的option
                 // }
                 // pro.option[1].text =
             }
@@ -154,10 +154,10 @@
             </span>
             <span style="margin-left: 100px;">项目人员：
                 <select style="height: 30px;width: 200px;" id="properson">
-                    <!--<optgroup label="主审" id = "zhushen">-->
+                    <!--<optgroup label="主审" id = "zhushen">id是主审-->
                         <!--&lt;!&ndash;<option></option>&ndash;&gt;-->
                     <!--</optgroup>-->
-                    <!--<optgroup label="助审" id="zs">-->
+                    <!--<optgroup label="助审" id="zs">id是助审-->
                         <!--&lt;!&ndash;<option></option>&ndash;&gt;-->
                     <!--</optgroup>-->
                 </select>

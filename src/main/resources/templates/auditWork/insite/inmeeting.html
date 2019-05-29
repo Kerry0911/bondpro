@@ -1,59 +1,133 @@
 <!DOCTYPE html>
-<html lang="en" xmlns>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>进场会</title>
-    <link rel="stylesheet" href="../../../static/css/bootstrap.css">
-    <script  src="../../../static/vendor/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}">
 </head>
 <body>
-    <div>
-        <div>进场会</div>
-        <div>
-            <form>
-                <div class="form-group">
-                    <label>项目名称</label>
-                    <input type="text">
-                </div>
-                <div class="form-group">
-                    <label>项目编号</label>
-                    <input type="text">
-                </div>
-                <div class="form-group">
-                    <label>项目类型</label>
-                    <input type="text">
-                </div>
-                <div class="form-group">
-                    <label>被审计机构</label>
-                    <input type="text">
-                </div>
-                <div class="form-group">
-                    <label>具体被审计机构</label>
-                    <input type="text">
-                </div>
-                <div class="form-group">
-                    <label>审计期间起</label>
-                    <input type="text">
-                </div>
-                <div class="form-group">
-                    <label>审计期间止</label>
-                    <input type="text">
-                </div>
-            </form>
-
-            <table>
-                <tr>
-                    <td>附件名</td>
-                    <td>上传时间</td>
-                    <td>操作</td>
-                </tr>
-                <tr>
-                    <td>132</td>
-                    <td>132</td>
-                    <td>132</td>
-                </tr>
-            </table>
+<div style="background-color: #6ab8f7;border: 1px solid black;width: 900px;height:30px;margin: 0 auto;">基本信息</div>
+<div style="margin:0 auto;text-align:center;width: 900px;height: 180px;border: 1px solid black">
+    <div style="margin-top:15px;font-size: 16px;">
+        项目名称：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.optionalAuditPlanproject.ppName}">
+        项目编号：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.optionalAuditPlanproject.ppId}">
+        项目类型：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.optionalAuditPlanproject.ppType}"><br>
+        <div style="margin-top: 15px;">
+            <span>被审计机构：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.optionalAuditPlanproject.ppAudited}"></span>
+            <span style="margin-left: 50px;">具体被审计机构：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.optionalAuditPlanproject.ppSpecific}"></span>
+        </div>
+        <div style="margin-top: 15px;">
+            <span style="margin-right: 33px;">审计期间起：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.optionalAuditPlanproject.ppStarttime}"></span>
+            <span style="margin-left: 50px;">审计期间止：<input type="text" style="width: 262px;height: 30px;background-color: lightsteelblue" th:value="${session.optionalAuditPlanproject.ppEndstart}"></span>
         </div>
     </div>
+</div>
+<!--<div id="filetool">-->
+    <!--<button href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'">上传</button>-->
+    <!--<button href="#" class="easyui-linkbutton" data-options="iconCls:'icon-hammer'">下载</button>-->
+    <!--<button href="#" class="easyui-linkbutton" data-options="iconCls:'icon-hammer'">删除</button>-->
+<!--</div>-->
+<br>
+<div>
+    <div style="background-color: #6ab8f7;border: 1px solid black;width: 800px;height:30px;margin: 0 auto;"><a href="#" style="margin-left: 600px;" onclick="openfiledialog()">进场会议记录会议文件上传</a></div>
+    <table border="1px" width="800px" style="margin: 0 auto" id="filetable">
+        <tr>
+            <td height="30px;">附件名</td>
+            <td>上传时间</td>
+            <td>操作</td>
+        </tr>
+        <tr th:each="l:${session.projectfiles}">
+            <td height="30px;" th:text="${l.filename}">附件名</td>
+            <td th:text="${l.shangchuantime}">上传时间</td>
+            <td><a href="javascript:void(0)" th:onclick="'del('+${l.id}+')'">删除</a><a href="javascript:void(0)" class="button" th:onclick="'xiazai('+${l.id}+')'">下载</a></td>
+        </tr>
+    </table>
+    <div id="filedialog" class="easyui-dialog" style="width: 500px;height: 200px;" title="文件上传" data-options="buttons:'#btn',closed:true,left: 300,top:100">
+        <form method="POST" enctype="multipart/form-data">
+            文件：<input id="file" type="file" name="file"/>
+            <input type="button" onclick="uploadfile()" value="上传"/>
+        </form>
+    </div>
+    <!--<table id="filedatagrid" class="easyui-datagrid" toolbar="#filetool" data-options="fitColumns:true,singleSelect:true,pagination:true">-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th data-options="field:'filename'">附件名</th>-->
+            <!--<th data-options="field:'shangchuantime'">上传时间</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+    <!--</table>-->
+</div>
+<script th:inline="javascript">
+    function del(id){
+        $("#filetable tr").slice(1).remove();
+        $.ajax({
+            url:"del",
+            dataType:"json",
+            data:{id:id},
+            type:"post",
+            success:function(data){
+                for(var i =0;i<data.length;i++) {
+                    //删了之后再插到数据库所有数据 返回到这个页面 再通过append到table  等于就是删除一个数据之后  然后再重新查所有数据传到前台  然后通过append添加到table下 在这之前会removetable下面的tr  然后查到之后在这里append给table 等于是刷新
+                    $("#filetable").append("<tr><td height='30px;'>"+data[i].filename+"</td><td>" + data[i].shangchuantime +"</td><td><a href='javascript:void(0)' onclick='del("+data[i].id+")'>删除</a><a href='javascript:void(0)' class='button' onclick='xiazai("+data[i].id+")'>下载</a></td></tr>");
+                }
+            }
+        })
+    }
+    function xiazai(id){
+        $.ajax({
+            url:"xiazaifile",
+            dataType:"json",
+            data:{id:id},
+            type:"post",
+            success:function(data){
+                $.download('xiazai', 'post', data.filelujing, data.filename);
+            }
+        })
+    }
+    jQuery.download = function(url, method, filelujing, filename){
+        jQuery('<form action="'+url+'" method="'+(method||'post')+'">' +  // action请求路径及推送方法
+            '<input type="text" name="filelujing" value="'+filelujing+'"/>' + // 文件路径
+            '<input type="text" name="filename" value="'+filename+'"/>' + // 文件名称
+            '</form>')
+            .appendTo('body').submit().remove();
+    };
+    function openfiledialog(){
+        $("#filedialog").dialog("open");
+    }
+    function uploadfile(){
+        var file  = $("#file")[0].files[0];
+        if (checkData()) {
+            var formData = new FormData();
+            //此处将所要传递的数据append到formData中
+            formData.append("fileinfo", file);
+            $.ajax({
+                url: "upload",
+                type: "POST",
+                data: formData,
+                processData: false,       //必不可缺
+                contentType: false,       //必不可缺
+                // dataType: "json",
+                success: function (data) {
+                    $("#filetable").append("<tr><td height='30px;'>"+data.filename+"</td><td>"+data.shangchuantime+"</td><td><a href='javascript:void(0)' onclick='del("+data.id+")'>删除</a><a href='javascript:void(0)' class='button' onclick='xiazai("+data.id+")'>下载</a></td></tr>");
+                    alert("文件上传成功");
+                    $("#file").val() == "";
+                }
+            })
+        }
+    }
+    function checkData(){
+        var fileDir = $("#file").val();
+        if("" == fileDir){
+            alert("选择需要上传的文件！");
+            return false
+        }
+        return true;
+    }
+</script>
 </body>
 </html>

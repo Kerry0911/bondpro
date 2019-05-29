@@ -52,6 +52,9 @@ public class AuditPlanproject implements Serializable {
     private List<AuditFangan> auditFangans = new ArrayList<AuditFangan>();
     @OneToMany(fetch = FetchType.LAZY,targetEntity =Task.class,mappedBy = "auditPlanproject")
     private List<Task> tasks = new ArrayList<Task>();
+    @OneToMany(fetch = FetchType.LAZY,targetEntity =Projectfile.class,mappedBy = "auditPlanproject")
+    private List<Projectfile> projectfiles = new ArrayList<Projectfile>();
+
 
 
     public AuditPlanproject(Integer ppId, String ppName, String ppAudit, String ppAudited, String ppSpecific, String ppType, String ppCreatepeople, Date ppCreatedate, String ppGeneratepeople, AuditPlan auditPlan, Date ppStarttime, Date ppEndstart, String ppJieduan, String ppCheck, String ppJd, String ppState) {

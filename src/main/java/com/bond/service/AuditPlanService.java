@@ -4,15 +4,19 @@ import com.bond.bean.*;
 import com.bond.repository.*;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,7 +37,14 @@ public class AuditPlanService {
     private TaskRep taskRep;
     @Autowired
     private ProjectroleRep projectroleRep;
-
+    @Autowired
+    private AuditFanganRep auditFanganRep;
+    @Autowired
+    private DaibanthingRep daibanthingRep;
+    @Autowired
+    private OfficialdraftRep officialdraftRep;
+    @Autowired
+    private ProjectfileRep projectfileRep;
     /**
      * 查找所有的审计计划
      * @return
@@ -259,5 +270,121 @@ public class AuditPlanService {
     }
     public List<Task> selectTaskbyppid(Integer id){
         return taskRep.findByAuditPlanproject_PpId(id);
+    }
+
+    /**
+     * 保存方案
+     * @param auditFangan
+     * @return
+     */
+    public AuditFangan addfangan(AuditFangan auditFangan){
+        return auditFanganRep.save(auditFangan);
+    }
+
+    /**
+     * 添加待审
+     * @param daibanthing
+     * @return
+     */
+    public Daibanthing adddaiban(Daibanthing daibanthing){
+        return daibanthingRep.save(daibanthing);
+    }
+
+    /**
+     *
+     * @param officialdraft
+     * @return
+     */
+    public Officialdraft addoff(Officialdraft officialdraft){
+        return officialdraftRep.save(officialdraft);
+    }
+
+    public Projectfile uploadfile(MultipartFile file,Integer id){
+        Projectfile p = new Projectfile();
+        try {
+            // 获取文件名
+            String fileName = file.getOriginalFilename();
+            System.out.println(fileName);
+            // 获取文件的后缀名
+            String suffixName = fileName.substring(fileName.lastIndexOf("."));
+            System.out.println(suffixName);
+            // 设置文件存储路径   将本地文件上传到这个路径里面
+            String filePath = "F:/Program Files/";
+            String path = filePath + fileName;
+            File dest = new File(path);
+            // 检测是否存在目录
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();// 新建文件夹
+            }
+            //给文件表注值
+            Projectfile projectfile= new Projectfile();
+            AuditPlanproject a = new AuditPlanproject();
+            a.setPpId(id);
+            projectfile.setFilelujing(path);
+            projectfile.setFilename(fileName);
+            projectfile.setAuditPlanproject(a);
+            projectfile.setShangchuantime(new Date());
+            p = projectfileRep.save(projectfile);
+            file.transferTo(dest);// 文件写入
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        return p;
+    }
+    public List<Projectfile> selectprojectfilebyppid(Integer ppid){
+        return projectfileRep.findByAuditPlanproject_PpId(ppid);
+    }
+
+    /**
+     * 查找文件
+     * @param id
+     * @return
+     */
+    public Optional<Projectfile> selectbyfileid(Integer id){
+        return projectfileRep.findById(id);
+    }
+    /**
+     * 删除
+     */
+    public void delete(Integer id){
+        projectfileRep.deleteById(id);
+    }
+
+    /**
+     * 查找所有审计要点
+     * @return
+     */
+    public List<Projectfile> selectAllprojectfile(){
+        return projectfileRep.findAll();
+    }
+
+    /**
+     *
+     * @param code 是编号
+     * @param auditpoints 是内容
+     * @return
+     */
+    public List<Task> selecttaskbycodeandauditpoints(String code,String auditpoints,AuditPlanproject aa){
+        List<Task> list = taskRep.findAll(new Specification<Task>() {
+            //这个方法就等于一个Predicate
+            @Override
+            public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(code)){
+                    predicates.add(criteriaBuilder.like(root.<String>get("tCode"),"%"+code+"%"));
+                }
+                //如果传进来的这个不等于空 就拼接上这个进行查  如果等于空 就不拼接这个 就只通过上面那个查
+                if (!StringUtils.isEmpty(auditpoints)){
+                    predicates.add(criteriaBuilder.like(root.<String>get("tAuditpoints"),"%"+auditpoints+"%"));
+                }
+                if (!StringUtils.isEmpty(aa)) {
+                    predicates.add(criteriaBuilder.equal(root.<String>get("auditPlanproject"),aa));
+                }
+                return criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+            }
+        });
+        return list;
     }
 }

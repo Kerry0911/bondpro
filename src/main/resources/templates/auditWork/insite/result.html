@@ -1,10 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <script type="text/javascript" th:src="@{/easyui/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
     <meta charset="UTF-8">
     <title>现场检查结果</title>
 </head>
-<body>
+<style>
+    a{text-decoration: none;}
+</style>
+<script>
+    function dialog() {
+        $("#dialog").window('open');
+    }
 
+    function dialog1() {
+        $("#dialog1").window('open');
+    }
+</script>
+<body class="easyui-layout">
+<div data-options="region:'west'" style="width: 200px;">
+    <table class="easyui-datagrid" style="width: 198px;">
+        <thead>
+        <tr>
+            <th data-options="field:'jiancha'" style="width: 100%;background: #00aff0;">检查项</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a href="javascript:void(0)" style="width: 185px;">资产前20户</a></td>
+        </tr>
+        <tr>
+            <td><a href="javascript:void(0)" style="width: 185px;">交易前20户</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="javascript:void(0)" class="easyui-linkbutton" style="background: #00aff0;height: 30px;" onclick="dialog1()">检查项目总结</a>
+</div>
+<div data-options="region:'center'" style="width: 100%">
+    <table class="easyui-datagrid" style="height: 100%;width: 100%">
+        <thead>
+        <tr>
+            <th data-options="field:'list',width:'25%'" >客户信息</th>
+            <th data-options="field:'weifan',width:'25%'" >违反词条</th>
+            <th data-options="field:'jisuan',width:'25%'">计算扣分</th>
+            <th data-options="field:'caozuo',width:'25%'">操作</th>
+        </tr>
+        </thead>
+        <tbody >
+        <tr style="padding: 10px;">
+            <td>张三</td><td>非法操盘</td><td>3</td><td><a href="javascript:void(0)">删除</a><a href="javascript:void(0)" onclick="dialog()">稽核明细</a></td>
+        </tr>
+        <tr>
+            <td>李四</td><td>伪造证件</td><td>2</td><td><a href="javascript:void(0)">删除</a><a href="javascript:void(0)" onclick="dialog()">稽核明细</a></td>
+        </tr>
+        <tr>
+            <td>王五</td><td>大额操作</td><td>2</td><td><a href="javascript:void(0)">删除</a><a href="javascript:void(0)" onclick="dialog()">稽核明细</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="dialog" class="easyui-dialog" style="width:800px;padding: 20px;"
+         iconCls="icon-add" data-options="title:'明细稽核',modal:true,closed:true">
+        <form id="" method="post" novalidate>
+            <div style="margin-bottom:10px;">
+                <label>是否正常:</label>
+                <input type="radio" class="easyui-validatebox" name="radiotype"><label>未知</label></input>
+                <input type="radio" class="easyui-validatebox" name="radiotype"><label>正常</label></input>
+                <input type="radio" class="easyui-validatebox" name="radiotype"><label>异常</label></input>
+            </div>
+            <div style="margin-bottom:10px;">
+                <textarea class="easyui-textbox" label="风险事项:" required="true"  multiline="true" style="width:100%;height:60px"></textarea>
+            </div>
+            <div style="margin-bottom:10px;">
+                <textarea class="easyui-textbox" label="补充风险事项:" required="true"  multiline="true" style="width:100%;height:60px"></textarea>
+            </div>
+            <div style="margin-bottom:10px;">
+                <textarea class="easyui-textbox" label="备注信息:" required="true"  multiline="true" style="width:100%;height:60px"></textarea>
+            </div>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" label="检查用户:" required="true" style="width:48%"></input>
+                <input class="easyui-textbox" label="检查时间:" required="true" style="width:48%;"></input>
+            </div>
+            <div style="text-align:right">
+                <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+                <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+            </div>
+        </form>
+    </div>
+
+    <div id="dialog1" class="easyui-dialog" style="width:800px;padding: 20px;"
+         iconCls="icon-add" data-options="title:'检查项总结',modal:true,closed:true">
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="稽核项目:" required="true" style="width:100%"></input>
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="检查项:" required="true" style="width:100%"></input>
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="部门名称:" required="true" style="width:100%"></input>
+        </div>
+        <div style="margin-bottom:10px;">
+            <label>审核状态:</label>
+            <input type="radio" class="easyui-validatebox" name="radiotype"><label>0未处理</label></input>
+            <input type="radio" class="easyui-validatebox" name="radiotype"><label>1处理中</label></input>
+            <input type="radio" class="easyui-validatebox" name="radiotype"><label>2已完成</label></input>
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="累计:" required="true" style="width:100%"></input>
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="被稽核:" required="true" style="width:100%"></input>
+        </div>
+        <div style="margin-bottom:10px;">
+            <textarea class="easyui-textbox" label="审计状况:" name="auditStatus" multiline="true" required="true" style="width:100%;height:60px"></textarea>
+        </div>
+        <div style="margin-bottom:10px;">
+            <textarea class="easyui-textbox" label="备注信息:" name="remarks1" multiline="true" required="true" style="width:100%;height:60px"></textarea>
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" label="检查用户:" required="true" style="width:48%"></input>
+            <input class="easyui-textbox" label="检查时间:" required="true" style="width:48%;"></input>
+        </div>
+        <div style="text-align:right">
+            <input class="easyui-linkbutton" type="submit" value="保存" style="width:80px;height:30px">
+            <input class="easyui-linkbutton" type="reset" value="取消" style="width:80px;height:30px">
+        </div>
+    </div>
+</div>
 </body>
 </html>

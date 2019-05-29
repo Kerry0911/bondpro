@@ -6,10 +6,15 @@ import org.apache.coyote.http11.HttpOutputBuffer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.crypto.Data;
+import java.io.*;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -143,10 +148,10 @@ public class AuditWork {
      */
     @RequestMapping("addproject")
     @ResponseBody
-    public boolean addproject(@RequestParam("ppid") Integer ppid, String ppname, String pptype, String ppaudited, String  starttime, String endtime, String ppjd, String checkxiang){
+    public boolean addproject(HttpSession session,@RequestParam("ppid") Integer ppid, String ppname, String pptype, String ppaudited, String  starttime, String endtime, String ppjd, String checkxiang){
         boolean b = false;
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-        Date startt = new Date();
+        Date startt = new Date();//前端传来的时间用string接 然后在通过simpledateformat转为date  再添加到数据库
         Date endt = new Date();
         try{
             startt = s.parse(starttime);
@@ -156,7 +161,8 @@ public class AuditWork {
         }
         AuditPlanproject a = new AuditPlanproject();
         a.setPpId(ppid);a.setPpName(ppname);a.setPpType(pptype);a.setPpAudited(ppaudited);a.setPpStarttime(startt);a.setPpEndstart(endt);a.setPpJd(ppjd);a.setPpCheck(checkxiang);
-        AuditPlanproject auditPlanproject = service.addproject(a);
+        AuditPlanproject auditPlanproject = service.addproject(a);//返回刚刚添加的项目的内容
+        session.setAttribute("auditPlanproject",auditPlanproject);
         if(ppjd.substring(ppjd.length()-1,ppjd.length()).equals(",")){//如果传过来的阶段后面有,那么就去掉
             ppjd = ppjd.substring(0,ppjd.length()-1);
         }
@@ -269,8 +275,10 @@ public class AuditWork {
         if(zhushenpq.substring(zhushenpq.length()-1,zhushenpq.length()).equals(",")){
             zhushenpq = zhushenpq.substring(0,zhushenpq.length()-1);
         }
-        if(zspq.substring(zspq.length()-1,zspq.length()).equals(",")){
-            zspq = zspq.substring(0,zspq.length()-1);
+        if(zspq!=null&&zspq!="") {//如果这个助审的资质为空就表示我没有选择助审  所以就不需要进行这个去后面尾部多余符号的语句 你都没有资质你还进行这个处理干啥 都是空的 就没必要处理
+            if (zspq.substring(zspq.length() - 1, zspq.length()).equals(",")) {
+                zspq = zspq.substring(0, zspq.length() - 1);
+            }
         }
         if(zs!=null&&zs!="") {
             if (zs.substring(zs.length() - 1, zs.length()).equals(",")) {
@@ -291,7 +299,7 @@ public class AuditWork {
                 b = true;
             }
         }
-        if(shifou==1){
+        if(shifou==1){//这里是两个阶段的都一起进行修改
             Projectrole a = service.selectprolebyproleid(rid, ppjd);
             a.setZhushen(zhushen);
             a.setZhushenrole(zhushenrole);
@@ -300,6 +308,8 @@ public class AuditWork {
             a.setZsrole(zsrole);
             a.setZspqualification(zspq);
             Projectrole projectrole = service.addprorole(a);
+            //如果那边只选择非现场阶段 那么添加的时候前面在角色里面就会只添加非现场阶段的数据 如果一起修改的话会导致查不到现场阶段的数据 就会报错
+            // 因为根本没添加进现场阶段的角色数据 所以数据库里面根本就没有这一个数据  所以导致查不到 就会报错
             Projectrole a1 = service.selectprolebyproleid(rid+1, "仅现场阶段");
             a1.setZhushen(zhushen);
             a1.setZhushenrole(zhushenrole);
@@ -433,8 +443,6 @@ public class AuditWork {
         Date end =null;
         try{
             if(!starttime.equals("")&&!endtime.equals("")) {
-                System.out.println(starttime);
-                System.out.println(endtime);
                 start = s.parse(starttime);
                 end = s.parse(endtime);
             }
@@ -477,15 +485,230 @@ public class AuditWork {
         }
         return b;
     }
+
+    /**
+     * 跳转到审计方案
+     * @param session
+     * @return
+     */
     @RequestMapping("toauditscheme")
     public String toauditscheme(HttpSession session){
-        Integer pp = 23671;
-        Optional<AuditPlanproject> a =service.selectbid(pp);//通过项目id查到项目 可以直接在前台通过指定的变量点出项目所有属性
-        List<Projectrole> p = service.selectbyproid(pp);
-        List<Task> t = service.selectTaskbyppid(pp);
+         Integer id = 21227;
+        Optional<AuditPlanproject> a =service.selectbid(id);//通过项目id查到项目 可以直接在前台通过指定的变量点出项目所有属性
+        List<Projectrole> p = service.selectbyproid(id);
+        List<Task> t = service.selectTaskbyppid(id);
         session.setAttribute("a",a.get());
         session.setAttribute("p",p.get(0));//传过去的是一个对象 因为我在list里面拿到了第一个对象
         session.setAttribute("t",t);
         return "auditWork/prorosalStage/auditScheme";
     }
+
+    /**
+     * 保存审计方案
+     * @param id
+     * @param des
+     * @return
+     */
+    @RequestMapping("savafangan")
+    @ResponseBody
+    public AuditFangan savafangan(@RequestParam("id")Integer id,@RequestParam("des") String des){//得到项目id
+        boolean b = false;
+        AuditFangan fangan = new AuditFangan();
+        AuditPlanproject a = new AuditPlanproject();
+        a.setPpId(id);
+        fangan.setAuditPlanproject(a);
+        fangan.setfDes(des);
+        AuditFangan auditFangan = service.addfangan(fangan);//将刚刚添加的方案返回给页面 然后在传到后台来将这个方案提交审核
+        return auditFangan;
+    }
+
+    /**
+     * 提交审核 添加待审
+     * @param id
+     * @return
+     */
+    @RequestMapping("tijiaoshenhe")
+    @ResponseBody
+    public boolean tijiaoshenhe(@RequestParam("fanganid")Integer id){//传来的是方案id
+        Date d= new Date();
+        AuditFangan fangan = new AuditFangan();
+        String daibantype = "项目方案审计";
+        String sendpeople = "贺武康";
+        Date sendtime = d;
+        Integer fid = id;
+        String state = "审核中";
+        fangan.setfId(fid);
+        Daibanthing daibanthing = new Daibanthing();
+        daibanthing.setdSendpeople(sendpeople);
+        daibanthing.setdSendtime(sendtime);
+        daibanthing.setdType(daibantype);
+        daibanthing.setAuditFangan(fangan);
+        daibanthing.setState(state);
+        Daibanthing daibanthing1 = service.adddaiban(daibanthing);//添加完了的待办事项  返回的就是刚刚添加的代办事项的内容
+        Officialdraft o = new Officialdraft();
+        String jieshoupeople = "经理";
+        o.setDaibanthing(daibanthing1);//直接把这个待办事项的内容添加到off里面 这个里面是有这个待办事项的id的
+        o.setoJieshoudept(jieshoupeople);
+        o.setState(0);
+        Officialdraft officialdraft = service.addoff(o);
+        boolean b= false;
+        if (daibanthing1!=null) {
+            b = true;
+        }
+        return b;
+    }
+
+    /**
+     * 进场会
+     * @param session
+     * @return
+     */
+    @RequestMapping("toinmeeting")
+    public String toxianchangres(HttpSession session){
+        AuditPlanproject a = (AuditPlanproject)session.getAttribute("auditPlanproject");
+        Integer id = 94136;
+        List<Projectfile> projectfiles = service.selectprojectfilebyppid(id);
+        Optional<AuditPlanproject> optionalAuditPlanproject = service.selectbid(id);
+        session.setAttribute("optionalAuditPlanproject",optionalAuditPlanproject.get());
+        session.setAttribute("projectfiles",projectfiles);
+        return "auditWork/insite/inmeeting";
+    }
+    @RequestMapping(value = "/upload")
+    @ResponseBody
+    public Projectfile upload(@RequestParam("fileinfo") MultipartFile file) {
+        Integer id = 94136;
+        Projectfile projectfile = service.uploadfile(file,id);
+        return projectfile;
+    }
+
+    /**
+     * 这里只是通过ajax传过来文件id  然后查到文件 再传到页面进行操作
+     * @param id
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("xiazaifile")
+    @ResponseBody
+    public Projectfile xiazai(@RequestParam("id") Integer id, HttpServletRequest request, HttpServletResponse response){
+        Optional<Projectfile> projectfile = service.selectbyfileid(id);
+        File file = new File(projectfile.get().getFilelujing());//意思是从这个路径里面下载文件
+        return projectfile.get();
+    }
+
+    /**
+     * 在页面通过form表单下载  传路径过来
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping("xiazai")
+    @ResponseBody
+    public String xz( HttpServletRequest request, HttpServletResponse response){
+        String lujing = request.getParameter("filelujing");
+        File file = new File(lujing);//意思是从这个路径里面下载文件
+//        File file = new File(realPath , fileName);
+        if (file.exists()) {
+//            response.setCharacterEncoding("UTF-8");
+//            response.setContentType("multipart/form-data");
+//            response.setHeader("Content-Disposition",
+//                    "attachment;fileName="+URLEncoder.encode(fileName, "UTF-8"));
+            try {
+                response.setContentType("application/force-download");// 设置强制下载不打开
+                response.addHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(lujing, "UTF-8"));
+            }catch (UnsupportedEncodingException e){
+                e.printStackTrace();
+            }
+            byte[] buffer = new byte[1024];
+            FileInputStream fis = null;
+            BufferedInputStream bis = null;
+            try {
+                fis = new FileInputStream(file);
+                bis = new BufferedInputStream(fis);
+                OutputStream os = response.getOutputStream();
+                int i = bis.read(buffer);
+                while (i != -1) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+                return "下载成功";
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return "下载失败";
+    }
+    /**
+     * 删除文件
+     */
+    @RequestMapping("del")
+    @ResponseBody
+    public List<Projectfile> delete(@RequestParam("id")Integer id){
+        service.delete(id);
+        List<Projectfile> projectfiles = service.selectAllprojectfile();
+        return projectfiles;
+    }
+    /**
+     * 跳转到数据抽取
+     */
+    @RequestMapping("chouqu")
+    @ResponseBody
+    public List<Task> dataget(HttpSession session){
+        AuditPlanproject a = (AuditPlanproject)session.getAttribute("auditPlanproject");
+        Integer id = 94136;
+        List<Task> tasks = service.selectTaskbyppid(id);
+        return tasks;
+    }
+    @RequestMapping("sousuobycodeandaudit")
+    @ResponseBody
+    public List<Task> sousuobycodeandaudit(HttpSession session,@RequestParam("tauditpoints") String tauditpoints, @RequestParam("tcode") String tcode){
+        AuditPlanproject a = (AuditPlanproject)session.getAttribute("auditPlanproject");
+        Integer id = 94136;
+        AuditPlanproject aa = new AuditPlanproject();
+        aa.setPpId(id);
+        if(tcode.equals("")||tcode==null){
+            tcode=null;
+        }else {
+            tcode = "%"+tcode+"%";
+        }
+        if(tauditpoints.equals("")||tauditpoints==null){
+            tauditpoints=null;
+        }else {
+            tauditpoints = "%"+tauditpoints+"%";
+        }
+        List<Task> tasks =service.selecttaskbycodeandauditpoints(tcode,tauditpoints,aa);
+        return tasks;
+    }
+        @RequestMapping("chongzuo")
+        @ResponseBody
+        public Task chongzuo(HttpSession session,@RequestParam("id")Integer id,@RequestParam("name")String name,@RequestParam("tAuditpoints")String tAuditpoints,@RequestParam("tCode")String tcode){
+            AuditPlanproject a = (AuditPlanproject)session.getAttribute("auditPlanproject");
+            Integer idd = 94136;
+            AuditPlanproject aa = new AuditPlanproject();
+            aa.setPpId(idd);
+            Task t = new Task();
+            t.settId(id);
+            t.settState("重做中");
+            t.settName(name);
+            t.settCode(tcode);
+            t.settAuditpoints(tAuditpoints);
+            t.setAuditPlanproject(aa);
+            Task task = service.addrenwu(t);
+            return task;
+        }
 }

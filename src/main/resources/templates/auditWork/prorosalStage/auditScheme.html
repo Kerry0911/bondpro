@@ -7,6 +7,8 @@
     <script type="text/javascript" th:src="@{/easyui/jquery.easyui.min.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/default/easyui.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/easyui/themes/icon.css}"/>
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}">
 </head>
 <body>
 <script th:inline="javascript">
@@ -27,10 +29,10 @@
         zhushen1 = zhushens.split(",");//将主审人员通过，分割给数组 然后通过下标一个一个展示出来
         zs1 = zss.split(",");
         for(var i = 0;i<zhushen1.length;i++) {
-            $("#prorol").append("<tr><td>"+zhushen1[i]+"</td><td>"+zhushenrole1+"</td><td>"+zhushenpq1[i]+"</td></tr>")
+            $("#prorol").append("<tr><td  style='height: 30px;'>"+zhushen1[i]+"</td><td>"+zhushenrole1+"</td><td>"+zhushenpq1[i]+"</td></tr>")
         }
         for(var j = 0;j<zs1.length;j++){
-            $("#prorol").append("<tr><td>"+zs1[j]+"</td><td>"+zsrole1+"</td><td>"+zspq1[j]+"</td></tr>")
+            $("#prorol").append("<tr><td  style='height: 30px;'>"+zs1[j]+"</td><td>"+zsrole1+"</td><td>"+zspq1[j]+"</td></tr>")
         }
     })
 </script>
@@ -38,6 +40,7 @@
     <div style="background-color: #6ab8f7;border: 1px solid black;width: 900px;height:30px;margin: 0 auto;">基本信息</div>
         <div style="margin:0 auto;text-align:center;width: 900px;height: 180px;border: 1px solid black">
             <div style="margin-top:15px;font-size: 16px;">
+                <input type="text" id="projectid" th:value="${session.a.ppId}" hidden>
                 项目名称：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.a.ppName}">
                 项目编号：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.a.ppId}">
                 项目类型：<input type="text" style="height: 30px;background-color: lightsteelblue" th:value="${session.a.ppType}"><br>
@@ -52,7 +55,7 @@
             </div>
         </div>
     <div style="margin-top: 20px;">
-            <div style="text-align:center;width: 425px;height: 300px;border: 1px solid black;margin-left: 225px;float: left;">
+            <div style="text-align:center;width: 425px;height: 200px;border: 1px solid black;margin-left: 225px;float: left;">
                 <div style="background-color: #6ab8f7;border: 1px solid black;width: 425px;height:30px">项目成员</div>
                 <div>
                     <table id="prorol" border="1px" style="width: 400px;margin: 0 auto;margin-top: 10px;">
@@ -69,7 +72,7 @@
                     </table>
                 </div>
             </div>
-            <div style="text-align:center;width: 425px;height: 300px;border: 1px solid black;margin-left:50px;float: left;">
+            <div style="text-align:center;width: 425px;height: 200px;border: 1px solid black;margin-left:50px;float: left;">
                 <div style="background-color: #6ab8f7;border: 1px solid black;width: 425px;height:30px">任务分配</div>
                 <div>
                     <table border="1px" style="width: 400px;margin: 0 auto;margin-top: 10px;">
@@ -78,7 +81,7 @@
                             <td width="50%">检查项</td>
                         </tr>
                         <tr th:each="t:${session.t}">
-                            <td th:text="${t.tName}"></td>
+                            <td style="height: 30px;" th:text="${t.tName}"></td>
                             <td th:text="${t.tCode}"></td>
                         </tr>
                     </table>
@@ -86,5 +89,39 @@
             </div>
     </div>
 </div>
+<div style="margin-top: 220px;width: 100%;text-align: center;">
+    <div>补充说明：</div><textarea id="des" style="width: 800px;height: 100px;"></textarea>
+</div>
+<div style="margin-top: 20px;width: 1000px;text-align: right;">
+    <button class="btn-info" style="margin-right: 20px;" onclick="baocun()">保存</button><button class="btn-info">取消</button><button class="btn-info"  style="margin-left: 20px;" onclick="tijiaoshenhe()">提交审核</button>
+</div>
+<script th:inline="javascript">
+    var fanganid = "";
+    function baocun(){
+        var id = $("#projectid").val();
+        var des = $("#des").val();
+        $.ajax({
+            url:"savafangan",
+            dataType:"json",
+            type:"post",
+            data:{id:id,des:des},
+            success:function(data){
+                fanganid=data.fId;
+                alert("保存成功");
+        }
+        })
+    }
+    function tijiaoshenhe(){
+        $.ajax({
+            url:"tijiaoshenhe",
+            dataType:"json",
+            data:{fanganid:fanganid},
+            type:"post",
+            success:function(data){
+                alert("提交审核成功");
+            }
+        })
+    }
+</script>
 </body>
 </html>
