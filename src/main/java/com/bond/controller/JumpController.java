@@ -34,10 +34,10 @@ public class JumpController {
      * 领导工作台
      * @return
      */
-    @RequestMapping("/persontask")
+    @RequestMapping("/personTask")
     public String persontask(){return "leadWorkbench/personTask"; }
 
-    @RequestMapping("/proprocess")
+    @RequestMapping("/proProcess")
     public String proprocess(){return "leadWorkbench/proProcess"; }
 
 

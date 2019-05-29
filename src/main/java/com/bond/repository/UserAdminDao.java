@@ -1,6 +1,7 @@
 package com.bond.repository;
 
 import com.bond.bean.AuditUser;
+import com.bond.bean.Systemconfiguration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,4 +32,9 @@ public interface UserAdminDao extends JpaRepository<AuditUser,Integer>, JpaSpeci
 
     //根据角色查询用户
     List<AuditUser> findByURole(String uRole);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update systemconfiguration set configValueName=?2 and description=?2 where id=?1",nativeQuery = true)
+    public int upRole(Integer id,String configValuename,String description);
  }

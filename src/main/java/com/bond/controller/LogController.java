@@ -55,6 +55,7 @@ public class LogController {
             e.printStackTrace();
         }
         String lMk=request.getParameter("lMk");
+        System.out.println(logService.findSearch(lName,lDept,lType,lInfo,lTime,eTime,lMk).size());
         return logService.findSearch(lName,lDept,lType,lInfo,lTime,eTime,lMk);
     }
 }

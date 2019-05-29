@@ -107,8 +107,8 @@ public class UserAdminService {
 
     //角色修改
     @Transactional
-    public void upRole(Systemconfiguration sys){
-        dao2.save(sys);
+    public void upRole(Integer id,String configValuename,String description){
+        dao1.upRole(id,configValuename,description);
     }
 
     //登录

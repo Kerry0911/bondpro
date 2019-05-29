@@ -30,7 +30,6 @@ public class UserAdminController {
     @Resource
     private AuditedService auditedService=new AuditedService();
 
-
     //查询部门
     @RequestMapping("/useradmin")
     public String useradmin(Model model){
@@ -209,8 +208,9 @@ public class UserAdminController {
     @RequestMapping("/upRole")
     @ResponseBody
     public void upRole(Systemconfiguration sys,Integer id){
+        sys.setId(id);
         System.out.println(id);
-        service1.upRole(sys);
+        service1.upRole(id,sys.getConfigvaluename(),sys.getDescription());
     }
 
     @RequestMapping("/loginshow")
@@ -220,7 +220,6 @@ public class UserAdminController {
     //登录
     @RequestMapping("/login")
     public String  login(String uUsercode, String uPassword, HttpSession session){
-        System.out.println(uUsercode+"----------"+uPassword  );
         AuditUser user=service1.getUser(uUsercode,uPassword);
         if(user==null){
             session.setAttribute("a","用户名或密码错误");
@@ -229,7 +228,7 @@ public class UserAdminController {
             session.setAttribute("a","登陆成功");
             session.setAttribute("users",user);
             if(user.getuRole().equals("审计人员")){
-                return "";
+                return "auditors/index";
             }else if(user.getuRole().equals("审计部总经理")){
                 return "auditManager/index";
             }else if(user.getuRole().equals("系统初始化角色")){
