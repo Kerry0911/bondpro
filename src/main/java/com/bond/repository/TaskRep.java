@@ -12,6 +12,7 @@ public interface TaskRep extends JpaRepository<Task,Integer>, JpaSpecificationEx
 
     @Query(value = "select a.*,b.* from task a,audit_planproject b where a.pp_id=?1 and b.pp_state='0'",nativeQuery = true)
     public List<Task> findByPp(String ppId);
+    public Task findByAuditPlanproject_PpIdAndTName(Integer ppid,String tname);
 
     //public List<Task> findTaskByTIdAndTAuditpoints(Integer tId,String tAuditpoints);
 }

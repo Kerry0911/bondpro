@@ -10,53 +10,105 @@
 </head>
 <body>
     <div>
-            项目编号：<input type="text">
-            项目名称：<input type="text">
+            项目编号：<input type="text" id="ppid">
+            项目名称：<input type="text" id="ppname">
             创建人：
-            <select style="width: 100px;">
-                <option></option>
+            <select style="width: 100px;" id="createpeople">
+                <option value="">请选择</option>
+                <span th:each="a:${session.auditUsers}">
+                    <option th:text="${a.uUsername}" th:value="${a.uUsername}"></option>
+                </span>
             </select>
             项目类型：
-            <select style="width: 100px;">
-                <option></option>
-            </select>
-            项目状态：
-            <select style="width: 100px;">
-                <option></option>
+            <select style="width: 100px;" id="pptype">
+                <option value="">请选择</option>
+                <option value="公司类项目">公司类项目</option>
+                <option value="营业部类项目">营业部类项目</option>
+                <option value="专项">专项</option>
             </select><br>
-            <a id="search" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">搜索</a>
+            项目状态：
+            <select style="width: 100px;" id="ppstate">
+                <option value="">请选择</option>
+                <option value="编辑中">编辑中</option>
+                <option value="已结项">已结项</option>
+            </select><br>
+            <a id="search" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="ss()">搜索</a>
             <a id="reset" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reset'">重置</a>
     </div>
 <div id="tool" >
-    <a id="edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">编辑</a>
+    <a id="edit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="bianji()">编辑</a>
     <a id="stop" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-stop'">终止</a>
     <a id="in" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-in'">进入项目</a>
     <a id="submit" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-submit'">提交审核</a>
-    <a id="scan" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">查看详情</a>
+    <a id="scan" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="showxiangqing()">查看详情</a>
     <a id="jindu" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'">项目进度</a>
 </div>
-<table class="easyui-datagrid" toolbar="#tool" id="dg1" data-options="pagination:true" style="width: 100%" >
+<table class="easyui-datagrid" toolbar="#tool" id="dg1" data-options="url:'toauditpro',pagination:true,singleSelect:true" style="width: 100%" >
     <thead>
     <tr>
         <th data-options="field:'price',checkbox:true"></th>
-        <th data-options="field:'code',width:'12%'">项目编号</th>
-        <th data-options="field:'name',width:'12%'">项目名称</th>
-        <th data-options="field:'d',width:'12%'">审计部门</th>
-        <th data-options="field:'c',width:'12%'">项目类型</th>
-        <th data-options="field:'v',width:'12%'">项目状态</th>
-        <th data-options="field:'f',width:'13%'">当前操作模块</th>
-        <th data-options="field:'r',width:'13%'">主审</th>
-        <th data-options="field:'b',width:'12%'">项目进度</th>
+        <th data-options="field:'ppId',width:'12%'"  formatter="pid">项目编号</th>
+        <th data-options="field:'ppName',width:'12%'">项目名称</th>
+        <th data-options="field:'ppAudit',width:'12%'">审计部门</th>
+        <th data-options="field:'ppType',width:'12%'">项目类型</th>
+        <th data-options="field:'ppState',width:'12%'">项目状态</th>
+        <th data-options="field:'ppJieduan',width:'13%'">当前操作模块</th>
+        <th data-options="field:'idd',width:'13%'" formatter="find">主审</th>
+        <th data-options="field:'ppCreatepeople',width:'13%'">创建人</th>
     </tr>
     </thead>
-    <tbody>
-    <tr>
-        <td></td><td>001</td><td>name1</td><td>2323</td><td>2323</td><td>2323</td><td>2323</td><td>2323</td><td>2323</td>
-    </tr>
-    <tr>
-        <td></td><td>002</td><td>name2</td><td>4612</td><td>2323</td><td>2323</td><td>2323</td><td>2323</td><td>2323</td>
-    </tr>
-    </tbody>
 </table>
+    <div id="shengji" class="easyui-dialog" title="项目详情" style="width:1300px;height:700px;padding: 30px;"
+         data-options="resizable:true,modal:true,closed:true,top:50">
+        <iframe id="shengjiiframe" scrolling="auto" frameborder="0" style="width:100%;height:650px;"></iframe>
+    </div>
+    <div id="bianji" class="easyui-dialog" title="项目编辑" style="width:1300px;height:700px;padding: 30px;"
+         data-options="resizable:true,modal:true,closed:true,top:50">
+        <iframe  id="bianjiiframe" scrolling="auto" frameborder="0" style="width:100%;height:650px;"></iframe>
+    </div>
+<script th:inline="javascript">
+    function bianji(){
+        var obj = $("#dg1").datagrid("getSelected");
+        var url =  "toauditscheme1?id="+obj.ppId;
+        $("#bianjiiframe").attr("src",url);
+        $("#bianji").dialog("open");
+    }
+    function ss(){
+        var id = $("#ppid").val();
+        var name = $("#ppname").val();
+        var createpeople = $("#createpeople").val();
+        var type = $("#pptype").val();
+        var state = $("#ppstate").val();
+        $.ajax({
+            url:"sousuopro",
+            dataType:"json",
+            data:{id:id,name:name,createpeople:createpeople,type:type,state:state},
+            type:"post",
+            success:function(data){
+                $("#dg1").datagrid("loadData",data);
+            }
+        })
+    }
+    function showxiangqing(){
+        var obj = $("#dg1").datagrid("getSelected");
+        var url =  "toauditscheme1?id="+obj.ppId;
+        $("#shengjiiframe").attr("src",url);//然后给ifram的src一个属性  指定页面给src
+        $("#shengji").dialog("open");
+    }
+    function pid(value,row,index){
+        row.idd=value;//给idd这个row value值
+        return value;//return原来的值给ppid
+    }
+    function find(value,row,index){//这里的value就是通过上面 row.idd = value 来的 这样就可以给idd这个row一个value 然后就可以通过的这个value查东西了
+        var nnn = $.ajax({
+            url:"findzhushenrole",
+            data:{id:value},
+            async:false,
+            type:"post",
+        })
+        var name = nnn.responseText;
+        return name;
+    }
+</script>
 </body>
 </html>
