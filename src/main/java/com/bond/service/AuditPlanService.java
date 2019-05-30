@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -171,7 +172,7 @@ public class AuditPlanService {
     }
 
     /**
-     * 通过项目id查找项目
+     * 通过项目id查找角色
      * @param pid
      * @return
      */
@@ -267,6 +268,9 @@ public class AuditPlanService {
      */
     public Task addrenwu(Task t){
         return taskRep.save(t);
+    }
+    public Task selectrenwubyppidandp(Integer ppid,String name){
+        return taskRep.findByAuditPlanproject_PpIdAndTName(ppid,name);
     }
     public List<Task> selectTaskbyppid(Integer id){
         return taskRep.findByAuditPlanproject_PpId(id);
@@ -381,6 +385,33 @@ public class AuditPlanService {
                 }
                 if (!StringUtils.isEmpty(aa)) {
                     predicates.add(criteriaBuilder.equal(root.<String>get("auditPlanproject"),aa));
+                }
+                return criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
+            }
+        });
+        return list;
+    }
+    public List<AuditPlanproject> selectbyfive(Integer id, String name, String createpeople, String type,String state){
+        List<AuditPlanproject> list = auditPlanprojectRep.findAll(new Specification<AuditPlanproject>() {
+            //这个方法就等于一个Predicate
+            @Override
+            public Predicate toPredicate(Root<AuditPlanproject> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicates = new ArrayList<>();
+                if (!StringUtils.isEmpty(name)){
+                    predicates.add(criteriaBuilder.like(root.<String>get("ppName"),"%"+name+"%"));
+                }
+                //如果传进来的这个不等于空 就拼接上这个进行查  如果等于空 就不拼接这个 就只通过上面那个查
+                if (!StringUtils.isEmpty(createpeople)){
+                    predicates.add(criteriaBuilder.like(root.<String>get("ppCreatepeople"),"%"+createpeople+"%"));
+                }
+                if (!StringUtils.isEmpty(type)){
+                    predicates.add(criteriaBuilder.like(root.<String>get("ppType"),"%"+type+"%"));
+                }
+                if (!StringUtils.isEmpty(state)){
+                    predicates.add(criteriaBuilder.like(root.<String>get("ppState"),"%"+state+"%"));
+                }
+                if (!StringUtils.isEmpty(id)) {
+                    predicates.add(criteriaBuilder.equal(root.<Integer>get("ppId"),id));
                 }
                 return criteriaQuery.where(predicates.toArray(new Predicate[predicates.size()])).getRestriction();
             }

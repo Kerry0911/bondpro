@@ -63,10 +63,10 @@
                 for(var i =0;i<data.list.length;i++) {
                     if (data.list[i].auditPlan.pType == "年度计划") {//通过查到的项目点出他所属于的审计计划然后再点出该审计计划类型  等于就是这个项目的类型
                         ndjh++;
-                        if (data.list[i].ppJieduan == "开展中") {
+                        if (data.list[i].ppState == "编辑中") {
                             akz++;
                         }
-                        if (data.list[i].ppJieduan == "已完成") {
+                        if (data.list[i].ppState == "已结项") {
                             awanc++;
                         }
                     }
@@ -87,10 +87,10 @@
                 for(var j =0;j<data.list.length;j++) {
                     if (data.list[j].auditPlan.pType == "asd") {//判断项目所属于的计划是不是指定类型 如果是就在给指定类型的项目数量加一
                         xzjh++;
-                        if (data.list[j].ppJieduan == "开展中") {//判断阶段是不是在开展中 如果是则开展中的项目数量+1
+                        if (data.list[j].ppState == "编辑中") {//判断阶段是不是在开展中 如果是则开展中的项目数量+1
                             bkz++;
                         }
-                        if (data.list[j].ppJieduan == "已完成") {//判断阶段是不是已完成 如果是则已完成的项目数量+1
+                        if (data.list[j].ppState == "已结项") {//判断阶段是不是已完成 如果是则已完成的项目数量+1
                             bwanc++;
                         }
                     }

@@ -127,12 +127,6 @@ public class JumpController {
     public String myfolder(){ return "workbench/directory"; }
 
 
-
-    @RequestMapping("/auditplan")
-    public String auditplan(){
-        return "auditWork/auditPlan";
-    }
-
     @RequestMapping("/auditpro")
     public String auditpro(){
         return "auditWork/auditPro";

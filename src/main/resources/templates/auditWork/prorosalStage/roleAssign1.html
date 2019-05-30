@@ -11,17 +11,16 @@
 <body>
 <script th:inline="javascript">
     $(function(){
-        //得到刚创建的项目的id
-        var ppid =window.parent.ppid;
-        var ppjd =window.parent.ppjd;
+        var ppid =[[${session.ppid}]];
+        var ppjd =[[${session.ppjd}]];
         $("#feidg").datagrid({
             url:"feixianchang?ppid="+ppid+"&ppjd="+ppjd,
         })
         $("#feidg").datagrid("reload");
     })
     $(function(){
-        var ppid = window.parent.ppid;
-        var ppjd = window.parent.ppjd;
+        var ppid =[[${session.ppid}]];
+        var ppjd =[[${session.ppjd}]];
         $("#xianc").datagrid({
             url:"xianchang?ppid="+ppid+"&ppjd="+ppjd,
         })
@@ -52,7 +51,7 @@
         var pqualification = [];
         var role = [];
         var allxinxi = [];
-        var ppid =window.parent.ppid;//得到刚刚添加的这个项目的id
+        var ppid =[[${session.ppid}]];//得到刚刚添加的这个项目的id
         var ppjd =jieduan;//这两个值的来源是看你选择的是哪个阶段来选择的
         var ridd = rid;
         $('input[class="all"]:checked').each(function(){
@@ -74,6 +73,7 @@
                     $("#role").dialog("close");
                     $("#feidg").datagrid("reload");
                     $("#xianc").datagrid("reload");
+                    window.parent.parent.$("#dg1").datagrid("reload");
                     $("input:checkbox").removeAttr("checked");
                     $("input:radio").removeAttr("checked");
                     shifouyiqiupdate=0;
