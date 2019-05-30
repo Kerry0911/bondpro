@@ -30,16 +30,21 @@
     var rid = "";
     var shifouyiqiupdate =0;
     function click(rowIndex,rowData){//点击非现场阶段的项目的时候 就赋非现场阶段的值给他
+        var jd= [[${session.ppjd}]];//得到项目的阶段
         jieduan = rowData.jd;
         rid = rowData.id;
-        $.messager.confirm("系统提示","是否要现场阶段也一起修改",function(data){
-            if(data){
-                shifouyiqiupdate = 1;
-                $("#role").dialog("open");
-            }else{
-                $("#role").dialog("open");
-            }
-        })
+        if(jd=="仅非现场阶段,仅现场阶段,") {//只有在项目的jd是都有的情况下 才走这里 才允许一起修改  不然不允许
+            $.messager.confirm("系统提示", "是否要现场阶段也一起修改", function (data) {
+                if (data) {
+                    shifouyiqiupdate = 1;
+                    $("#role").dialog("open");
+                } else {
+                    $("#role").dialog("open");
+                }
+            })
+        }else{
+            $("#role").dialog("open");
+        }
     }
     function xianclick(rowIndex,rowData){//点击现场阶段的项目的时候 就赋现场阶段的值给他
         jieduan = rowData.jd;

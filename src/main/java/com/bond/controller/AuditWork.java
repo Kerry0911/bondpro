@@ -445,24 +445,28 @@ public class AuditWork {
     @ResponseBody
     public String selectbyproname(@RequestParam("proid") Integer proid) {
         int is = 0;
-        String name = "";
-        List<Projectrole> list = service.selectbyproid(proid);
-        String feiname = list.get(0).getZhushen() + "," + list.get(0).getZs();//非现场阶段的人员的名字
-        String xianname = list.get(1).getZhushen() + "," + list.get(1).getZs();//现场阶段的人员的名字
-        String[] fname = feiname.split(",");
-        String[] xname = xianname.split(",");
-        for (int i = 0; i < xname.length; i++) {
-            for (int j = 0; j < fname.length; j++) {
-                if (xname[i].equals(fname[j])) {
-                    is++;
+        String feiname = "";
+        String xianname = "";
+        List<Projectrole> list = service.selectbyproid(proid);//在项目角色里面通过项目id查找
+        if(list.size()>=2) {//如果等于二就表示这个项目有两个阶段  那么就要在这两个阶段中对人员进行去重 如果不等于二就不走这里 就不会报list[1]为null
+            feiname = list.get(0).getZhushen() + "," + list.get(0).getZs();//非现场阶段的人员的名字
+            xianname = list.get(1).getZhushen() + "," + list.get(1).getZs();//现场阶段的人员的名字
+            String[] fname = feiname.split(",");
+            String[] xname = xianname.split(",");
+            for (int i = 0; i < xname.length; i++) {
+                for (int j = 0; j < fname.length; j++) {
+                    if (xname[i].equals(fname[j])) {
+                        is++;
+                    }
                 }
+                if (is == 0) {
+                    feiname += "," + xname[i];
+                }
+                is = 0;
             }
-            System.out.println(is);
-            if (is == 0) {
-                feiname += "," + xname[i];
-            }
-            System.out.println(feiname);
-            is = 0;
+        }
+        if(list.size()==1){//如果等于1就表示没有两个阶段
+            feiname = list.get(0).getZhushen() + "," + list.get(0).getZs();//非现场阶段的人员的名字
         }
         return feiname;
     }
@@ -665,7 +669,6 @@ public class AuditWork {
         Integer id = a.getPpId();
         List<Projectfile> projectfiles = service.selectprojectfilebyppid(id);
         Optional<AuditPlanproject> optionalAuditPlanproject = service.selectbid(id);
-        System.out.println(optionalAuditPlanproject.get().getPpName());
         session.setAttribute("optionalAuditPlanproject", optionalAuditPlanproject.get());
         session.setAttribute("projectfiles", projectfiles);
         return "auditWork/insite/inmeeting";
